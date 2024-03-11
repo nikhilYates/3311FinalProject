@@ -1,4 +1,4 @@
-package Controller;
+package userManagement;
 
 public interface User {
 
