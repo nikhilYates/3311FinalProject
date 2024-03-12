@@ -1,6 +1,6 @@
 package userManagement;
 
-public interface User {
+public abstract class User implements UserManager {
 
 	
 }

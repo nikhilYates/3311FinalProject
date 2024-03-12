@@ -1,6 +1,6 @@
 package userManagement;
 
-public class Faculty implements User {
+public class Faculty extends User {
 
 	
 }

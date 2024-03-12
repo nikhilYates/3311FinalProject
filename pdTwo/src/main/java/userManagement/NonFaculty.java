@@ -1,6 +1,6 @@
 package userManagement;
 
-public class NonFaculty implements User{
+public class NonFaculty extends User {
 
 	
 	

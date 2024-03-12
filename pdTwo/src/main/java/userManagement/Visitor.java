@@ -1,5 +1,5 @@
 package userManagement;
 
-public class Visitor implements User{
+public class Visitor extends User{
 
 }
