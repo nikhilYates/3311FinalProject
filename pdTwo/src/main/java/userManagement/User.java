@@ -24,7 +24,7 @@ public abstract class User implements UserManager {
 	 * Public User constructor
 	 */
 	public User() {
-		this("user01", "nikhilyy@my.yorku.ca", "1234");
+		
 		System.out.println("User Default Constructor");
 	}
 	
