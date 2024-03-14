@@ -1,7 +1,7 @@
 package itemManagement;
 
 
-public abstract class PhysicalItemState extends Product {
+public abstract class PhysicalItemState implements Product {
 
 	public boolean displayState() {
 		return true;

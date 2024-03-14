@@ -1,6 +1,5 @@
 package itemManagement;
 
-public interface Product extends ItemManager {
+public interface Product {
 
-	
 }

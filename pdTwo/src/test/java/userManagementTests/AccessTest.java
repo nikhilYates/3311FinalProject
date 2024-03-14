@@ -13,13 +13,13 @@ class AccessTest {
 
 	@Test
 	public void signupFailedTest () throws IOException {
-		boolean signingup = Session.signup("t1@yorku.ca", "t1t1", new Student());
+		boolean signingup = Session.signup("t1@yorku.ca", "t1t1", new Student(null, null, null, null, null, 0));
 		assertFalse(signingup);
 	}
 	
 	@Test
 	public void signupSuccessTest () throws IOException {	// only for first time, still need to set up a method to delete it before testing
-		boolean signingup = Session.signup("hello@gmail.com", "hello", new Student());
+		boolean signingup = Session.signup("hello@gmail.com", "hello", new Student(null, null, null, null, null, 0));
 		assertTrue(signingup);
 	}
 	
