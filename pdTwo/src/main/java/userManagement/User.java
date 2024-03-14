@@ -1,11 +1,18 @@
 package userManagement;
 
 public abstract class User implements UserManager {
+		
+	enum userType {
+		Student,
+		Faculty,
+		NonFaculty,
+		Visitor
+	}
 	
 	private String userID;
 	private String email;
 	private String password;
-	private Enum userType;
+	private userType usertype;
 	
 	/**
 	 * Private paramaterized constructor
@@ -13,10 +20,11 @@ public abstract class User implements UserManager {
 	 * @param email
 	 * @param password
 	 */
-	private User(String userID, String email, String password) {
+	protected User(String userID, String email, String password, userType usertype) {
 		this.userID = userID;
 		this.email = email;
 		this.password = password;
+		this.usertype = usertype;
 		
 	}
 	
@@ -49,10 +57,9 @@ public abstract class User implements UserManager {
 		return password;
 	}
 
-	
 
-	public Enum getUserType() {
-		return userType;
+	public userType getUsertype() {
+		return usertype;
 	}
 
 	

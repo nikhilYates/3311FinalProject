@@ -18,8 +18,8 @@ public class ItemUserBridge {
 	 * Consider this class the highest level of abstraction between the two interfaces
 	 * This class will handle input from the GUI  
 	 */
-	UserManager userAbstraction = new Student();
-	ItemManager itemAbstraction = new Textbook();
+//	UserManager userAbstraction = new Student();
+//	ItemManager itemAbstraction = new Textbook();
 	
 		
 }
