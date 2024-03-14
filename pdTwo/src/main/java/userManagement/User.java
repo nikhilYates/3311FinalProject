@@ -46,18 +46,28 @@ public abstract class User implements UserManager {
 		return userID;
 	}
 
-
+	/**
+	 * 
+	 * @return get the user email
+	 */
 	public String getEmail() {
 		return email;
 	}
 
 	
-
+	/**
+	 * 
+	 * @return get the user password
+	 */
 	public String getPassword() {
 		return password;
 	}
 
 
+	/**
+	 * 
+	 * @return get the usertype
+	 */
 	public userType getUsertype() {
 		return usertype;
 	}
