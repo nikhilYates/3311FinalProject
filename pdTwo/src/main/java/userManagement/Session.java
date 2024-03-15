@@ -20,9 +20,11 @@ public class Session {
 	private static final int VALIDATIONCELL = 5;
 
     private final String email;
+    private final int rowNum;
 
-    private Session(String email) {
+    private Session(String email, int rowNum) {
         this.email = email;
+        this.rowNum = rowNum;
     }
 
     public static Session login(String email, String password) throws IOException {
@@ -35,8 +37,9 @@ public class Session {
         for (Row row : sheet) {		// checks for email, and if password matches
             if (email.equalsIgnoreCase(row.getCell(EMAILCELL).getStringCellValue())) {	// based on current positioning
             	if (password.equalsIgnoreCase(row.getCell(PASSWORDCELL).getStringCellValue())) {
+            		int thisRowNum = row.getRowNum();
             		workbook.close();
-            		return new Session(email);
+            		return new Session(email, thisRowNum);
             	} else {
             		break;
             	}
@@ -78,7 +81,7 @@ public class Session {
         if (userType.getClass().getSimpleName() == Visitor.class.getSimpleName()) {
         	validationCell.setCellValue(true);
         } else {
-        	validationCell.setCellValue(true);
+        	validationCell.setCellValue(false);
         }
         
         FileOutputStream out = new FileOutputStream(file);
@@ -87,5 +90,29 @@ public class Session {
         workbook.close();
         
         return true; // false if not valid
+    }
+    
+    // add a row delete method, wither static and find email and delete, or via class and change constructor to initiate with row instead of email
+    // or do both, one can be for testing and one for client, testing will be the static
+    public boolean deleteUser() throws IOException {	// you need to be logged in and use that session object
+    	File file = new File("src/main/resources/csv/user.xlsx");
+        FileInputStream fileInput = new FileInputStream(file);
+        Workbook workbook = new XSSFWorkbook(fileInput);
+        
+        Sheet sheet = workbook.getSheetAt(0);
+        
+        Row theRow = sheet.getRow(this.rowNum);
+        if (theRow != null) {
+        	sheet.removeRow(sheet.getRow(this.rowNum));
+        	
+        	FileOutputStream out = new FileOutputStream(file);
+        	
+        	workbook.write(out);
+        	workbook.close();
+        	return true;
+        }
+        
+        workbook.close();
+        return false;
     }
 }

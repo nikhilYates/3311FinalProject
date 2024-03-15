@@ -5,11 +5,24 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import userManagement.Session;
 import userManagement.Student;
 
 class AccessTest {
+	
+	public String signupEmail = "helloworld@gmail.com";
+	public String signupPassword = "helloworld";
+	
+	@BeforeEach
+	public void deleteUser () throws IOException {
+		Session user = Session.login(this.signupEmail, this.signupPassword);
+		if (user != null) {
+			user.deleteUser();
+		}
+	}
+	
 
 	@Test
 	public void signupFailedTest () throws IOException {
@@ -18,8 +31,8 @@ class AccessTest {
 	}
 	
 	@Test
-	public void signupSuccessTest () throws IOException {	// only for first time, still need to set up a method to delete it before testing
-		boolean signingup = Session.signup("hello@gmail.com", "hello", new Student(null, null, null, null, null, 0));
+	public void signupSuccessTest () throws IOException {
+		boolean signingup = Session.signup(this.signupEmail, this.signupPassword, new Student(null, null, null, null, null, 0));
 		assertTrue(signingup);
 	}
 	
