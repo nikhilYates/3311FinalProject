@@ -18,6 +18,8 @@ public class Session {
 	private static final int PASSWORDCELL = 3;
 	private static final int USERTYPECELL = 4;
 	private static final int VALIDATIONCELL = 5;
+	
+	private static final File file = new File("src/main/resources/csv/user.xlsx");
 
     private final String email;
     private final int rowNum;
@@ -26,11 +28,16 @@ public class Session {
         this.email = email;
         this.rowNum = rowNum;
     }
+    
+    private static Workbook getWorkbook() throws IOException {
+    	FileInputStream fileInput = new FileInputStream(file);
+        
+        return new XSSFWorkbook(fileInput);
+    }
 
     public static Session login(String email, String password) throws IOException {
         ;   // login logic using csv file
-        FileInputStream file = new FileInputStream(new File("src/main/resources/csv/user.xlsx"));
-        Workbook workbook = new XSSFWorkbook(file);
+        Workbook workbook = getWorkbook();
         
         Sheet sheet = workbook.getSheetAt(0);
         
@@ -53,9 +60,7 @@ public class Session {
 
     public static boolean signup(String email, String password, User userType) throws IOException {
         ;   // sign up logic using csv file and doing some basic validation, maybe
-        File file = new File("src/main/resources/csv/user.xlsx");
-        FileInputStream fileInput = new FileInputStream(file);
-        Workbook workbook = new XSSFWorkbook(fileInput);
+        Workbook workbook = getWorkbook();
         
         Sheet sheet = workbook.getSheetAt(0);
         
@@ -95,9 +100,7 @@ public class Session {
     // add a row delete method, wither static and find email and delete, or via class and change constructor to initiate with row instead of email
     // or do both, one can be for testing and one for client, testing will be the static
     public boolean deleteUser() throws IOException {	// you need to be logged in and use that session object
-    	File file = new File("src/main/resources/csv/user.xlsx");
-        FileInputStream fileInput = new FileInputStream(file);
-        Workbook workbook = new XSSFWorkbook(fileInput);
+    	Workbook workbook = getWorkbook();
         
         Sheet sheet = workbook.getSheetAt(0);
         
