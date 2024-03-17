@@ -1,6 +1,5 @@
 package userManagement;
 
-<<<<<<< Updated upstream
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -33,102 +32,35 @@ public abstract class User implements UserManager {
 	
 	/**
 	 * Protected paramaterized constructor
-=======
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-public abstract class User implements UserManager {
-
-	enum UserType {
-		STUDENT, FACULTY, STAFF, VISITOR
-	}
-
-	private String userID;
-	private String email;
-	private String password;
-	private UserType userType;
-
-	/**
-	 * Private paramaterized constructor
-	 * 
->>>>>>> Stashed changes
 	 * @param userID
 	 * @param email
 	 * @param password
 	 */
-<<<<<<< Updated upstream
 	protected User(int userID, String email, int rowNum) {
 		this.userID = userID;
 		this.email = email;
 		this.rowNum = rowNum;
 		this.usertype = this.getClass().getSimpleName();
-=======
-	public User(String userID, String email, String password, UserType userType) {
-		if (!validateEmail(email)) {
-			throw new IllegalArgumentException("Invalid email address.");
-		}
-		if (!validatePassword(password)) {
-			throw new IllegalArgumentException("Password does not meet complexity requirements.");
-		}
-		this.userID = userID;
-		this.email = email;
-		this.password = password;
-		this.userType = userType;
+	}
+	
+	
+	/**
+	 * Getter methods down here
+	 * @return
+	 */
+
+	public int getUserID() {
+		return userID;
 	}
 
 	/**
-	 * Public User constructor
+	 * 
+	 * @return get the user email
 	 */
-	public User() {
-
-		System.out.println("User Default Constructor");
->>>>>>> Stashed changes
-	}
-
-	public abstract void register(String email, String password, UserType userType);
-
-	public boolean login(String email, String password) {
-		// This method should check against stored user credentials, typically in a
-		// database.
-		// The below code assumes a check against the current attributes for simplicity.
-		return this.email.equals(email) && this.password.equals(password);
-	}
-
-	protected boolean validateEmail(String email) {
-		// Regex for validating email
-		String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-		Pattern pattern = Pattern.compile(emailRegex);
-		Matcher matcher = pattern.matcher(email);
-		return matcher.matches();
-	}
-
-	protected boolean validatePassword(String password) {
-		// Regex for validating password complexity: At least one digit, one lowercase,
-		// one uppercase, one special character, and at least 8 characters
-		String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
-		Pattern pattern = Pattern.compile(passwordRegex);
-		Matcher matcher = pattern.matcher(password);
-		return matcher.matches();
-	}
-
-	public void notifyValidation() {
-		System.out.println("User " + email + " has been validated.");
-	}
-
-<<<<<<< Updated upstream
-	public int getUserID() {
-		return userID;
-=======
-	public String getUserID() {
-		return this.userID;
->>>>>>> Stashed changes
-	}
-
 	public String getEmail() {
-		return this.email;
+		return email;
 	}
 
-<<<<<<< Updated upstream
 
 	/**
 	 * 
@@ -136,14 +68,6 @@ public abstract class User implements UserManager {
 	 */
 	public String getUsertype() {
 		return usertype;
-=======
-	public String getPassword() {
-		return this.password;
-	}
-
-	public UserType getUsertype() {
-		return this.userType;
->>>>>>> Stashed changes
 	}
 	
 	// subclasses might want access this for additional attributes
@@ -254,26 +178,5 @@ public abstract class User implements UserManager {
         return false;
     }
 
-	public void setUserID(String userID) {
-		this.userID = userID;
-	}
-
-	public void setEmail(String email) {
-		if (!validateEmail(email)) {
-			throw new IllegalArgumentException("Invalid email address.");
-		}
-		this.email = email;
-	}
-
-	public void setPassword(String password) {
-		if (!validatePassword(password)) {
-			throw new IllegalArgumentException("Password does not meet complexity requirements.");
-		}
-		this.password = password;
-	}
 	
-    public void setUserType(UserType userType) {
-        this.userType = userType;
-    }
-
 }
