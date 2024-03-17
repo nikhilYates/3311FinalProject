@@ -88,6 +88,10 @@ public abstract class User implements UserManager {
             	if (password.equalsIgnoreCase(row.getCell(PASSWORDCELL).getStringCellValue())) {
             		int thisRowNum = row.getRowNum();
             		String userType = row.getCell(USERTYPECELL).getStringCellValue();
+            		boolean validated = row.getCell(VALIDATIONCELL).getBooleanCellValue();
+            		if (!validated) {
+            			break;
+            		}
             		workbook.close();
             		if (userType.equalsIgnoreCase(Faculty.class.getSimpleName())) {
             			return new Faculty((int) row.getCell(USERIDCELL).getNumericCellValue(), email, thisRowNum, row.getCell(DEPARTMENTCELL).getStringCellValue());
@@ -142,7 +146,7 @@ public abstract class User implements UserManager {
         majorCell.setCellValue("");
         yearCell.setCellValue(0);
         
-        if (userType.getSimpleName() == Visitor.class.getSimpleName()) {
+        if (userType.getSimpleName().equalsIgnoreCase(Visitor.class.getSimpleName())) {
         	validationCell.setCellValue(true);
         } else {
         	validationCell.setCellValue(false);
