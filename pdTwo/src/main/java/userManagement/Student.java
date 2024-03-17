@@ -1,5 +1,13 @@
 package userManagement;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+
 public class Student extends User {
 	
 	private String major;
@@ -15,9 +23,9 @@ public class Student extends User {
 	 * @param major
 	 * @param year
 	 */
-	public Student(String userID, String email, String password, userType usertype, String major, int year) {
+	protected Student(int userID, String email, int rowNum, String major, int year) {
 		
-		super(userID, email, password, User.userType.Student);
+		super(userID, email, rowNum);
 		this.major = major;
 		this.year = year;
 	}
@@ -36,6 +44,38 @@ public class Student extends User {
 	 */
 	public int getYear() {
 		return year;
+	}
+	
+	// to set the major, at the Beginning it's empty
+	public void setMajor(String major) throws IOException {
+		Workbook workbook = getWorkbook();
+        
+        Sheet sheet = workbook.getSheetAt(0);
+        
+        Row accountRow = sheet.getRow(this.rowNum);
+        Cell majorCell = accountRow.createCell(MAJORCELL);
+        majorCell.setCellValue(major);
+        
+        FileOutputStream out = new FileOutputStream(file);
+        
+        workbook.write(out);
+        workbook.close();
+	}
+	
+	// to set the year, at the Beginning it's empty
+	public void setYear(int year) throws IOException {
+		Workbook workbook = getWorkbook();
+        
+        Sheet sheet = workbook.getSheetAt(0);
+        
+        Row accountRow = sheet.getRow(this.rowNum);
+        Cell yearCell = accountRow.createCell(YEARCELL);
+        yearCell.setCellValue(year);
+        
+        FileOutputStream out = new FileOutputStream(file);
+        
+        workbook.write(out);
+        workbook.close();
 	}
 
 }

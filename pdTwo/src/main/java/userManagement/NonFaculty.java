@@ -10,9 +10,9 @@ public class NonFaculty extends User {
 	 * @param password
 	 * @param usertype
 	 */
-	public NonFaculty(String userID, String email, String password, userType usertype) {
+	protected NonFaculty(int userID, String email, int rowNum) {
 		
-		super(userID, email, password, User.userType.NonFaculty);
+		super(userID, email, rowNum);
 	}
 	
 	

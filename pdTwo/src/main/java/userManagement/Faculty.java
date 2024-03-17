@@ -1,5 +1,13 @@
 package userManagement;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+
 public class Faculty extends User {
 
 	
@@ -13,9 +21,9 @@ public class Faculty extends User {
 	 * @param usertype
 	 * @param department
 	 */
-	public Faculty(String userID, String email, String password, userType usertype, String department) {
+	protected Faculty(int userID, String email, int rowNum, String department) {
 		
-		super(userID, email, password, User.userType.Faculty);
+		super(userID, email, rowNum);
 		this.department = department;
 	}
 	
@@ -25,6 +33,22 @@ public class Faculty extends User {
 	 */
 	public String getDepartment() {
 		return department;
+	}
+	
+	// to set the department, at the Beginning it's empty
+	public void setDepartment(String department) throws IOException {
+		Workbook workbook = getWorkbook();
+        
+        Sheet sheet = workbook.getSheetAt(0);
+        
+        Row accountRow = sheet.getRow(this.rowNum);
+        Cell departmentCell = accountRow.createCell(DEPARTMENTCELL);
+        departmentCell.setCellValue(department);
+        
+        FileOutputStream out = new FileOutputStream(file);
+        
+        workbook.write(out);
+        workbook.close();
 	}
 	
 }

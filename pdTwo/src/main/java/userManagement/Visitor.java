@@ -10,9 +10,9 @@ public class Visitor extends User{
 	 * @param password
 	 * @param usertype
 	 */
-	public Visitor(String userID, String email, String password, userType usertype) {
+	protected Visitor(int userID, String email, int rowNum) {
 		
-		super(userID, email, password, User.userType.Visitor);
+		super(userID, email, rowNum);
 	}
 
 }
