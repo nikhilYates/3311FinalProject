@@ -1,5 +1,6 @@
 package userManagement;
 
+<<<<<<< Updated upstream
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -29,15 +30,24 @@ public class Student extends User {
 		this.major = major;
 		this.year = year;
 	}
+=======
+import java.util.ArrayList;
+import java.util.List;
 
-	/**
-	 * 
-	 * @return the student's major
-	 */
-	public String getMajor() {
-		return major;
-	}
+public class Student extends User {
+    private String studentID;
+    private List<Course> coursesEnrolled;
+    private List<Textbook> textbooks;
+>>>>>>> Stashed changes
 
+    public Student(String userID, String email, String password, String studentID) {
+        super(userID, email, password, UserType.STUDENT);
+        this.studentID = studentID;
+        this.coursesEnrolled = new ArrayList<>();
+        this.textbooks = new ArrayList<>();
+    }
+
+<<<<<<< Updated upstream
 	/**
 	 * 
 	 * @return the year that the student is in
@@ -77,5 +87,68 @@ public class Student extends User {
         workbook.write(out);
         workbook.close();
 	}
+=======
+    @Override
+    public void register(String email, String password, UserType userType) {
+        // Implement registration logic specific to Student
+        if (!validateEmail(email)) {
+            throw new IllegalArgumentException("Invalid email format.");
+        }
+        if (!validatePassword(password)) {
+            throw new IllegalArgumentException("Password does not meet complexity requirements.");
+        }
+        if (userType != UserType.STUDENT) {
+            throw new IllegalArgumentException("UserType must be STUDENT.");
+        }
+>>>>>>> Stashed changes
 
+        // Assuming a method to save the student information to the database
+        saveStudentToDatabase(email, password);
+    }
+
+    // Additional student-specific methods
+    public void enrollInCourse(Course course) {
+        // Logic for enrolling in a course
+        if (course != null && !coursesEnrolled.contains(course)) {
+            coursesEnrolled.add(course);
+        }
+    }
+
+    public void accessTextbookForCourse(Textbook textbook) {
+        // Logic for accessing a textbook for an enrolled course
+        if (textbook != null && !textbooks.contains(textbook)) {
+            textbooks.add(textbook);
+        }
+    }
+
+    // Logic to save student to a database (for example purposes)
+    private void saveStudentToDatabase(String email, String password) {
+        // Placeholder for actual database save logic
+        System.out.println("Student registered with email: " + email);
+    }
+
+    // Getters and setters
+    public String getStudentID() {
+        return studentID;
+    }
+
+    public void setStudentID(String studentID) {
+        this.studentID = studentID;
+    }
+
+    public List<Course> getCoursesEnrolled() {
+        return new ArrayList<>(coursesEnrolled);
+    }
+
+    public void setCoursesEnrolled(List<Course> coursesEnrolled) {
+        this.coursesEnrolled = new ArrayList<>(coursesEnrolled);
+    }
+
+    public List<Textbook> getTextbooks() {
+        return new ArrayList<>(textbooks);
+    }
+
+    public void setTextbooks(List<Textbook> textbooks) {
+        this.textbooks = new ArrayList<>(textbooks);
+    }
 }
