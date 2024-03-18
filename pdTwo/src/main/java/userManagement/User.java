@@ -30,6 +30,10 @@ public abstract class User implements UserManager {
 	private String email;
 	private String usertype;
 	
+	protected String department;
+	protected String major;
+	protected int year;
+	
 	/**
 	 * Protected paramaterized constructor
 	 * @param userID
@@ -69,6 +73,30 @@ public abstract class User implements UserManager {
 	public String getUsertype() {
 		return usertype;
 	}
+	
+	// to be used by only faculty, null for others
+	public String getDepartment() {
+		return department;
+	}
+	
+	// to be used by only student, null for others
+	public String getMajor() {
+		return major;
+	}
+	
+	// to be used by only student, null for others
+	public int getYear() {
+		return year;
+	}
+	
+	// to be overridden
+	public void setDepartment(String department) throws IOException {}
+	
+	// to be overridden
+	public void setMajor(String major) throws IOException {}
+	
+	// to be overridden
+	public void setYear(int year) throws IOException {}
 	
 	// subclasses might want access this for additional attributes
 	protected static Workbook getWorkbook() throws IOException {
@@ -180,6 +208,24 @@ public abstract class User implements UserManager {
         
         workbook.close();
         return false;
+    }
+    
+    // temporary
+    public static void verifyUser(String email) throws IOException {
+    	Workbook workbook = getWorkbook();
+        
+        Sheet sheet = workbook.getSheetAt(0);
+        
+        for (Row row : sheet) {
+            if (email.equalsIgnoreCase(row.getCell(EMAILCELL).getStringCellValue())) {
+            	row.getCell(VALIDATIONCELL).setCellValue(true);
+            	
+            	FileOutputStream out = new FileOutputStream(file);
+            	
+            	workbook.write(out);
+            	workbook.close();
+            }
+        }
     }
 
 	

@@ -9,9 +9,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 public class Faculty extends User {
-
-	
-	private String department;
 	
 	/**
 	 * Faculty Constructor
@@ -27,15 +24,8 @@ public class Faculty extends User {
 		this.department = department;
 	}
 	
-	/**
-	 * 
-	 * @return department that the faculty belongs to
-	 */
-	public String getDepartment() {
-		return department;
-	}
-	
 	// to set the department, at the Beginning it's empty
+	@Override
 	public void setDepartment(String department) throws IOException {
 		Workbook workbook = getWorkbook();
         

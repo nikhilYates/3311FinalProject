@@ -10,9 +10,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 public class Student extends User {
 	
-	private String major;
-	private int year;
-	
 	
 	/**
 	 * Student constructor
@@ -29,24 +26,9 @@ public class Student extends User {
 		this.major = major;
 		this.year = year;
 	}
-
-	/**
-	 * 
-	 * @return the student's major
-	 */
-	public String getMajor() {
-		return major;
-	}
-
-	/**
-	 * 
-	 * @return the year that the student is in
-	 */
-	public int getYear() {
-		return year;
-	}
 	
 	// to set the major, at the Beginning it's empty
+	@Override
 	public void setMajor(String major) throws IOException {
 		Workbook workbook = getWorkbook();
         
@@ -60,9 +42,12 @@ public class Student extends User {
         
         workbook.write(out);
         workbook.close();
+        
+        this.major = major;
 	}
 	
 	// to set the year, at the Beginning it's empty
+	@Override
 	public void setYear(int year) throws IOException {
 		Workbook workbook = getWorkbook();
         
@@ -76,6 +61,8 @@ public class Student extends User {
         
         workbook.write(out);
         workbook.close();
+        
+        this.year = year;
 	}
 
 }

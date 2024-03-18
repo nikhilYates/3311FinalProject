@@ -25,12 +25,21 @@ class AccessTest {	// xlsx really messy cause i only can read it
 	public String loginFailEmail = "helloworld6@gmail.com";
 	public String loginFailPassword = "helloworld6";
 	
+	public int studentUserId = -5;
+	public String studentEmail = "helloworld5@gmail.com";
+	public String studentPassword = "helloworld5";
+	
 	@BeforeEach
 	public void deleteUser () throws IOException {
 		User user = User.login(this.signupEmail, this.signupPassword);
 		if (user != null) {
 			user.deleteUser();
 		}
+	}
+	
+	@BeforeEach
+	public void verifyStudent () throws IOException {
+		User.verifyUser(studentEmail);
 	}
 	
 
@@ -62,6 +71,41 @@ class AccessTest {	// xlsx really messy cause i only can read it
 	public void loginTestFailNoVerification () throws IOException {
 		User loggingin = User.login(this.loginFailEmail, this.loginFailPassword);
 		assertNull(loggingin);
+	}
+	
+	@Test
+	public void studentLoginTest () throws IOException {		// validated student using temp method
+		User student = User.login(this.studentEmail, this.studentPassword);
+		assertNotNull(student);
+	}
+	
+	@Test
+	public void studentAttributeTest () throws IOException {		// validated student using temp method
+		User student = User.login(this.studentEmail, this.studentPassword);
+		assertNotNull(student.getMajor());
+	}
+	
+	@Test
+	public void studentNullAttributeTest () throws IOException {		// validated student using temp method
+		User student = User.login(this.studentEmail, this.studentPassword);
+		assertNull(student.getDepartment());
+	}
+	
+	@Test
+	public void studentMethodTest () throws IOException {		// validated student using temp method
+		User student = User.login(this.studentEmail, this.studentPassword);
+		String major = "Computer Science";
+		student.setMajor(major);
+		assertEquals(student.getMajor(), major);
+	}
+	
+	@Test
+	public void studentMethod2Test () throws IOException {		// validated student using temp method
+		User student = User.login(this.studentEmail, this.studentPassword);
+		String major = "Computer Science";
+		student.setMajor(major);
+		student = User.login(this.studentEmail, this.studentPassword); // basically logging in again to check i major is in cvs file, and is retrieved when making the object
+		assertEquals(student.getMajor(), major);
 	}
 
 }
