@@ -6,9 +6,13 @@ public class PhysicalItem extends PhysicalItemState {
     private String location;
     private boolean rentalStatus; // true if currently rented, false otherwise
     private boolean purchaseOption; // true if available for purchase, false otherwise
-    private int availableCopies;
+    protected int availableCopies;
     private PhysicalItemState state;
 
+    public PhysicalItem() {
+    	
+    }
+    
     public PhysicalItem(String itemID, String title, String location, boolean purchaseOption) {
         this.itemID = itemID;
         this.title = title;
