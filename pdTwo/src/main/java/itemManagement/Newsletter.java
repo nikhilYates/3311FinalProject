@@ -76,7 +76,7 @@ public class Newsletter implements DigitalItem{
         return true;
     }
 
-    // Getters and setters
+     // Getters and setters
     public String getNewsletterID() {
         return newsletterID;
     }
