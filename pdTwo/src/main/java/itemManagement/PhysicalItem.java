@@ -99,4 +99,21 @@ public class PhysicalItem extends PhysicalItemState {
     public void setPurchaseOption(boolean purchaseOption) {
         this.purchaseOption = purchaseOption;
     }
+    
+    
+    public void setAvailableCopies(int availableCopies) {
+    	
+    	this.availableCopies = availableCopies;
+    }
+    
+    public int getAvailableCopies() {
+    	
+    	return availableCopies;
+    }
+    
+    public PhysicalItem getItemByID(String itemid) {
+    	
+    	return this;
+    }
+    
 }

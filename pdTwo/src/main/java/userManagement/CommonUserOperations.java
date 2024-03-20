@@ -27,6 +27,32 @@ public abstract class CommonUserOperations implements UserManager {
 		return true;
 	}
 	
+	
+	/**
+	 * We are going to get a physicalItem by ID, and update it's inventory by 1/-1 depending on whether a user
+	 * is renting or returning an item
+	 * @param physicalItem
+	 * @param operation : true = return, false = rent
+	 */
+	public void updatePhysicalItemInventory(RentalTransaction physicalItem, boolean operation) {
+		
+		PhysicalItem itemToUpdate = new PhysicalItem().getItemByID(physicalItem.getItemid());
+		
+		// if user is returning a book:
+		if(operation == true) {
+			itemToUpdate.setAvailableCopies(itemToUpdate.getAvailableCopies() + 1);
+		
+		} 
+		// else if user is checking a book out
+		else {
+			
+			itemToUpdate.setAvailableCopies(itemToUpdate.getAvailableCopies() - 1);
+		}
+		
+		
+		
+	}
+	
 	/**
 	 * want to see if the user's rental list is over the rental limit, or if user has more than 3 items overdue
 	 * @param rentalList
