@@ -1,5 +1,6 @@
 package userManagement;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 import itemManagement.PhysicalItem;
 
@@ -17,19 +18,33 @@ public class RentalTransaction {
 	private String itemid;
 	private LocalDate rentalDate;
 	private LocalDate dueDate;
+	private double latePenalty = 0;
 	private boolean isReturned;
 	
 	
-	public RentalTransaction(String userid, String itemid, LocalDate rentalDate, LocalDate dueDate, boolean isReturned) {
+	public RentalTransaction(String userid, String itemid, LocalDate rentalDate, LocalDate dueDate, double latePenalty, boolean isReturned) {
 		
 		this.setUserid(userid);
 		this.setItemid(itemid);
 		this.setRentalDate(rentalDate);
 		this.setDueDate(dueDate);
+		this.setLatePenalty(latePenalty);
 		this.setReturned(isReturned);
 	}
 
 
+	public void setLatePenalty(double latePenalty) {
+		
+		long daysLate = ChronoUnit.DAYS.between(this.getDueDate(), LocalDate.now());
+		
+		this.latePenalty += daysLate * 0.50;
+	}
+	
+	public double getLatePenalty() {
+		
+		return latePenalty;
+	}
+	
 	public String getUserid() {
 		return userid;
 	}

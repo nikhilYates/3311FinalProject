@@ -2,6 +2,7 @@ package userManagement;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 import itemManagement.PhysicalItem;
@@ -17,8 +18,11 @@ public abstract class CommonUserOperations implements UserManager {
 	public boolean rentPhysicalItem(RentalTransaction physicalItem, List<RentalTransaction> rentalList) {
 		
 		// check if a user can even rent an item. If not, return false and prompt the user
-		if(checkRentalAbility(rentalList) == false) {
+		PhysicalItem itemToCheck = new PhysicalItem().getItemByID(physicalItem.getItemid());
+		
+		if(checkRentalAbility(rentalList) == false || itemToCheck.getAvailableCopies() < 1 ) {
 			
+			System.out.println("Unable to rent this item.");
 			return false;
 		}
 		
@@ -26,6 +30,8 @@ public abstract class CommonUserOperations implements UserManager {
 		System.out.println(physicalItem.getItemid() + " succesfully checked out! You have 30 days to return this item before a late penalty is applied.");
 		return true;
 	}
+	
+	
 	
 	
 	/**
@@ -48,9 +54,7 @@ public abstract class CommonUserOperations implements UserManager {
 			
 			itemToUpdate.setAvailableCopies(itemToUpdate.getAvailableCopies() - 1);
 		}
-		
-		
-		
+			
 	}
 	
 	/**
@@ -62,6 +66,7 @@ public abstract class CommonUserOperations implements UserManager {
 		
 		if(rentalList.size() >= 10) {
 			
+			System.out.println("You have reached the maximum number of rentals for this account. ");
 			return false;
 		}
 		
@@ -81,68 +86,85 @@ public abstract class CommonUserOperations implements UserManager {
 	public List<RentalTransaction> countOverdueItems(List<RentalTransaction> rentalList) {
 		
 		
-		return null;
+		
+		List<RentalTransaction> overdueItems = new ArrayList<>();
+		
+		for (RentalTransaction rental : rentalList) {
+			
+			if(ChronoUnit.DAYS.between(rental.getDueDate(), LocalDate.now()) > 0) {
+				
+				overdueItems.add(rental);
+			}
+		}
+		
+		return overdueItems;
 	}
 	
 	
 	
 	
 	
-	// after login, show the list of hardcover books that a user is currently renting & their due dates (req 3)
+	/**
+	 *  after login, show the list of hardcover books that a user is currently renting & their due dates (req 3)
+	 * @param physicalItemRentals
+	 * @return a list of all hardCoverRentals -> will display the due dates in the user interface!
+	 */
 	public List<RentalTransaction> getCurrentHardcoverRentals(List<RentalTransaction> physicalItemRentals) {
 			
 			
+		List<RentalTransaction> hardCoverRentals = new ArrayList<>();
+		
+		for(RentalTransaction rental : physicalItemRentals) {
 			
+			if(rental.getItemid().startsWith("BK")) {
+				
+				hardCoverRentals.add(rental);
+			}
+		}
 			
-		return null;
+		return hardCoverRentals;
 	}
 		
-	// getCurrentHardcoverRentals helper method that will display a warning if any of the rented books are due within the next 24 hours
-	public boolean rentalDueSoonPrompt(List<RentalTransaction> hardCoverRentals) {
+	
+	/**
+	 *  getCurrentHardcoverRentals helper method that will display a warning if any of the rented books are due within the next 24 hours
+	 * @param rental
+	 * @return true if the item is due in the next 24 hours, false otherwise
+	 */
+	public boolean rentalDueSoonPrompt(RentalTransaction rental) {
+			
+		if(ChronoUnit.DAYS.between(LocalDate.now(), rental.getDueDate()) <= 1) {
+			
 			return true;
+			
+		}
+		
+		return false;
 	}
 	
 	
 	
 	
 	/**
-	 * Calculate the total penalty applied to the account based on late items
+	 * Calculate the TOTAL penalty applied to the account based on late items
 	 * @param physicalItemRentals
 	 * @return
 	 */
 	public double calculateLateFees(List<RentalTransaction> rentalList) {
 		
-		List<RentalTransaction> lateItems = countOverdueItems(rentalList);
+		double totalPenalty = 0.00;
 		
-		double fee = 0.00;
-		
-		
-		for (RentalTransaction lateItem : lateItems) {
+		for(RentalTransaction rental : rentalList) {
 			
-			long daysLate = ChronoUnit.DAYS.between(lateItem.getDueDate(), LocalDate.now());
-			fee += daysLate * 0.50;
-			
+			if(rental.getLatePenalty() > 0) {
+				
+				totalPenalty += rental.getLatePenalty();
+			}
 		}
 		
-		return fee;
+		return totalPenalty;
 	}
 	
-	
-	/**
-	 * Previous method checks total outstanding fee balance. This method checks overdue balance for a single item
-	 * @param rental
-	 * @return
-	 */
-	public double calculateItemLateFee(RentalTransaction rental) {
-		
-		double lateFee = 0.00;
-		long daysLate = ChronoUnit.DAYS.between(rental.getDueDate(), LocalDate.now());
-		
-		lateFee += daysLate * 0.50;
-		
-		return lateFee;
-		
-	}
 	
 	
 	/**
@@ -156,13 +178,10 @@ public abstract class CommonUserOperations implements UserManager {
 		for(RentalTransaction rental : rentalList) {
 			
 			if(rental.getItemid().equals(itemid) && rental.getUserid().equals(userid)) {
-				
-				
-				double rentalLateFee = calculateItemLateFee(rental); 
-				
-				if(rentalLateFee > 0.00) {
 					
-					System.out.println("Late penalty of " + rentalLateFee + " must be paid.");
+				if(rental.getLatePenalty() > 0.00) {
+					
+					System.out.println("Late penalty of " + rental.getLatePenalty() + " must be paid.");
 				}
 				
 				rentalList.remove(rental);
