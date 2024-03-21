@@ -1,10 +1,8 @@
 package userManagement;
-
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-
 import itemManagement.PhysicalItem;
 
 public abstract class CommonUserOperations implements UserManager {
@@ -84,7 +82,6 @@ public abstract class CommonUserOperations implements UserManager {
 	 * @return number of overdue items
 	 */
 	public List<RentalTransaction> countOverdueItems(List<RentalTransaction> rentalList) {
-		
 		
 		
 		List<RentalTransaction> overdueItems = new ArrayList<>();

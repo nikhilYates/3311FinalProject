@@ -27,6 +27,7 @@ public class Student extends User {
 		this.year = year;
 	}
 	
+
 	// to set the major, at the Beginning it's empty
 	@Override
 	public void setMajor(String major) throws IOException {

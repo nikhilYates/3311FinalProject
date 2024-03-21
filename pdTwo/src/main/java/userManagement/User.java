@@ -46,6 +46,7 @@ public abstract class User {
 		this.rowNum = rowNum;
 		this.usertype = this.getClass().getSimpleName();
 	}
+
 	
 	
 	/**
