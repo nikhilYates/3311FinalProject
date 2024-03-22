@@ -117,6 +117,27 @@ public class MainUINew extends JFrame {
         JPasswordField passwordField = new JPasswordField();
         JButton loginButton = new JButton("Login");
         
+        // Add action listener to the login button
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle signup logic here
+                String email = emailField.getText();
+                String password = new String(passwordField.getPassword());
+                try {
+					User login = User.login(email, password);
+					if (login != null) {
+						JOptionPane.showMessageDialog(null, "You have successfully logged-in");
+					} else {
+						JOptionPane.showMessageDialog(null, "Incorrect email or password");
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+            }
+        });
+        
         // Add components to the panel
         panel.add(emailLabel);
         panel.add(emailField);
