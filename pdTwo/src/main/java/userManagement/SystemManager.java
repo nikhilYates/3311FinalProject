@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -12,7 +13,9 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import itemManagement.BookRequestManagement;
 import itemManagement.PhysicalItem;
+import itemManagement.BookRequestManagement.BookRequest;
 
 public class SystemManager {
 	
@@ -201,4 +204,14 @@ public class SystemManager {
 	}
 	
 	// method to see all requests
+	public boolean printRequests(BookRequestManagement bookRequests) {
+		List<BookRequest> requests = bookRequests.getRequestsSystemManagerOnly(this);
+		if (requests != null) {
+			for (BookRequest request : requests) {
+				System.out.println("\nRequest ID: " + request.getRequestID() + "\nRequest Type: " + request.getRequestType() + "\nTopics: " + request.getTopics().toString());
+			}
+			return true;
+		}
+		return false;
+	}
 }

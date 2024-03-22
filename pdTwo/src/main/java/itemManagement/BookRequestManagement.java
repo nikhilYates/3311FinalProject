@@ -3,6 +3,8 @@ package itemManagement;
 import java.util.ArrayList;
 import java.util.List;
 
+import userManagement.SystemManager;
+
 // Assuming that BookRequest is a class that encapsulates details of a book request
 // If not, a placeholder implementation is provided below
 
@@ -76,10 +78,17 @@ public class BookRequestManagement {
     public void setUserID(String userID) {
         this.userID = userID;
     }
+    
+    public List<BookRequest> getRequestsSystemManagerOnly(SystemManager sysManager) {
+    	if (sysManager != null) {
+    		return this.requests;
+    	}
+    	return null;
+    }
 
     // Placeholder class implementation for BookRequest
     // This would be in its own separate file in a real application
-    class BookRequest {
+    public class BookRequest {
         private String requestID;
         private String userID;
         private String requestType;
