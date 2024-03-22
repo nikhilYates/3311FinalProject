@@ -12,6 +12,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import itemManagement.ItemRepo;
 import itemManagement.PhysicalItem;
 
 public abstract class User {
@@ -59,8 +60,10 @@ public abstract class User {
 		
 		for(RentalTransaction rentedItem : this.rentalList) {
 			
-			PhysicalItem itemOfInterest = new PhysicalItem().getItemByID(rentedItem.getItemid());
 			
+			
+			
+			PhysicalItem itemOfInterest = ItemRepo.getItemById(rentedItem.getItemid());
 			
 			System.out.println("Item ID: " + rentedItem.getItemid());
 			System.out.println("Title: " + itemOfInterest.getTitle());
