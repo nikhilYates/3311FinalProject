@@ -64,7 +64,7 @@ public abstract class User {
 			PhysicalItem itemOfInterest = ItemRepo.getItemById(rentedItem.getItemid());
 			
 			System.out.println("Item ID: " + rentedItem.getItemid());
-//			System.out.println("Title: " + itemOfInterest.getTitle());
+			System.out.println("Title: " + itemOfInterest.getTitle());
 			System.out.println("Rented on: " + rentedItem.getRentalDate().toString());
 			System.out.println("Due by: " + rentedItem.getDueDate().toString());
 			System.out.println("---------------------------------------------------");

@@ -18,7 +18,7 @@ public class ItemRepo {
 		
 		for(PhysicalItem item : allPhysicalItems) {
 			
-			if(item.getTitle().equals(itemid)) {
+			if(item.getItemID().equals(itemid)) {
 				
 				System.out.println(item.getTitle());
 				

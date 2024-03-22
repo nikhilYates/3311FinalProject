@@ -42,8 +42,6 @@ public class Main {
 		
 		user.getRentalList();
 		
-		
-		
 	}
 	
 	
