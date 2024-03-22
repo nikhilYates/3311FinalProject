@@ -42,9 +42,18 @@ public class Main {
 		user.getRentalList();
 		
 
-		
 		User user2 = new Student(2, "bob.smalls", 11, "ComputerScience", 4);
+		
+		
 		user2.getRentalList();
+		user2.addToRentalList(transaction3);
+		user2.getRentalList();
+		
+	    Scanner scanner = new Scanner(System.in);
+	    System.out.print("Enter search term (regex): ");
+	    String searchTerm = scanner.nextLine();
+	    ItemRepo.searchItem(searchTerm);
+	    scanner.close();
 		
 		
 	}
