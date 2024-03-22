@@ -101,6 +101,14 @@ public abstract class User {
 		
 	}
 	
+	/**
+	 * To showcase all the functionality of the CommonOperations class
+	 */
+	public void comprehensiveReport() {
+		
+		
+	}
+	
 	
 	
 	/**
