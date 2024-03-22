@@ -30,8 +30,6 @@ public abstract class CommonUserOperations implements UserManager {
 	}
 	
 	
-	
-	
 	/**
 	 * We are going to get a physicalItem by ID, and update it's inventory by 1/-1 depending on whether a user
 	 * is renting or returning an item

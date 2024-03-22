@@ -107,9 +107,5 @@ class AccessTest {	// xlsx really messy cause i only can read it
 		student = User.login(this.studentEmail, this.studentPassword); // basically logging in again to check i major is in cvs file, and is retrieved when making the object
 		assertEquals(student.getMajor(), major);
 	}
-	
-	
-	
-	
 
 }

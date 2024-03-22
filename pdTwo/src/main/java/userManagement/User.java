@@ -23,7 +23,6 @@ public abstract class User {
 	protected static final int YEARCELL = 8;
 	
 	protected static final File file = new File("src/main/resources/csv/user.xlsx");
-	
 	protected final int rowNum;
 	
 	private int userID;
@@ -47,7 +46,6 @@ public abstract class User {
 		this.usertype = this.getClass().getSimpleName();
 	}
 
-	
 	
 	/**
 	 * Getter methods down here
