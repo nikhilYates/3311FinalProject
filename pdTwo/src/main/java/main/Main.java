@@ -12,13 +12,13 @@ public class Main {
 	public static void main(String[] args) {
 		
 		
-		PhysicalItem item1 = new PhysicalItem("001", "The Great Gatsby", "Shelf A1", true);
-		PhysicalItem item2 = new PhysicalItem("002", "1984", "Shelf B2", false);
-		PhysicalItem item3 = new PhysicalItem("003", "To Kill a Mockingbird", "Shelf C3", true);
-		PhysicalItem item4 = new PhysicalItem("004", "Moby Dick", "Shelf D4", false);
-		PhysicalItem item5 = new PhysicalItem("005", "Pride and Prejudice", "Shelf E5", true);
+		ItemRepo.addItem(new PhysicalItem("001", "The Great Gatsby", "Shelf A1", true));
+		ItemRepo.addItem(new PhysicalItem("002", "1984", "Shelf B2", false));
+		ItemRepo.addItem(new PhysicalItem("003", "To Kill a Mockingbird", "Shelf C3", true));
+		ItemRepo.addItem(new PhysicalItem("004", "Moby Dick", "Shelf D4", false));
+		ItemRepo.addItem(new PhysicalItem("005", "Pride and Prejudice", "Shelf E5", true));
 
-		
+		ItemRepo.printList(ItemRepo.allPhysicalItems);
 
 		// Assuming RentalTransaction class and constructor are defined correctly
 
@@ -31,10 +31,6 @@ public class Main {
 		/**
 		 * NEED a method in User that creates a list of rentals (i.e add to constructor)
 		 */
-		
-		
-		System.out.println("PHYSICAL ITEM TESTING");
-		System.out.println(item1.getTitle());
 		
 		
 		UserManager userOps = new CommonUserOperations();
