@@ -10,5 +10,5 @@ import itemManagement.PhysicalItem;
  */
 public interface UserManager {
 	
-	
+	// here we can include the display rented items maybe?
 }
