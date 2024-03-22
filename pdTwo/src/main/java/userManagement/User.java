@@ -56,7 +56,11 @@ public abstract class User {
 	
 	public List<RentalTransaction> getRentalList() {
 		
-		System.out.println("Rental List for " + this.email + ": ");
+		UserManager userOps = new CommonUserOperations();
+		
+		
+		System.out.println("\nRental List for " + this.email + ": ");
+		System.out.println("---------------------------------------------------");
 		
 		if(this.rentalList.size() < 1) {
 			
@@ -69,10 +73,20 @@ public abstract class User {
 				
 				PhysicalItem itemOfInterest = ItemRepo.getItemById(rentedItem.getItemid());
 				
+				
 				System.out.println("Item ID: " + rentedItem.getItemid());
 				System.out.println("Title: " + itemOfInterest.getTitle());
 				System.out.println("Rented on: " + rentedItem.getRentalDate().toString());
 				System.out.println("Due by: " + rentedItem.getDueDate().toString());
+				
+				if(userOps.rentalDueSoonPrompt(rentedItem)) {
+					System.out.println("RENTAL DUE IN THE NEXT 24 HOURS.");
+				}
+				
+				if(rentedItem.getLatePenalty() > 0) {
+					System.out.println("LATE ITEM - PENALTY OF $" + rentedItem.getLatePenalty() + " applied to your account.");
+				}
+				
 				System.out.println("---------------------------------------------------");
 			
 				
@@ -106,6 +120,40 @@ public abstract class User {
 	 */
 	public void comprehensiveReport() {
 		
+		UserManager userOps = new CommonUserOperations();
+		System.out.println("------------------------------------------------------------------------------------------------------");
+		System.out.println("COMPREHENSIVE USER REPORT FOR " + this.email + '\n');
+		
+		System.out.println("User ID: " + this.userID);
+		System.out.println("User Category: " + this.usertype);
+		this.getRentalList();
+		
+		System.out.println("All HardCover Rentals: ");
+		List<RentalTransaction> hardcoverRentals = userOps.getCurrentHardcoverRentals(this.rentalList);
+		
+		for(RentalTransaction hardcoverRental : hardcoverRentals) {
+			
+			System.out.println("Hardcover item id: " + hardcoverRental.getItemid());
+		}
+		
+		
+		List<RentalTransaction> lateItems = userOps.countOverdueItems(this.rentalList);
+		
+		if(lateItems.size() >= 3) {
+			
+			System.out.println("ALERT. Your account's ability to rent items has been suspended due to at least 3 late items. Please return these items to regain rent ability.");
+		}
+		
+		
+		double totalLateBalance = userOps.calculateLateFees(rentalList);
+		
+		if(totalLateBalance > 0) {
+			
+			System.out.println("ALERT. You have an outstanding balance of $" + totalLateBalance + ". Pay the balance immediately.");
+			
+		}
+		
+		System.out.println("------------------------------------------------------------------------------------------------------");
 		
 	}
 	

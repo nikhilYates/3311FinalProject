@@ -39,7 +39,10 @@ public class Main {
 		
 		
 		user.addToRentalList(transaction1);
-		user.getRentalList();
+		user.addToRentalList(transaction2);
+		user.addToRentalList(transaction3);
+		
+		user.comprehensiveReport();
 		
 
 		
