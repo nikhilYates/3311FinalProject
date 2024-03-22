@@ -23,10 +23,12 @@ public class PhysicalItem extends PhysicalItemState {
         this.state = new OpenState(); // By default all items are available for rent
     }
 
+    
     public void setState(PhysicalItemState state) {
         this.state = state;
     }
 
+    
     @Override
     public boolean displayState() {
         if (availableCopies > 0) {
@@ -99,4 +101,21 @@ public class PhysicalItem extends PhysicalItemState {
     public void setPurchaseOption(boolean purchaseOption) {
         this.purchaseOption = purchaseOption;
     }
+    
+    
+    public void setAvailableCopies(int availableCopies) {
+    	
+    	this.availableCopies = availableCopies;
+    }
+    
+    public int getAvailableCopies() {
+    	
+    	return availableCopies;
+    }
+    
+    public PhysicalItem getItemByID(String itemid) {
+    	
+    	return this;
+    }
+    
 }

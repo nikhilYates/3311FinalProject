@@ -11,7 +11,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public abstract class User implements UserManager {
+public abstract class User {
 	
 	protected static final int USERIDCELL = 1;
 	protected static final int EMAILCELL = 2;
@@ -23,7 +23,6 @@ public abstract class User implements UserManager {
 	protected static final int YEARCELL = 8;
 	
 	protected static final File file = new File("src/main/resources/csv/user.xlsx");
-	
 	protected final int rowNum;
 	
 	private int userID;
@@ -46,7 +45,7 @@ public abstract class User implements UserManager {
 		this.rowNum = rowNum;
 		this.usertype = this.getClass().getSimpleName();
 	}
-	
+
 	
 	/**
 	 * Getter methods down here
