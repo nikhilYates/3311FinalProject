@@ -55,8 +55,11 @@ class SystemManagementTests {
 		List<String> topics = new ArrayList<>();
 		topics.add("Ham");
 		topics.add("Cheese");
-		bookRequests.initiateBookRequest("111", topics);
-		bookRequests.initiateBookRequest("222", topics);
+		String reqID1 = bookRequests.initiateBookRequest("111", topics);
+		String reqID2 = bookRequests.initiateBookRequest("222", topics);
+		bookRequests.initiateBookRequest("not submited", topics);
+		bookRequests.submitRequest(reqID1);
+		bookRequests.submitRequest(reqID2);
 		assertTrue(sysMan.printRequests(bookRequests));
 	}
 

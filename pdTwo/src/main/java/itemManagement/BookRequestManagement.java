@@ -18,10 +18,11 @@ public class BookRequestManagement {
     }
 
     // Initiates a book request, it will create a new request and add it to the requests list
-    public void initiateBookRequest(String requestType, List<String> topics) {
+    public String initiateBookRequest(String requestType, List<String> topics) {	// returns requestID
         BookRequest newRequest = new BookRequest(userID, requestType, topics);
         requests.add(newRequest);
         System.out.println("A new book request has been initiated for topics: " + String.join(", ", topics));
+        return newRequest.getRequestID();
     }
 
     // Specifies details of a book request after it has been initiated

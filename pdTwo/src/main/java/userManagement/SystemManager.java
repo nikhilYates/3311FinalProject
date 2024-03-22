@@ -208,7 +208,9 @@ public class SystemManager {
 		List<BookRequest> requests = bookRequests.getRequestsSystemManagerOnly(this);
 		if (requests != null) {
 			for (BookRequest request : requests) {
-				System.out.println("\nRequest ID: " + request.getRequestID() + "\nRequest Type: " + request.getRequestType() + "\nTopics: " + request.getTopics().toString());
+				if (request.isSubmitted()) {
+					System.out.println("\nRequest ID: " + request.getRequestID() + "\nRequest Type: " + request.getRequestType() + "\nTopics: " + request.getTopics().toString());
+				}
 			}
 			return true;
 		}
