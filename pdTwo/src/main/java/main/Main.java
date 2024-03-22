@@ -42,6 +42,15 @@ public class Main {
 		
 		user.getRentalList();
 		
+		
+		
+		
+		User user2 = new Student(2, "bob.smalls", 11, "ComputerScience", 4);
+		
+		
+		user2.getRentalList();
+		
+		
 	}
 	
 	

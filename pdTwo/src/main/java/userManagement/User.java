@@ -56,20 +56,27 @@ public abstract class User {
 	
 	public List<RentalTransaction> getRentalList() {
 		
-		System.out.println("Here is your list of rented items");
+		System.out.println("Rental List for " + this.email + ": ");
 		
-		for(RentalTransaction rentedItem : this.rentalList) {
+		if(this.rentalList.size() < 1) {
 			
-			
-			PhysicalItem itemOfInterest = ItemRepo.getItemById(rentedItem.getItemid());
-			
-			System.out.println("Item ID: " + rentedItem.getItemid());
-			System.out.println("Title: " + itemOfInterest.getTitle());
-			System.out.println("Rented on: " + rentedItem.getRentalDate().toString());
-			System.out.println("Due by: " + rentedItem.getDueDate().toString());
-			System.out.println("---------------------------------------------------");
+			System.out.println("You have not rented anything yet. You can rent up to 10 items from the library.");
+		}
 		
+		else {
+			for(RentalTransaction rentedItem : this.rentalList) {
+				
+				
+				PhysicalItem itemOfInterest = ItemRepo.getItemById(rentedItem.getItemid());
+				
+				System.out.println("Item ID: " + rentedItem.getItemid());
+				System.out.println("Title: " + itemOfInterest.getTitle());
+				System.out.println("Rented on: " + rentedItem.getRentalDate().toString());
+				System.out.println("Due by: " + rentedItem.getDueDate().toString());
+				System.out.println("---------------------------------------------------");
 			
+				
+			}
 		}
 		
 		return this.rentalList;
