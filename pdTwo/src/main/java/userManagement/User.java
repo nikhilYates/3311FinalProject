@@ -1,6 +1,7 @@
 package userManagement;
 
 import java.io.File;
+import java.util.*;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,6 +11,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import itemManagement.PhysicalItem;
 
 public abstract class User {
 	
@@ -33,6 +36,9 @@ public abstract class User {
 	protected String major;
 	protected int year;
 	
+	
+	private List<RentalTransaction> rentalList = new ArrayList<>();
+	
 	/**
 	 * Protected paramaterized constructor
 	 * @param userID
@@ -46,6 +52,48 @@ public abstract class User {
 		this.usertype = this.getClass().getSimpleName();
 	}
 
+	
+	public List<RentalTransaction> getRentalList() {
+		
+		System.out.println("Here is your list of rented items");
+		
+		for(RentalTransaction rentedItem : this.rentalList) {
+			
+			PhysicalItem itemOfInterest = new PhysicalItem().getItemByID(rentedItem.getItemid());
+			
+			
+			System.out.println("Item ID: " + rentedItem.getItemid());
+			System.out.println("Title: " + itemOfInterest.getTitle());
+			System.out.println("Rented on: " + rentedItem.getRentalDate().toString());
+			System.out.println("Due by: " + rentedItem.getDueDate().toString());
+			System.out.println("---------------------------------------------------");
+		
+			
+		}
+		
+		return this.rentalList;
+	}
+	
+	public void addToRentalList(RentalTransaction rental) {
+		
+		UserManager userOps = new CommonUserOperations();
+		
+		if(userOps.checkRentalAbility(rentalList)) {
+			
+			rentalList.add(rental);
+			System.out.println("Client Side - Item added to rental list");
+			System.out.println("Updated List: ");
+			
+			for(RentalTransaction rentedItem : rentalList) {
+				
+				System.out.println(rentedItem.getItemid());
+				
+			}
+		}
+		
+	}
+	
+	
 	
 	/**
 	 * Getter methods down here
@@ -104,6 +152,7 @@ public abstract class User {
         return new XSSFWorkbook(fileInput);
     }
 	
+	
 	public static User login(String email, String password) throws IOException {
         ;   // login logic using csv file
         Workbook workbook = getWorkbook();
@@ -140,6 +189,7 @@ public abstract class User {
         return null;
     }
 
+	
     public static boolean signup(int userId, String email, String password, Class<? extends User> userType) throws IOException {
         ;   // sign up logic using csv file and doing some basic validation, maybe
         Workbook workbook = getWorkbook();

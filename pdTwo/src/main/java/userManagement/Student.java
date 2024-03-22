@@ -20,7 +20,7 @@ public class Student extends User {
 	 * @param major
 	 * @param year
 	 */
-	protected Student(int userID, String email, int rowNum, String major, int year) {
+	public Student(int userID, String email, int rowNum, String major, int year) {
 		
 		super(userID, email, rowNum);
 		this.major = major;
@@ -65,5 +65,7 @@ public class Student extends User {
         
         this.year = year;
 	}
+	
+
 
 }

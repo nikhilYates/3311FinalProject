@@ -115,6 +115,11 @@ public class PhysicalItem extends PhysicalItemState {
     
     public PhysicalItem getItemByID(String itemid) {
     	
+    	
+    	System.out.println("Getting PHYSICALITEMBYID:");
+    	System.out.println(this.title);
+    	
+    	
     	return this;
     }
     

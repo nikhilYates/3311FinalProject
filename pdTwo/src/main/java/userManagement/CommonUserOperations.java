@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import itemManagement.PhysicalItem;
 
-public abstract class CommonUserOperations implements UserManager {
+public class CommonUserOperations implements UserManager {
 
 	/**
 	 *  add an item to a users rental list (i.e., let a user rent an item)
@@ -13,6 +13,7 @@ public abstract class CommonUserOperations implements UserManager {
 	 * @param rentalList
 	 * @return
 	 */
+	@Override
 	public boolean rentPhysicalItem(RentalTransaction physicalItem, List<RentalTransaction> rentalList) {
 		
 		// check if a user can even rent an item. If not, return false and prompt the user
@@ -36,6 +37,7 @@ public abstract class CommonUserOperations implements UserManager {
 	 * @param physicalItem
 	 * @param operation : true = return, false = rent
 	 */
+	@Override
 	public void updatePhysicalItemInventory(RentalTransaction physicalItem, boolean operation) {
 		
 		PhysicalItem itemToUpdate = new PhysicalItem().getItemByID(physicalItem.getItemid());
@@ -58,6 +60,7 @@ public abstract class CommonUserOperations implements UserManager {
 	 * @param rentalList
 	 * @return
 	 */
+	@Override
 	public boolean checkRentalAbility(List<RentalTransaction> rentalList) {
 		
 		if(rentalList.size() >= 10) {
@@ -79,6 +82,7 @@ public abstract class CommonUserOperations implements UserManager {
 	 * @param rentalList
 	 * @return number of overdue items
 	 */
+	@Override
 	public List<RentalTransaction> countOverdueItems(List<RentalTransaction> rentalList) {
 		
 		
@@ -104,6 +108,7 @@ public abstract class CommonUserOperations implements UserManager {
 	 * @param physicalItemRentals
 	 * @return a list of all hardCoverRentals -> will display the due dates in the user interface!
 	 */
+	@Override
 	public List<RentalTransaction> getCurrentHardcoverRentals(List<RentalTransaction> physicalItemRentals) {
 			
 			
@@ -126,6 +131,7 @@ public abstract class CommonUserOperations implements UserManager {
 	 * @param rental
 	 * @return true if the item is due in the next 24 hours, false otherwise
 	 */
+	@Override
 	public boolean rentalDueSoonPrompt(RentalTransaction rental) {
 			
 		if(ChronoUnit.DAYS.between(LocalDate.now(), rental.getDueDate()) <= 1) {
@@ -145,6 +151,7 @@ public abstract class CommonUserOperations implements UserManager {
 	 * @param physicalItemRentals
 	 * @return
 	 */
+	@Override
 	public double calculateLateFees(List<RentalTransaction> rentalList) {
 		
 		double totalPenalty = 0.00;
@@ -168,6 +175,7 @@ public abstract class CommonUserOperations implements UserManager {
 	 * @param userid
 	 * @param rentalList
 	 */
+	@Override
 	public void returnItem(String itemid, String userid, List<RentalTransaction> rentalList) {
 		
 		for(RentalTransaction rental : rentalList) {
