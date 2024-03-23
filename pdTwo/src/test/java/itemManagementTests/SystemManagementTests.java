@@ -16,7 +16,7 @@ import userManagement.SystemManager;
 class SystemManagementTests {
 	
 	@BeforeEach
-	public void deleteUser () throws IOException {
+	public void deleteItem () throws IOException {
 		SystemManager sysMan = SystemManager.getSystemManager(1162070547);
 		PhysicalItem item = new PhysicalItem("-2", "Screem", "Somewhere", true);
 		sysMan.deleteItem(item);
