@@ -176,7 +176,7 @@ public class CommonUserOperations implements UserManager {
 	 * @param rentalList
 	 */
 	@Override
-	public void returnItem(String itemid, String userid, List<RentalTransaction> rentalList) {
+	public void returnItem(String itemid, int userid, List<RentalTransaction> rentalList) {
 		
 		for(RentalTransaction rental : rentalList) {
 			
