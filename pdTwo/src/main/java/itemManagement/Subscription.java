@@ -1,6 +1,6 @@
 package itemManagement;
 
-public class Subscription {
+public class Subscription implements Product{
     private String subscriptionID;
     private String userEmail;
     private boolean isActive; // Represents the status of the subscription

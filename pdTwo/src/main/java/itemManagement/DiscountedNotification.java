@@ -3,7 +3,7 @@ package itemManagement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DiscountedNotification {
+public class DiscountedNotification implements Product{
     private String clientID;
     private List<Item> discountedItems;
 
