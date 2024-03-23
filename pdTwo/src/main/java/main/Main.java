@@ -53,7 +53,7 @@ public class Main {
 		user2.getRentalList();
 		
 	    Scanner scanner = new Scanner(System.in);
-	    System.out.print("Enter search term (regex): ");
+	    System.out.print("Enter search term: ");
 	    String searchTerm = scanner.nextLine();
 	    ItemRepo.searchItem(searchTerm);
 	    scanner.close();
