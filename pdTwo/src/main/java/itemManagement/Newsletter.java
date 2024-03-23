@@ -102,15 +102,3 @@ public class Newsletter implements DigitalItem{
     }
 }
 
-// Subscription class placeholder to make the sub/unsub logic work
-class Subscription {
-    private String subscriptionID;
-    private String userEmail;
-    // Constructor, getters, setters
-
-    public String getSubscriptionID() {
-        return subscriptionID;
-    }
-
-    // ... other methods as needed
-}

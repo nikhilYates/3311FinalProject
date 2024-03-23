@@ -57,31 +57,4 @@ public class RentalManagement {
         this.userID = userID;
     }
 
-    // Assuming the Rental and Item classes are defined as follows:
-    // These would be in their own separate files
-}
-
-class Rental {
-    private Item item;
-    private Date rentDate;
-    private Date dueDate;
-
-    // Constructor, getters, and setters
-    public Rental(Item item, Date rentDate, Date dueDate) {
-        this.item = item;
-        this.rentDate = rentDate;
-        this.dueDate = dueDate;
-    }
-
-    public Item getItem() {
-        return item;
-    }
-
-    public Date getRentDate() {
-        return rentDate;
-    }
-
-    public Date getDueDate() {
-        return dueDate;
-    }
 }

@@ -57,6 +57,84 @@ public class Main {
 	    String searchTerm = scanner.nextLine();
 	    ItemRepo.searchItem(searchTerm);
 	    scanner.close();
+	    
+	    /*
+	     * CourseManagement
+	     * 
+	     * */
+	    // Create a CourseManagement instance for a faculty member
+        CourseManagement courseManagement = new CourseManagement("faculty123");
+
+        // Assuming methods to add courses and textbooks are implemented
+        courseManagement.getCoursesTaught().add(new Course("CS101", "Introduction to Computer Science"));
+        courseManagement.getTextbooksUsed().add(new Textbook("TXB123", "Computer Science: An Overview"));
+
+        // Track courses for the faculty member (for now, this will do nothing)
+        courseManagement.trackCourses("faculty123");
+
+        // Notify the faculty member about new editions of textbooks
+        courseManagement.notifyNewEditions("TXB123");
+
+        // Notify the faculty member about the unavailability of a textbook
+        courseManagement.notifyUnavailability("TXB456"); // TXB456 is a dummy ID for the test
+
+        // Output the courses and textbooks for verification
+        System.out.println("Courses taught by faculty123:");
+        for (Course course : courseManagement.getCoursesTaught()) {
+            System.out.println(course.getCourseID() + ": " + course.getCourseName());
+        }
+
+        System.out.println("\nTextbooks used by faculty123:");
+        for (Textbook textbook : courseManagement.getTextbooksUsed()) {
+            System.out.println(textbook.getTextbookID() + ": " + textbook.getTitle());
+        }
+        
+	    /*
+	     * TextBookAccess
+	     * 
+	     * */
+        
+     // Sample data setup
+        Course course1 = new Course("CSE101", "Introduction to Computer Science");
+        Course course2 = new Course("CSE102", "Data Structures and Algorithms");
+        List<Course> courses = new ArrayList<>(Arrays.asList(course1, course2));
+
+        Textbook textbook1 = new Textbook("TB101", "Computer Science: An Overview");
+        Textbook textbook2 = new Textbook("TB102", "Algorithms Unlocked");
+        List<Textbook> textbooks = new ArrayList<>(Arrays.asList(textbook1, textbook2));
+
+        // Testing TextbookAccess
+        TextbookAccess textbookAccess = new TextbookAccess("student456");
+        
+        // Mocking the lists that would be retrieved from a database
+        textbookAccess.setCoursesEnrolled(courses);
+        textbookAccess.setTextbooks(textbooks);
+        
+        // Listing courses enrolled
+        System.out.println("Courses enrolled by the student:");
+        List<Course> enrolledCourses = textbookAccess.listMyCourses(textbookAccess.getStudentID());
+        for (Course course : enrolledCourses) {
+            System.out.println(course.getCourseName());
+        }
+        
+        // Listing textbooks for a course
+        System.out.println("\nTextbooks for course " + course1.getCourseName() + ":");
+        List<Textbook> courseTextbooks = textbookAccess.listTextbooks(course1.getCourseID());
+        for (Textbook tb : courseTextbooks) {
+            System.out.println(tb.getTitle());
+        }
+        
+        // Accessing a textbook
+        textbookAccess.accessTextbook(textbook1.getTextbookID());
+
+        // Removing access to a textbook
+        textbookAccess.removeAccess(textbook2);
+        System.out.println("\nUpdated textbooks after removal:");
+        for (Textbook tb : textbookAccess.getTextbooks()) {
+            System.out.println(tb.getTitle());
+        }
+        
+        
 		
 		
 	}

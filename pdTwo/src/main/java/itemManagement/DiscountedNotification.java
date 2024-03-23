@@ -66,34 +66,3 @@ public class DiscountedNotification {
         this.discountedItems = discountedItems;
     }
 }
-
-// Simplified Item class for the purposes of this implementation
-class Item {
-    private String id;
-    private String name;
-    private double price;
-    private double discountPrice;
-
-    public Item(String id, String name, double price, double discountPrice) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.discountPrice = discountPrice;
-    }
-
-    // Getters and setters not shown for brevity
-
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public double getDiscountPrice() {
-        return discountPrice;
-    }
-
-    // Other methods, such as those to handle the item's state, would go here
-}

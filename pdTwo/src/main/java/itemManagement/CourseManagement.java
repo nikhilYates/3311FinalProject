@@ -42,11 +42,3 @@ public class CourseManagement {
         return textbooksUsed;
     }
 }
-
-// Assuming Course and Textbook classes are defined like this:
-class Course {
-    private String courseID;
-    private String courseName;
-
-    // Constructor and other methods not shown for brevity
-}

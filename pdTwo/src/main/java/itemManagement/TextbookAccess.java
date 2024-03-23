@@ -46,4 +46,13 @@ public class TextbookAccess {
     public List<Textbook> getTextbooks() {
         return textbooks;
     }
+
+	public void setCoursesEnrolled(List<Course> courses) {
+		this.coursesEnrolled = courses;
+		
+	}
+
+	public void setTextbooks(List<Textbook> textbooks2) {
+		this.textbooks = textbooks2;
+	}
 }
