@@ -14,7 +14,12 @@ public class Item implements DigitalItem{
         this.discountPrice = discountPrice;
     }
 
-    // Getters
+    public Item(String string, String string2) {
+    	this.id = string;
+    	this.name = string2;
+	}
+
+	// Getters
     public String getId() {
         return id;
     }

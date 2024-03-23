@@ -15,7 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import itemManagement.BookRequestManagement;
 import itemManagement.PhysicalItem;
-import itemManagement.BookRequestManagement.BookRequest;
+import itemManagement.BookRequest;
 
 public class SystemManager {
 	
