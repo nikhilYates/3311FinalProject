@@ -129,7 +129,7 @@ public class MainUINew extends JFrame {
 					if (login != null) {
 						JOptionPane.showMessageDialog(null, "You have successfully logged-in");
 					} else {
-						JOptionPane.showMessageDialog(null, "Incorrect email or password");
+						JOptionPane.showMessageDialog(null, "Incorrect email or password, or not verified");
 					}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
