@@ -5,8 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// Assuming Rental and Item are already defined in your system
-// If not, placeholder implementations are provided below the RentalManagement class
 
 public class RentalManagement {
     private String userID;
