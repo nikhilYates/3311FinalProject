@@ -176,17 +176,18 @@ public class CommonUserOperations implements UserManager {
 	 * @param rentalList
 	 */
 	@Override
-	public void returnItem(String itemid, int userid, List<RentalTransaction> rentalList) {
+	public void returnItem(int rentalID, List<RentalTransaction> rentalList) {
 		
 		for(RentalTransaction rental : rentalList) {
 			
-			if(rental.getItemid().equals(itemid) && rental.getUserid().equals(userid)) {
+			if(rental.getTransactionID() == rentalID) {
 					
 				if(rental.getLatePenalty() > 0.00) {
 					
 					System.out.println("Late penalty of " + rental.getLatePenalty() + " must be paid.");
 				}
 				
+				rental.setReturned(true);
 				rentalList.remove(rental);
 				System.out.println("Item succesfully returned!");
 			}

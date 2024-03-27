@@ -4,9 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 import org.junit.jupiter.api.Test;
 
+import userManagement.CommonUserOperations;
 import userManagement.RentalTransaction;
 
 class RentalTransactionTests {
@@ -53,6 +55,107 @@ class RentalTransactionTests {
 		RentalTransaction transaction = new RentalTransaction(2, "s001", "001", rentalDate, dueDate, 0, false);
 		
 		assertEquals(0, transaction.getLatePenalty());
+	}
+	
+	@Test
+	public void testReturnedItemAttributeUpdate() {
+		
+		CommonUserOperations ops = new CommonUserOperations();
+		
+		List<RentalTransaction> testRentalList = new ArrayList<>();
+		
+		RentalTransaction t1 = new RentalTransaction(1, "s001", "001", LocalDate.of(2024, 3, 1), LocalDate.of(2024, 3, 31), 0, false);
+		RentalTransaction t2 = new RentalTransaction(2, "s001", "002", LocalDate.of(2024, 3, 1), LocalDate.of(2024, 3, 31), 0, false);
+		RentalTransaction t3 = new RentalTransaction(3, "s001", "003", LocalDate.of(2024, 3, 1), LocalDate.of(2024, 3, 31), 0, false);
+		RentalTransaction t4 = new RentalTransaction(4, "s001", "004", LocalDate.of(2024, 3, 1), LocalDate.of(2024, 3, 31), 0, false);
+		
+		testRentalList.add(t1);
+		testRentalList.add(t2);
+		testRentalList.add(t3);
+		testRentalList.add(t4);
+		
+		// make sure that the status of the isReturned attribute has not changed (default = false)
+		assertEquals(false, t1.isReturned());
+		assertEquals(false, t2.isReturned());
+		assertEquals(false, t3.isReturned());
+		assertEquals(false, t4.isReturned());
+		
+		// return an item from transaction 3
+		ops.returnItem(3, testRentalList);
+		
+		// now it should show that the item has been returned but not change the rest
+		assertEquals(true, t3.isReturned());
+		assertEquals(false, t1.isReturned());
+		assertEquals(false, t2.isReturned());
+		assertEquals(false, t4.isReturned());
+		
+		
+	}
+	
+	@Test
+	public void testGetRentalDueDate() {
+		
+		LocalDate rentalDate = LocalDate.of(2024, 3, 16);
+		
+		// empty due date rental object
+		RentalTransaction rental = new RentalTransaction(1, "s001", "001", rentalDate, null, 0, false);
+		
+		assertEquals(LocalDate.of(2024, 4, 15), rental.getDueDate());
+		
+	}
+	
+	@Test 
+	public void testUpdateToLatePenalty() {
+		
+		LocalDate dueDate = LocalDate.now().minusDays(4);
+		RentalTransaction rental = new RentalTransaction(1, "s001", "001", dueDate.minusDays(30), dueDate, 0, false);
+		
+
+		assertEquals(2.0, rental.getLatePenalty());
+		
+	}
+	
+	@Test
+	public void testGetUserId() {
+		
+		String userid = "s001";
+		RentalTransaction rental = new RentalTransaction(1, null, "001", LocalDate.of(2024, 3, 1), LocalDate.of(2024, 3, 31), 0, false);
+	
+		rental.setUserid(userid);
+		
+		assertEquals(userid, rental.getUserid());
+		
+	}
+	
+	@Test
+	public void testGetItemId() {
+		
+		String itemid = "006";
+		RentalTransaction rental = new RentalTransaction(1, "s001", null, LocalDate.of(2024, 3, 1), LocalDate.of(2024, 3, 31), 0, false);
+		
+		rental.setItemid(itemid);
+		
+		assertEquals(itemid, rental.getItemid());
+	}
+	
+	@Test
+	public void testGetRentalDate() {
+		
+		RentalTransaction rental = new RentalTransaction(1, "s001", "001", null, null, 0, false);
+		
+		rental.setRentalDate(LocalDate.of(2024, 2, 28));
+		assertEquals(LocalDate.of(2024, 2, 28), rental.getRentalDate());
+	}
+	
+	@Test
+	public void testGetDueDateFromNewRentalDate() {
+		
+		RentalTransaction rental = new RentalTransaction(1, "s001", "001", null, null, 0, false);
+		rental.setRentalDate(LocalDate.of(2024, 2, 28));
+		
+		
+		// we should expect a due date of march 29 2024 since that is exactly 30 days after the rental date
+		assertEquals(LocalDate.of(2024, 3, 29), rental.getDueDate());
 	}
 	
 
