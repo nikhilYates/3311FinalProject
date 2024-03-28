@@ -63,6 +63,8 @@ public class DiscountedNotification implements Product{
     }
     
     public void setDiscountedItems(List<Item> discountedItems) {
-        this.discountedItems = discountedItems;
+        // Create a new ArrayList based on the input list to ensure the internal list is separate.
+        this.discountedItems = new ArrayList<>(discountedItems);
     }
+
 }
