@@ -19,7 +19,7 @@ public class Faculty extends User {
 	 * @param usertype
 	 * @param department
 	 */
-	protected Faculty(int userID, String email, int rowNum, String department) {
+	public Faculty(int userID, String email, int rowNum, String department) {
 
 		super(userID, email, rowNum);
 		this.department = department;

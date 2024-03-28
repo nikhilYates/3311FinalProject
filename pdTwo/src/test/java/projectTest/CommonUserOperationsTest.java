@@ -41,7 +41,7 @@ public class CommonUserOperationsTest {
 
 	private RentalTransaction createRentalTransaction(String itemId, boolean isReturned) {
 		LocalDate today = LocalDate.now();
-		return new RentalTransaction(rentalList.size() + 1, "user01", itemId, today.minusDays(5), // Rented 5 days ago
+		return new RentalTransaction(rentalList.size() + 1, 1, itemId, today.minusDays(5), // Rented 5 days ago
 				today.plusDays(25), // Due in 25 days
 				0.0, // No late penalty
 				isReturned);

@@ -14,14 +14,14 @@ public class RentalTransaction {
 	 */
 
 	private int transactionID;
-	private String userid;
+	private int userid;
 	private String itemid;
 	private LocalDate rentalDate;
 	private LocalDate dueDate;
 	private double latePenalty = 0;
 	private boolean isReturned = false;
 
-	public RentalTransaction(int transactionID, String userid, String itemid, LocalDate rentalDate, LocalDate dueDate,
+	public RentalTransaction(int transactionID, int userid, String itemid, LocalDate rentalDate, LocalDate dueDate,
 			double latePenalty, boolean isReturned) {
 
 		this.setTransactionID(transactionID);
@@ -44,12 +44,12 @@ public class RentalTransaction {
 		return latePenalty;
 	}
 
-	public String getUserid() {
+	public int getUserid() {
 		return userid;
 	}
 
-	public void setUserid(String userid) {
-		this.userid = userid;
+	public void setUserid(int userid2) {
+		this.userid = userid2;
 	}
 
 	public String getItemid() {
