@@ -75,8 +75,14 @@ public class RentalTransaction {
 
 
 	public LocalDate getDueDate() {
-		return this.rentalDate.plusDays(30);
+	    // If dueDate has been explicitly set, return it
+	    if (this.dueDate != null) {
+	        return this.dueDate;
+	    }
+	    // Otherwise, calculate it as 30 days from the rental date
+	    return this.rentalDate.plusDays(30);
 	}
+
 
 
 	public boolean isReturned() {
@@ -96,6 +102,14 @@ public class RentalTransaction {
 
 	public void setTransactionID(int transactionID) {
 		this.transactionID = transactionID;
+	}
+
+	public void setDueDate(LocalDate day) {
+		this.dueDate = day;
+	}
+
+	public void setLatePenalty(double d) {
+		this.latePenalty = d;
 	}
 	
 	
