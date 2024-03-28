@@ -1,9 +1,9 @@
 package userManagement;
 
-public class VisitorItems extends CommonUserOperations{
-	
+public class VisitorItems extends CommonUserOperations {
+
 	/**
-	 * Methods for visitors to access items 
+	 * Methods for visitors to access items
 	 */
 
 }

@@ -1,9 +1,8 @@
 package userManagement;
 
-public class NonFacultyItems extends CommonUserOperations{
+public class NonFacultyItems extends CommonUserOperations {
 
-	
 	/**
-	 * Methods for Non-Faculty staff to access items 
+	 * Methods for Non-Faculty staff to access items
 	 */
 }

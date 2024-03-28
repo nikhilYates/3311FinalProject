@@ -7,7 +7,7 @@ public class CourseRelationshipDecorator extends DigitalItemDecorator {
 		super(decoratedDigitalItem);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public void setCourse(String course) {
 		this.course = course;
 	}
@@ -15,5 +15,5 @@ public class CourseRelationshipDecorator extends DigitalItemDecorator {
 	public String getCourse() {
 		return this.course;
 	}
-	
+
 }
