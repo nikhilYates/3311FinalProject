@@ -1,5 +1,6 @@
 package itemManagement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TextbookAccess {
@@ -52,7 +53,8 @@ public class TextbookAccess {
 		
 	}
 
-	public void setTextbooks(List<Textbook> textbooks2) {
-		this.textbooks = textbooks2;
+	public void setTextbooks(List<Textbook> textbooks) {
+	    this.textbooks = new ArrayList<>(textbooks); // Create a new list based on the provided list
 	}
+
 }
