@@ -19,7 +19,13 @@ public interface UserManager {
     List<RentalTransaction> getCurrentHardcoverRentals(List<RentalTransaction> rentalList);
     boolean rentalDueSoonPrompt(RentalTransaction rental);
     double calculateLateFees(List<RentalTransaction> rentalList);
-    void returnItem(String itemid, int userid, List<RentalTransaction> rentalList);
+	/**
+	 * A user can return a physical item
+	 * @param itemid
+	 * @param userid
+	 * @param rentalList
+	 */
+	void returnItem(int rentalID, List<RentalTransaction> rentalList);
 	
 	
 	

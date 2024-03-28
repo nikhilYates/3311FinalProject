@@ -13,34 +13,33 @@ public class RentalTransaction {
 	 * and each instance gets added to the users rental list 
 	 */
 	
-
+	private int transactionID;
 	private String userid;
 	private String itemid;
 	private LocalDate rentalDate;
 	private LocalDate dueDate;
 	private double latePenalty = 0;
-	private boolean isReturned;
+	private boolean isReturned = false;
 	
 	
-	public RentalTransaction(String userid, String itemid, LocalDate rentalDate, LocalDate dueDate, double latePenalty, boolean isReturned) {
+	public RentalTransaction(int transactionID, String userid, String itemid, LocalDate rentalDate, LocalDate dueDate, double latePenalty, boolean isReturned) {
 		
+		this.setTransactionID(transactionID);
 		this.setUserid(userid);
 		this.setItemid(itemid);
 		this.setRentalDate(rentalDate);
-		this.setDueDate(dueDate);
-		this.setLatePenalty(latePenalty);
+		this.latePenalty = latePenalty;
 		this.setReturned(isReturned);
-	}
-
-
-	public void setLatePenalty(double latePenalty) {
-		
-		long daysLate = ChronoUnit.DAYS.between(this.getDueDate(), LocalDate.now());
-		
-		this.latePenalty += daysLate * 0.50;
 	}
 	
 	public double getLatePenalty() {
+		
+		long daysLate = ChronoUnit.DAYS.between(this.getDueDate(), LocalDate.now());
+		
+		if(daysLate >= 0) {
+		
+			this.latePenalty += daysLate * 0.50;
+		}
 		
 		return latePenalty;
 	}
@@ -76,12 +75,7 @@ public class RentalTransaction {
 
 
 	public LocalDate getDueDate() {
-		return dueDate;
-	}
-
-
-	public void setDueDate(LocalDate dueDate) {
-		this.dueDate = dueDate;
+		return this.rentalDate.plusDays(30);
 	}
 
 
@@ -92,6 +86,16 @@ public class RentalTransaction {
 
 	public void setReturned(boolean isReturned) {
 		this.isReturned = isReturned;
+	}
+
+
+	public int getTransactionID() {
+		return transactionID;
+	}
+
+
+	public void setTransactionID(int transactionID) {
+		this.transactionID = transactionID;
 	}
 	
 	
