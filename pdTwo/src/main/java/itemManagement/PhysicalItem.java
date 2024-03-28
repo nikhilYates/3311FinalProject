@@ -4,7 +4,7 @@ public class PhysicalItem extends PhysicalItemState {
     private String itemID;
     private String title;
     private String location;
-    private boolean rentalStatus; // true if currently rented, false otherwise
+    public boolean rentalStatus; // true if currently rented, false otherwise
     private boolean purchaseOption; // true if available for purchase, false otherwise
     protected int availableCopies;
     private PhysicalItemState state;
@@ -34,36 +34,39 @@ public class PhysicalItem extends PhysicalItemState {
         if (availableCopies > 0) {
             System.out.println(title + ", Available");
             this.state = new OpenState();
-            return true;
+            return true; // Open state
         } else {
             System.out.println(title + ", Not Available");
             this.state = new ClosedState();
-            return false;
+            return false; // Closed state
         }
     }
 
+
     @Override
     public void rentOut(PhysicalItem item) {
-        state.rentOut(this);
-        if (state.displayState()) {
-            availableCopies--; // Assuming decrement by 1 for each rental
-            rentalStatus = true;
-        }
-        if (availableCopies <= 0) {
-            this.state = new ClosedState();
-            availableCopies = 0;
-            rentalStatus = false;
+        if (availableCopies > 0) { // Ensure there are copies available to rent.
+            availableCopies--;
+            rentalStatus = true; // Item is now rented.
+            this.state = new OpenState(); // Item remains in the open state if copies are still available.
+
+            if (availableCopies <= 0) { // If no more copies are available after renting, change the state.
+                this.state = new ClosedState();
+                rentalStatus = false; // Technically, the item isn't available for rent anymore.
+            }
         }
     }
 
     @Override
     public void returnItem(PhysicalItem item) {
-        if (rentalStatus) {
+        if (availableCopies < 20) { // Assuming 20 is the max number of copies available.
             availableCopies++;
-            rentalStatus = false;
-            state.returnItem(this);
+            rentalStatus = false; // Item is no longer rented out.
+            this.state = new OpenState(); // Item is available for rent again.
         }
     }
+
+
 
     public void printStatus() {
         System.out.println("Item ID: " + itemID + ", Title: " + title + ", Location: " + location + ", Copies available: " + availableCopies + ", Rental Status: " + (rentalStatus ? "Rented" : "Available"));

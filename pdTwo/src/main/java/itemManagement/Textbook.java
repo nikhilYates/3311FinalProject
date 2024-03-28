@@ -17,6 +17,25 @@ public class Textbook implements DigitalItem {
     public String getTitle() {
         return this.title;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        Textbook textbook = (Textbook) obj;
+
+        if (!textbookID.equals(textbook.textbookID)) return false;
+        return title.equals(textbook.title);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = textbookID.hashCode();
+        result = 31 * result + title.hashCode();
+        return result;
+    }
+
 
 	
 }
