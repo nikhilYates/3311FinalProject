@@ -2,6 +2,7 @@ package itemManagement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class BookRequest {
     private String requestID;
@@ -14,7 +15,7 @@ public class BookRequest {
     public BookRequest(String userID, String requestType, List<String> topics) {
         this.userID = userID;
         // Generating a unique ID for the request
-        this.requestID = "REQ-" + System.currentTimeMillis(); 
+        this.requestID = "REQ-" + UUID.randomUUID().toString();
         this.requestType = requestType;
         this.topics = new ArrayList<>(topics);
         this.isSubmitted = false;
@@ -57,4 +58,12 @@ public class BookRequest {
     public void setPriority(boolean priority) {
         isPriority = priority;
     }
+
+	public String getUserID() {
+		return this.userID;
+	}
+
+	public void setUserID(String newUserID) {
+		this.userID = newUserID;
+	}
 }
