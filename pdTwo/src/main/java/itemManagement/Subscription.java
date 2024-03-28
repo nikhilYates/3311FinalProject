@@ -1,5 +1,7 @@
 package itemManagement;
 
+import java.util.Objects;
+
 public class Subscription implements Product{
     private String subscriptionID;
     private String userEmail;
@@ -41,5 +43,14 @@ public class Subscription implements Product{
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Subscription that = (Subscription) o;
+        return Objects.equals(subscriptionID, that.subscriptionID) &&
+                Objects.equals(userEmail, that.userEmail);
     }
 }
