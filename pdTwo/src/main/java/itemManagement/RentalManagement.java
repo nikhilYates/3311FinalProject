@@ -55,4 +55,7 @@ public class RentalManagement {
         this.userID = userID;
     }
 
+    public void addRental(Rental rental) {
+        this.rentedItems.add(rental);
+    }
 }
