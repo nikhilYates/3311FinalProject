@@ -216,4 +216,12 @@ public class SystemManager {
 		}
 		return false;
 	}
+	
+    // Public static method to get the instance
+    public static SystemManager getInstance() {
+        if (instance == null) {
+            instance = new SystemManager();
+        }
+        return instance;
+    }
 }

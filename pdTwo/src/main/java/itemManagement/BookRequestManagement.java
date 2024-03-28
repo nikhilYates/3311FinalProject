@@ -1,6 +1,8 @@
 package itemManagement;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.stream.Collectors;
 import java.util.List;
 
 import userManagement.SystemManager;
@@ -85,5 +87,9 @@ public class BookRequestManagement {
     		return this.requests;
     	}
     	return null;
-    }    
+    }
+
+    public Collection<BookRequest> getRequests() {
+        return new ArrayList<>(this.requests);
+    }  
 }
