@@ -20,11 +20,11 @@ public class Main {
 
 		// Assuming RentalTransaction class and constructor are defined correctly
 
-		RentalTransaction transaction1 = new RentalTransaction(1, "user01", "001", LocalDate.of(2024, 3, 1),
+		RentalTransaction transaction1 = new RentalTransaction(1, 1, "001", LocalDate.of(2024, 3, 1),
 				LocalDate.of(2024, 3, 15), 1.50, false);
-		RentalTransaction transaction2 = new RentalTransaction(2, "user01", "003", LocalDate.of(2024, 3, 5),
+		RentalTransaction transaction2 = new RentalTransaction(2, 1, "003", LocalDate.of(2024, 3, 5),
 				LocalDate.of(2024, 3, 19), 2.00, false);
-		RentalTransaction transaction3 = new RentalTransaction(3, "user01", "005", LocalDate.of(2024, 3, 10),
+		RentalTransaction transaction3 = new RentalTransaction(3, 1, "005", LocalDate.of(2024, 3, 10),
 				LocalDate.of(2024, 3, 24), 2.50, true);
 
 		List<RentalTransaction> userRentals = new ArrayList<>();
