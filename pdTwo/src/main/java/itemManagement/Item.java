@@ -46,11 +46,19 @@ public class Item implements DigitalItem {
 	}
 
 	public void setPrice(double price) {
-		this.price = price;
+		if (price < 0) {
+			throw new IllegalArgumentException("Price cannot be negative");
+		} else {
+			this.price = price;
+		}
 	}
 
 	public void setDiscountPrice(double discountPrice) {
-		this.discountPrice = discountPrice;
+		if (discountPrice < 0) {
+			throw new IllegalArgumentException("discountPrice cannot be negative");
+		} else {
+			this.discountPrice = discountPrice;
+		}
 	}
 
 	// Additional methods for item behavior could be implemented here

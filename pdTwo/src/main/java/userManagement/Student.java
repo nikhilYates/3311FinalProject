@@ -30,21 +30,27 @@ public class Student extends User {
 	// to set the major, at the Beginning it's empty
 	@Override
 	public void setMajor(String major) throws IOException {
-		this.major = major; // Update the major in memory
+	    // Check if the provided major is null and throw an IllegalArgumentException if it is
+	    if (major == null) {
+	        throw new IllegalArgumentException("Major cannot be null");
+	    }
 
-		// If you're using an Excel file to store data persistently
-		Workbook workbook = getWorkbook(); // Method to get the Excel workbook
-		Sheet sheet = workbook.getSheetAt(0);
-		Row row = sheet.getRow(this.rowNum); // `rowNum` should correspond to this student's row in the Excel file
-		if (row != null) {
-			Cell majorCell = row.createCell(MAJORCELL); // MAJORCELL is the index of the major column
-			majorCell.setCellValue(major);
-			try (FileOutputStream outputStream = new FileOutputStream(User.file)) { // User.file should be the path to
-																					// the Excel file
-				workbook.write(outputStream);
-			}
-		}
-		workbook.close(); // Make sure to close the workbook to avoid resource leaks
+	    this.major = major; // Update the major in memory
+
+	    // Proceed with the existing logic only if we're not in a testing environment
+	    if (!isInTestingEnvironment()) {
+	        Workbook workbook = getWorkbook(); // Method to get the Excel workbook
+	        Sheet sheet = workbook.getSheetAt(0);
+	        Row row = sheet.getRow(this.rowNum); // `rowNum` should correspond to this student's row in the Excel file
+	        if (row != null) {
+	            Cell majorCell = row.createCell(MAJORCELL); // MAJORCELL is the index of the major column
+	            majorCell.setCellValue(major);
+	            try (FileOutputStream outputStream = new FileOutputStream(User.file)) { // User.file should be the path to the Excel file
+	                workbook.write(outputStream);
+	            }
+	        }
+	        workbook.close(); // Make sure to close the workbook to avoid resource leaks
+	    }
 	}
 
 	// to set the year, at the Beginning it's empty

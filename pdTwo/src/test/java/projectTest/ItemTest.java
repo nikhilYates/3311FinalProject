@@ -81,13 +81,12 @@ public class ItemTest {
 				item.getDiscountPrice() <= item.getPrice());
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void testPriceNotNegative() {
 		item.setPrice(-1.0);
-		assertFalse("Price should not be negative", item.getPrice() < 0);
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void testDiscountPriceNotNegative() {
 		item.setDiscountPrice(-1.0);
 		assertFalse("Discount price should not be negative", item.getDiscountPrice() < 0);
