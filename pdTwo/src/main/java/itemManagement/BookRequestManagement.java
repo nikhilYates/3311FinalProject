@@ -19,6 +19,10 @@ public class BookRequestManagement {
 		this.requests = new ArrayList<>(); // Starting with an empty list of book requests
 	}
 
+	public BookRequestManagement() {
+		requests = new ArrayList<>();
+	}
+
 	// Initiates a book request, it will create a new request and add it to the
 	// requests list
 	public String initiateBookRequest(String requestType, List<String> topics) { // returns requestID

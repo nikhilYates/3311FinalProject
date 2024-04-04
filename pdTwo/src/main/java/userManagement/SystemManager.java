@@ -39,7 +39,7 @@ public class SystemManager {
 	} // private constructor for singleton
 
 	public static SystemManager getSystemManager(long code) {
-		if (code == actualCode) {
+		if (code == getActualcode()) {
 			if (instance == null) { // lazy initialization of singleton
 				instance = new SystemManager();
 			}
@@ -227,5 +227,9 @@ public class SystemManager {
 			instance = new SystemManager();
 		}
 		return instance;
+	}
+
+	public static long getActualcode() {
+		return actualCode;
 	}
 }
