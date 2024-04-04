@@ -41,7 +41,7 @@ public class ItemRepo {
 		}
 	}
 
-	// Initialize the repository with default items
+	// Initialize the repo with some items
 	public static void initializeWithDefaultItems() {
 		// Clear the current list to ensure a fresh start
 		allPhysicalItems.clear();
@@ -57,6 +57,5 @@ public class ItemRepo {
 
 	public static void reset() {
 		allPhysicalItems.clear();
-		// Optionally re-add default items here
 	}
 }
