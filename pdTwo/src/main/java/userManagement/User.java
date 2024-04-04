@@ -54,43 +54,42 @@ public abstract class User {
 	}
 
 	public List<RentalTransaction> getRentalList() {
+	    UserManager userOps = new CommonUserOperations();
 
-		UserManager userOps = new CommonUserOperations();
+	    System.out.println("\nRental List for " + this.email + ": ");
+	    System.out.println("---------------------------------------------------");
 
-		System.out.println("\nRental List for " + this.email + ": ");
-		System.out.println("---------------------------------------------------");
+	    if (this.rentalList.isEmpty()) {
+	        System.out.println("You have not rented anything yet. You can rent up to 10 items from the library.");
+	    } else {
+	        for (RentalTransaction rentedItem : this.rentalList) {
+	            PhysicalItem itemOfInterest = ItemRepo.getItemById(rentedItem.getItemid());
 
-		if (this.rentalList.size() < 1) {
+	            System.out.println("Item ID: " + rentedItem.getItemid());
+	            // Check if itemOfInterest is not null before accessing its properties
+	            if (itemOfInterest != null) {
+	                System.out.println("Title: " + itemOfInterest.getTitle());
+	            } else {
+	                System.out.println("Title: [Item not found]");
+	            }
+	            System.out.println("Rented on: " + rentedItem.getRentalDate());
+	            System.out.println("Due by: " + rentedItem.getDueDate());
 
-			System.out.println("You have not rented anything yet. You can rent up to 10 items from the library.");
-		}
+	            if (userOps.rentalDueSoonPrompt(rentedItem)) {
+	                System.out.println("RENTAL DUE IN THE NEXT 24 HOURS.");
+	            }
 
-		else {
-			for (RentalTransaction rentedItem : this.rentalList) {
+	            if (rentedItem.getLatePenalty() > 0) {
+	                System.out.println("LATE ITEM - PENALTY OF $" + rentedItem.getLatePenalty() + " applied to your account.");
+	            }
 
-				PhysicalItem itemOfInterest = ItemRepo.getItemById(rentedItem.getItemid());
+	            System.out.println("---------------------------------------------------");
+	        }
+	    }
 
-				System.out.println("Item ID: " + rentedItem.getItemid());
-				System.out.println("Title: " + itemOfInterest.getTitle());
-				System.out.println("Rented on: " + rentedItem.getRentalDate().toString());
-				System.out.println("Due by: " + rentedItem.getDueDate().toString());
-
-				if (userOps.rentalDueSoonPrompt(rentedItem)) {
-					System.out.println("RENTAL DUE IN THE NEXT 24 HOURS.");
-				}
-
-				if (rentedItem.getLatePenalty() > 0) {
-					System.out.println(
-							"LATE ITEM - PENALTY OF $" + rentedItem.getLatePenalty() + " applied to your account.");
-				}
-
-				System.out.println("---------------------------------------------------");
-
-			}
-		}
-
-		return this.rentalList;
+	    return this.rentalList;
 	}
+
 
 	public void addToRentalList(RentalTransaction rental) {
 
@@ -110,6 +109,22 @@ public abstract class User {
 		}
 
 	}
+	
+	public void removeFromRentalList(RentalTransaction rental) {
+	    //check
+		if (rentalList.contains(rental)) {
+	        rentalList.remove(rental);
+	        System.out.println("Client Side - Item removed from rental list");
+	        System.out.println("Updated List: ");
+
+	        for (RentalTransaction rentedItem : rentalList) {
+	            System.out.println(rentedItem.getItemid());
+	        }
+	    } else {
+	        System.out.println("The item to be removed was not found in the rental list.");
+	    }
+	}
+
 
 	/**
 	 * To showcase all the functionality of the CommonOperations class

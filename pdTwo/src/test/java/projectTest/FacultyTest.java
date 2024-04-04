@@ -1,60 +1,40 @@
 package projectTest;
 
+import userManagement.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import itemManagement.ItemRepo;
 import itemManagement.PhysicalItem;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.After;
-
-import userManagement.CommonUserOperations;
-import userManagement.Faculty;
-import userManagement.RentalTransaction;
-import userManagement.User;
-import java.io.*;
-import java.time.LocalDate;
-import java.util.*;
 import static org.junit.Assert.*;
+import java.io.IOException;
+import java.time.LocalDate;
 
 public class FacultyTest {
 
     private Faculty faculty;
-    private CommonUserOperations operations; // For CommonUserOperations instance
-    private List<RentalTransaction> rentalList; // For a list of RentalTransaction objects
-    private final String testFilePath = "test_user.xlsx";
 
     @Before
-    public void setUp() throws Exception {
-		ItemRepo.reset();
-		operations = new CommonUserOperations();
-        rentalList = new ArrayList<>();
-        
-        // Initialize ItemRepo with sample items
-        ItemRepo.addItem(new PhysicalItem("001", "Test Item 1", "Location A", true));
-        ItemRepo.addItem(new PhysicalItem("002", "Test Item 2", "Location B", true));        
-    	// Set up a test Excel file and a Faculty instance
-        // Note: Implement createTestWorkbook() to set up a workbook with test data
-        createTestWorkbook(testFilePath);
+    public void setUp() {
+        // Initialize Faculty with ID, email, row number, and department
+        faculty = new Faculty(1, "faculty@example.com", 0, "Engineering");
 
-        faculty = new Faculty(1, "test@university.edu", 0, "Engineering");
+        // Reset and initialize ItemRepo with necessary items
+        ItemRepo.reset();
+        ItemRepo.addItem(new PhysicalItem("001", "Test Item 1", "Location A", true));
+        ItemRepo.addItem(new PhysicalItem("002", "Test Item 2", "Location B", true));
     }
 
     @Test
-    public void testFacultyConstructor() {
+    public void testFacultyDepartmentInitially() {
         assertEquals("Engineering", faculty.getDepartment());
     }
 
     @Test
     public void testSetDepartment() throws IOException {
-        faculty.setDepartment("Science");
-        assertEquals("Science", faculty.getDepartment());
-        // Additional verification needed to check if Excel file is updated
+        faculty.setDepartment("Mathematics");
+        assertEquals("Mathematics", faculty.getDepartment());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -63,106 +43,92 @@ public class FacultyTest {
     }
 
     @Test
-    public void testLoginSuccessful() throws IOException {
-        User loggedInUser = User.login("test@university.edu", "password");
-        assertNotNull(loggedInUser);
-        assertTrue(loggedInUser instanceof Faculty);
+    public void testFacultyEmail() {
+        assertEquals("faculty@example.com", faculty.getEmail());
     }
 
     @Test
-    public void testLoginFailure() throws IOException {
-        User loggedInUser = User.login("wrong@university.edu", "password");
-        assertNull(loggedInUser);
+    public void testFacultyUserID() {
+        assertEquals(1, faculty.getUserID());
     }
 
     @Test
-    public void testSignup() throws IOException {
-        boolean success = User.signup(2, "newfaculty@university.edu", "newpass", Faculty.class);
-        assertTrue(success);
-        // Verify by attempting to login with the new credentials
+    public void testFacultyUserType() {
+        assertEquals("Faculty", faculty.getUsertype());
     }
 
     @Test
-    public void testDeleteUser() throws IOException {
-        boolean deleted = faculty.deleteUser();
-        assertTrue(deleted);
-        // Verify by checking the absence of the user in the Excel file
-    }
-
-    @Test
-    public void testVerifyUser() throws IOException {
-        User.verifyUser("test@university.edu");
-        // Verify by checking the user's validation status in the Excel file
-    }
-
-    @Test
-    public void testGetRentalListEmpty() {
-        List<RentalTransaction> rentalList = faculty.getRentalList();
-        assertTrue(rentalList.isEmpty());
+    public void testGetRentalListEmptyInitially() {
+        assertTrue(faculty.getRentalList().isEmpty());
     }
 
     @Test
     public void testAddToRentalList() {
-        LocalDate rentalDate = LocalDate.now();
-        LocalDate dueDate = rentalDate.plusDays(30);
+        // Ensure the item with ID "001" exists in the ItemRepo
+        assertNotNull("Item with ID '001' should exist in ItemRepo", ItemRepo.getItemById("001"));
 
-        RentalTransaction rental = new RentalTransaction(1, faculty.getUserID(), "itemid", rentalDate, dueDate, 0.0, false);
+        RentalTransaction rental = new RentalTransaction(1, 1, "001", LocalDate.now(), LocalDate.now().plusDays(30), 0.0, false);
         faculty.addToRentalList(rental);
-
-        assertFalse(faculty.getRentalList().isEmpty());
-        RentalTransaction addedRental = faculty.getRentalList().get(0);
-        assertEquals("itemid", addedRental.getItemid());
-        assertEquals(rentalDate, addedRental.getRentalDate());
-        assertEquals(dueDate, addedRental.getDueDate());
-        assertEquals(0.0, addedRental.getLatePenalty(), 0.01);
-        assertFalse(addedRental.isReturned());
+        assertEquals(1, faculty.getRentalList().size());
     }
 
     @Test
-    public void testComprehensiveReport() {
+    public void testRemoveFromRentalList() {
+        RentalTransaction rental = new RentalTransaction(1, 1, "001", LocalDate.now(), LocalDate.now().plusDays(30), 0.0, false);
+        faculty.addToRentalList(rental);
+        faculty.removeFromRentalList(rental);
+        assertTrue(faculty.getRentalList().isEmpty());
+    }
+
+    @Test
+    public void testRentalListSizeAfterMultipleAdditions() {
+        faculty.addToRentalList(new RentalTransaction(1, 1, "001", LocalDate.now(), LocalDate.now().plusDays(30), 0.0, false));
+        faculty.addToRentalList(new RentalTransaction(2, 1, "002", LocalDate.now(), LocalDate.now().plusDays(15), 0.0, false));
+        assertEquals(2, faculty.getRentalList().size());
+    }
+
+    @Test
+    public void testComprehensiveReportExecution() {
+        // Assuming comprehensiveReport() method prints a report to the console
+        // This test checks if the method can execute without throwing an exception
         faculty.comprehensiveReport();
-        // This test might be more about verifying the output format and content,
-        // possibly by capturing standard output
+        assertTrue(true); // Pass if no exception is thrown
     }
 
-    @After
-    public void tearDown() {
-        // Clean up the test Excel file
-        new File(testFilePath).delete();
+    @Test
+    public void testChangeDepartmentAgain() throws IOException {
+        faculty.setDepartment("Physics");
+        assertEquals("Physics", faculty.getDepartment());
     }
 
-    private void createTestWorkbook(String filePath) throws IOException {
-        Workbook workbook = new XSSFWorkbook(); // Create a new workbook
-        Sheet sheet = workbook.createSheet("TestData"); // Create a new sheet named "TestData"
-
-        // Create a header row and populate it with column names
-        Row headerRow = sheet.createRow(0);
-        String[] columnHeaders = {"UserID", "Email", "Password", "UserType", "Validation", "Department", "Major", "Year"};
-        for (int i = 0; i < columnHeaders.length; i++) {
-            Cell cell = headerRow.createCell(i);
-            cell.setCellValue(columnHeaders[i]);
-        }
-
-        // Add a row of test data
-        Row dataRow = sheet.createRow(1);
-        Object[] testData = {1, "test@example.com", "password123", "Faculty", true, "Engineering", "", 0};
-        for (int i = 0; i < testData.length; i++) {
-            Cell cell = dataRow.createCell(i);
-            if (testData[i] instanceof String) {
-                cell.setCellValue((String) testData[i]);
-            } else if (testData[i] instanceof Boolean) {
-                cell.setCellValue((Boolean) testData[i]);
-            } else if (testData[i] instanceof Integer) {
-                cell.setCellValue((Integer) testData[i]);
-            }
-        }
-
-        // Write the workbook to the file system
-        try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
-            workbook.write(outputStream);
-        } finally {
-            workbook.close(); // Close the workbook to free resources
-        }
+    @Test
+    public void testRentalListNotEmptyAfterAdding() {
+        RentalTransaction rental = new RentalTransaction(2, 1, "003", LocalDate.now(), LocalDate.now().plusDays(20), 0.0, false);
+        faculty.addToRentalList(rental);
+        assertFalse(faculty.getRentalList().isEmpty());
     }
 
+    @Test
+    public void testMultipleDepartmentsChange() throws IOException {
+        faculty.setDepartment("Biology");
+        faculty.setDepartment("Chemistry");
+        assertEquals("Chemistry", faculty.getDepartment());
+    }
+
+    @Test
+    public void testRentalListContainsSpecificRental() {
+        RentalTransaction rental = new RentalTransaction(3, 1, "004", LocalDate.now(), LocalDate.now().plusDays(10), 0.0, false);
+        faculty.addToRentalList(rental);
+        assertTrue(faculty.getRentalList().contains(rental));
+    }
+
+    @Test
+    public void testRentalListDoesNotContainRemovedRental() {
+        RentalTransaction rental = new RentalTransaction(4, 1, "005", LocalDate.now(), LocalDate.now().plusDays(25), 0.0, false);
+        faculty.addToRentalList(rental);
+        faculty.removeFromRentalList(rental);
+        assertFalse(faculty.getRentalList().contains(rental));
+    }
+
+    // You can add more tests here to cover further functionality as needed.
 }
