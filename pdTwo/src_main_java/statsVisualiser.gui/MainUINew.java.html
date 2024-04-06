@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>MainUINew.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">statsVisualiser.gui</a> &gt; <span class="el_source">MainUINew.java</span></div><h1>MainUINew.java</h1><pre class="source lang-java linenums">package statsVisualiser.gui;
+
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.Vector;
+
+import javax.swing.*;
+
+import userManagement.Faculty;
+import userManagement.NonFaculty;
+import userManagement.Student;
+import userManagement.User;
+import userManagement.Visitor;
+
+public class MainUINew extends JFrame {
+
+	private static final long serialVersionUID = 1L;
+
+	private static MainUINew instance;
+
+	public static MainUINew getInstance() {
+<span class="nc bnc" id="L25" title="All 2 branches missed.">		if (instance == null)</span>
+<span class="nc" id="L26">			instance = new MainUINew();</span>
+
+<span class="nc" id="L28">		return instance;</span>
+	}
+
+	private MainUINew() {
+		// Set window title
+<span class="nc" id="L33">		super(&quot;YU Library Management App&quot;);</span>
+<span class="nc" id="L34">		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+
+<span class="nc" id="L36">		JPanel signupPanel = createSignupPanel();</span>
+<span class="nc" id="L37">		JPanel loginPanel = createLoginPanel();</span>
+
+		// Add panels to the frame
+<span class="nc" id="L40">		add(signupPanel, BorderLayout.NORTH);</span>
+<span class="nc" id="L41">		add(loginPanel, BorderLayout.SOUTH);</span>
+
+		// Center the frame on the screen
+<span class="nc" id="L44">		setLocationRelativeTo(null);</span>
+<span class="nc" id="L45">	}</span>
+
+	private JPanel createSignupPanel() {
+<span class="nc" id="L48">		JPanel panel = new JPanel();</span>
+<span class="nc" id="L49">		panel.setLayout(new GridLayout(5, 2));</span>
+
+<span class="nc" id="L51">		JLabel userIdLabel = new JLabel(&quot;ID:&quot;);</span>
+<span class="nc" id="L52">		JTextField userIdField = new JTextField();</span>
+
+<span class="nc" id="L54">		JLabel emailLabel = new JLabel(&quot;Email:&quot;);</span>
+<span class="nc" id="L55">		JTextField emailField = new JTextField();</span>
+
+<span class="nc" id="L57">		JLabel passwordLabel = new JLabel(&quot;Password:&quot;);</span>
+<span class="nc" id="L58">		JPasswordField passwordField = new JPasswordField();</span>
+
+<span class="nc" id="L60">		JLabel userTypeLabel = new JLabel(&quot;UserType:&quot;);</span>
+<span class="nc" id="L61">		Vector&lt;Class&lt;? extends User&gt;&gt; userTypes = new Vector&lt;Class&lt;? extends User&gt;&gt;();</span>
+<span class="nc" id="L62">		userTypes.add(Student.class);</span>
+<span class="nc" id="L63">		userTypes.add(Faculty.class);</span>
+<span class="nc" id="L64">		userTypes.add(NonFaculty.class);</span>
+<span class="nc" id="L65">		userTypes.add(Visitor.class);</span>
+<span class="nc" id="L66">		JComboBox&lt;Class&lt;? extends User&gt;&gt; userTypeList = new JComboBox&lt;Class&lt;? extends User&gt;&gt;(userTypes);</span>
+
+<span class="nc" id="L68">		JButton signupButton = new JButton(&quot;SignUp&quot;);</span>
+
+		// Add action listener to the signup button
+<span class="nc" id="L71">		signupButton.addActionListener(new ActionListener() {</span>
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Handle signup logic here
+<span class="nc" id="L75">				int userId = Integer.parseInt(userIdField.getText());</span>
+<span class="nc" id="L76">				String email = emailField.getText();</span>
+<span class="nc" id="L77">				String password = new String(passwordField.getPassword());</span>
+<span class="nc" id="L78">				Class&lt;? extends User&gt; userType = userTypeList.getItemAt(userTypeList.getSelectedIndex());</span>
+				try {
+<span class="nc" id="L80">					boolean signup = User.signup(userId, email, password, userType);</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">					if (signup) {</span>
+<span class="nc" id="L82">						JOptionPane.showMessageDialog(null, &quot;You have successfully signed-up&quot;);</span>
+<span class="nc" id="L83">					} else {</span>
+<span class="nc" id="L84">						JOptionPane.showMessageDialog(null, &quot;Email in use&quot;);</span>
+					}
+<span class="nc" id="L86">				} catch (IOException e1) {</span>
+					// TODO Auto-generated catch block
+<span class="nc" id="L88">					e1.printStackTrace();</span>
+				}
+<span class="nc" id="L90">			}</span>
+		});
+
+		// Add components to the panel
+<span class="nc" id="L94">		panel.add(userIdLabel);</span>
+<span class="nc" id="L95">		panel.add(userIdField);</span>
+<span class="nc" id="L96">		panel.add(emailLabel);</span>
+<span class="nc" id="L97">		panel.add(emailField);</span>
+<span class="nc" id="L98">		panel.add(passwordLabel);</span>
+<span class="nc" id="L99">		panel.add(passwordField);</span>
+<span class="nc" id="L100">		panel.add(userTypeLabel);</span>
+<span class="nc" id="L101">		panel.add(userTypeList);</span>
+<span class="nc" id="L102">		panel.add(signupButton);</span>
+
+<span class="nc" id="L104">		return panel;</span>
+	}
+
+	private JPanel createLoginPanel() {
+<span class="nc" id="L108">		JPanel panel = new JPanel();</span>
+<span class="nc" id="L109">		panel.setLayout(new GridLayout(3, 2));</span>
+
+<span class="nc" id="L111">		JLabel emailLabel = new JLabel(&quot;Email:&quot;);</span>
+<span class="nc" id="L112">		JTextField emailField = new JTextField();</span>
+<span class="nc" id="L113">		JLabel passwordLabel = new JLabel(&quot;Password:&quot;);</span>
+<span class="nc" id="L114">		JPasswordField passwordField = new JPasswordField();</span>
+<span class="nc" id="L115">		JButton loginButton = new JButton(&quot;Login&quot;);</span>
+
+		// Add action listener to the login button
+<span class="nc" id="L118">		loginButton.addActionListener(new ActionListener() {</span>
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Handle signup logic here
+<span class="nc" id="L122">				String email = emailField.getText();</span>
+<span class="nc" id="L123">				String password = new String(passwordField.getPassword());</span>
+				try {
+<span class="nc" id="L125">					User login = User.login(email, password);</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">					if (login != null) {</span>
+<span class="nc" id="L127">						JOptionPane.showMessageDialog(null, &quot;You have successfully logged-in&quot;);</span>
+<span class="nc" id="L128">					} else {</span>
+<span class="nc" id="L129">						JOptionPane.showMessageDialog(null, &quot;Incorrect email or password, or not verified&quot;);</span>
+					}
+<span class="nc" id="L131">				} catch (IOException e1) {</span>
+					// TODO Auto-generated catch block
+<span class="nc" id="L133">					e1.printStackTrace();</span>
+				}
+<span class="nc" id="L135">			}</span>
+		});
+
+		// Add components to the panel
+<span class="nc" id="L139">		panel.add(emailLabel);</span>
+<span class="nc" id="L140">		panel.add(emailField);</span>
+<span class="nc" id="L141">		panel.add(passwordLabel);</span>
+<span class="nc" id="L142">		panel.add(passwordField);</span>
+<span class="nc" id="L143">		panel.add(loginButton);</span>
+
+<span class="nc" id="L145">		return panel;</span>
+	}
+
+	public static void main(String[] args) {
+<span class="nc" id="L149">		JFrame frame = MainUINew.getInstance();</span>
+<span class="nc" id="L150">		frame.setSize(900, 600);</span>
+<span class="nc" id="L151">		frame.setVisible(true);</span>
+<span class="nc" id="L152">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

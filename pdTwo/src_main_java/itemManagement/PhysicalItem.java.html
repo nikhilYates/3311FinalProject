@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>PhysicalItem.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">itemManagement</a> &gt; <span class="el_source">PhysicalItem.java</span></div><h1>PhysicalItem.java</h1><pre class="source lang-java linenums">package itemManagement;
+
+public class PhysicalItem extends PhysicalItemState {
+	private String itemID;
+	private String title;
+	private String location;
+	public boolean rentalStatus; // true if currently rented, false otherwise
+	private boolean purchaseOption; // true if available for purchase, false otherwise
+	protected int availableCopies;
+	private PhysicalItemState state;
+
+<span class="fc" id="L12">	public PhysicalItem() {</span>
+
+<span class="fc" id="L14">	}</span>
+
+<span class="fc" id="L16">	public PhysicalItem(String itemID, String title, String location, boolean purchaseOption) {</span>
+<span class="fc" id="L17">		this.itemID = itemID;</span>
+<span class="fc" id="L18">		this.title = title;</span>
+<span class="fc" id="L19">		this.location = location;</span>
+<span class="fc" id="L20">		this.purchaseOption = purchaseOption;</span>
+<span class="fc" id="L21">		this.rentalStatus = false; // Assuming item is not rented initially</span>
+<span class="fc" id="L22">		this.availableCopies = 20; // Default number of copies</span>
+<span class="fc" id="L23">		this.state = new OpenState(); // By default all items are available for rent</span>
+<span class="fc" id="L24">	}</span>
+
+	public void setState(PhysicalItemState state) {
+<span class="nc" id="L27">		this.state = state;</span>
+<span class="nc" id="L28">	}</span>
+
+	@Override
+	public boolean displayState() {
+<span class="fc bfc" id="L32" title="All 2 branches covered.">		if (availableCopies &gt; 0) {</span>
+<span class="fc" id="L33">			System.out.println(title + &quot;, Available&quot;);</span>
+<span class="fc" id="L34">			this.state = new OpenState();</span>
+<span class="fc" id="L35">			return true; // Open state</span>
+		} else {
+<span class="fc" id="L37">			System.out.println(title + &quot;, Not Available&quot;);</span>
+<span class="fc" id="L38">			this.state = new ClosedState();</span>
+<span class="fc" id="L39">			return false; // Closed state</span>
+		}
+	}
+
+	@Override
+	public void rentOut(PhysicalItem item) {
+<span class="fc bfc" id="L45" title="All 2 branches covered.">		if (availableCopies &gt; 0) { // Ensure there are copies available to rent.</span>
+<span class="fc" id="L46">			availableCopies--;</span>
+<span class="fc" id="L47">			rentalStatus = true; // Item is now rented.</span>
+<span class="fc" id="L48">			this.state = new OpenState(); // Item remains in the open state if copies are still available.</span>
+
+<span class="fc bfc" id="L50" title="All 2 branches covered.">			if (availableCopies &lt;= 0) { // If no more copies are available after renting, change the state.</span>
+<span class="fc" id="L51">				this.state = new ClosedState();</span>
+<span class="fc" id="L52">				rentalStatus = false; // Technically, the item isn't available for rent anymore.</span>
+			}
+		}
+<span class="fc" id="L55">	}</span>
+
+	@Override
+	public void returnItem(PhysicalItem item) {
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">		if (availableCopies &lt; 20) { // Assuming 20 is the max number of copies available.</span>
+<span class="fc" id="L60">			availableCopies++;</span>
+<span class="fc" id="L61">			rentalStatus = false; // Item is no longer rented out.</span>
+<span class="fc" id="L62">			this.state = new OpenState(); // Item is available for rent again.</span>
+		}
+<span class="fc" id="L64">	}</span>
+
+	public void printStatus() {
+<span class="fc" id="L67">		System.out</span>
+<span class="fc" id="L68">				.println(&quot;Item ID: &quot; + itemID + &quot;, Title: &quot; + title + &quot;, Location: &quot; + location + &quot;, Copies available: &quot;</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">						+ availableCopies + &quot;, Rental Status: &quot; + (rentalStatus ? &quot;Rented&quot; : &quot;Available&quot;));</span>
+<span class="fc" id="L70">	}</span>
+
+	// Getters and Setters for the new attributes
+	public String getItemID() {
+<span class="fc" id="L74">		return itemID;</span>
+	}
+
+	public void setItemID(String itemID) {
+<span class="fc" id="L78">		this.itemID = itemID;</span>
+<span class="fc" id="L79">	}</span>
+
+	public String getTitle() {
+<span class="fc" id="L82">		return title;</span>
+	}
+
+	public void setTitle(String title) {
+<span class="fc" id="L86">		this.title = title;</span>
+<span class="fc" id="L87">	}</span>
+
+	public String getLocation() {
+<span class="fc" id="L90">		return location;</span>
+	}
+
+	public void setLocation(String location) {
+<span class="fc" id="L94">		this.location = location;</span>
+<span class="fc" id="L95">	}</span>
+
+	public boolean isPurchaseOption() {
+<span class="fc" id="L98">		return purchaseOption;</span>
+	}
+
+	public void setPurchaseOption(boolean purchaseOption) {
+<span class="fc" id="L102">		this.purchaseOption = purchaseOption;</span>
+<span class="fc" id="L103">	}</span>
+
+	public void setAvailableCopies(int availableCopies) {
+
+<span class="fc" id="L107">		this.availableCopies = availableCopies;</span>
+<span class="fc" id="L108">	}</span>
+
+	public int getAvailableCopies() {
+
+<span class="fc" id="L112">		return availableCopies;</span>
+	}
+
+	public PhysicalItem getItemByID(String itemid) {
+
+<span class="fc" id="L117">		System.out.println(&quot;Getting PHYSICALITEMBYID:&quot;);</span>
+<span class="fc" id="L118">		System.out.println(this.title);</span>
+
+<span class="fc" id="L120">		return this;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

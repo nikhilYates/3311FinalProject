@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>CommonUserOperations.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">userManagement</a> &gt; <span class="el_source">CommonUserOperations.java</span></div><h1>CommonUserOperations.java</h1><pre class="source lang-java linenums">package userManagement;
+
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+
+import itemManagement.ItemRepo;
+import itemManagement.PhysicalItem;
+
+<span class="fc" id="L11">public class CommonUserOperations implements UserManager {</span>
+
+	/**
+	 * add an item to a users rental list (i.e., let a user rent an item)
+	 * 
+	 * @param physicalItem
+	 * @param rentalList
+	 * @return
+	 */
+	@Override
+	public boolean rentPhysicalItem(RentalTransaction physicalItem, List&lt;RentalTransaction&gt; rentalList) {
+<span class="fc" id="L22">		PhysicalItem itemToCheck = ItemRepo.getItemById(physicalItem.getItemid());</span>
+
+<span class="pc bpc" id="L24" title="1 of 4 branches missed.">		if (checkRentalAbility(rentalList) &amp;&amp; itemToCheck.getAvailableCopies() &gt; 0) {</span>
+<span class="fc" id="L25">			rentalList.add(physicalItem);</span>
+<span class="fc" id="L26">			System.out.println(physicalItem.getItemid()</span>
+<span class="fc" id="L27">					+ &quot; successfully checked out! You have 30 days to return this item before a late penalty is applied.&quot;);</span>
+			// Decrement available copies of the item
+<span class="fc" id="L29">			itemToCheck.setAvailableCopies(itemToCheck.getAvailableCopies() - 1);</span>
+<span class="fc" id="L30">			return true;</span>
+		}
+<span class="fc" id="L32">		System.out.println(&quot;Unable to rent this item.&quot;);</span>
+<span class="fc" id="L33">		return false;</span>
+	}
+
+	/**
+	 * We are going to get a physicalItem by ID, and update it's inventory by 1/-1
+	 * depending on whether a user is renting or returning an item
+	 * 
+	 * @param physicalItem
+	 * @param operation    : true = return, false = rent
+	 */
+	@Override
+	public void updatePhysicalItemInventory(RentalTransaction physicalItem, boolean operation) {
+<span class="fc" id="L45">		PhysicalItem itemToUpdate = ItemRepo.getItemById(physicalItem.getItemid());</span>
+
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">		if (itemToUpdate != null) {</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">			if (operation) { // Returning item</span>
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">				if (itemToUpdate.getAvailableCopies() &lt; 20) {</span>
+<span class="fc" id="L50">					itemToUpdate.setAvailableCopies(itemToUpdate.getAvailableCopies() + 1);</span>
+				}
+<span class="fc" id="L52">			} else { // Renting item</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">				if (itemToUpdate.getAvailableCopies() &gt; 0) {</span>
+<span class="fc" id="L54">					itemToUpdate.setAvailableCopies(itemToUpdate.getAvailableCopies() - 1);</span>
+				}
+			}
+		}
+<span class="fc" id="L58">	}</span>
+
+	/**
+	 * want to see if the user's rental list is over the rental limit, or if user
+	 * has more than 3 items overdue
+	 * 
+	 * @param rentalList
+	 * @return
+	 */
+	@Override
+	public boolean checkRentalAbility(List&lt;RentalTransaction&gt; rentalList) {
+
+<span class="fc bfc" id="L70" title="All 2 branches covered.">		if (rentalList.size() &gt;= 10) {</span>
+
+<span class="fc" id="L72">			System.out.println(&quot;You have reached the maximum number of rentals for this account. &quot;);</span>
+<span class="fc" id="L73">			return false;</span>
+		}
+
+		/**
+		 * NEED TO ADD: check if a user has more than 3 items overdue. Use helper method
+		 */
+
+<span class="fc" id="L80">		return true;</span>
+	}
+
+	/**
+	 * Get the number of overdue items based on the rental and due dates To also be
+	 * used by the calculateLateFees method
+	 * 
+	 * @param rentalList
+	 * @return number of overdue items
+	 */
+	@Override
+	public List&lt;RentalTransaction&gt; countOverdueItems(List&lt;RentalTransaction&gt; rentalList) {
+
+<span class="fc" id="L93">		List&lt;RentalTransaction&gt; overdueItems = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L95" title="All 2 branches covered.">		for (RentalTransaction rental : rentalList) {</span>
+
+<span class="fc bfc" id="L97" title="All 2 branches covered.">			if (ChronoUnit.DAYS.between(rental.getDueDate(), LocalDate.now()) &gt; 0) {</span>
+
+<span class="fc" id="L99">				overdueItems.add(rental);</span>
+			}
+		}
+
+<span class="fc" id="L103">		return overdueItems;</span>
+	}
+
+	/**
+	 * after login, show the list of hardcover books that a user is currently
+	 * renting &amp; their due dates (req 3)
+	 * 
+	 * @param physicalItemRentals
+	 * @return a list of all hardCoverRentals -&gt; will display the due dates in the
+	 *         user interface!
+	 */
+	@Override
+	public List&lt;RentalTransaction&gt; getCurrentHardcoverRentals(List&lt;RentalTransaction&gt; physicalItemRentals) {
+
+<span class="fc" id="L117">		List&lt;RentalTransaction&gt; hardCoverRentals = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L119" title="All 2 branches covered.">		for (RentalTransaction rental : physicalItemRentals) {</span>
+
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">			if (rental.getItemid().startsWith(&quot;BK&quot;)) {</span>
+
+<span class="fc" id="L123">				hardCoverRentals.add(rental);</span>
+			}
+		}
+
+<span class="fc" id="L127">		return hardCoverRentals;</span>
+	}
+
+	/**
+	 * getCurrentHardcoverRentals helper method that will display a warning if any
+	 * of the rented books are due within the next 24 hours
+	 * 
+	 * @param rental
+	 * @return true if the item is due in the next 24 hours, false otherwise
+	 */
+	public boolean rentalDueSoonPrompt(RentalTransaction rental) {
+		// Assuming RentalTransaction.getDueDate() returns a LocalDate
+<span class="fc" id="L139">		LocalDate dueDate = rental.getDueDate();</span>
+<span class="fc" id="L140">		long daysUntilDue = ChronoUnit.DAYS.between(LocalDate.now(), dueDate);</span>
+
+		// The rental is considered due soon if it is due within the next 24 hours
+		// (i.e., 0 or 1 day until due)
+<span class="fc bfc" id="L144" title="All 2 branches covered.">		return daysUntilDue &lt;= 1;</span>
+	}
+
+	/**
+	 * Calculate the TOTAL penalty applied to the account based on late items
+	 * 
+	 * @param physicalItemRentals
+	 * @return
+	 */
+	@Override
+	public double calculateLateFees(List&lt;RentalTransaction&gt; rentalList) {
+
+<span class="fc" id="L156">		double totalPenalty = 0.00;</span>
+
+<span class="fc bfc" id="L158" title="All 2 branches covered.">		for (RentalTransaction rental : rentalList) {</span>
+
+<span class="fc bfc" id="L160" title="All 2 branches covered.">			if (rental.getLatePenalty() &gt; 0) {</span>
+
+<span class="fc" id="L162">				totalPenalty += rental.getLatePenalty();</span>
+			}
+		}
+
+<span class="fc" id="L166">		return totalPenalty;</span>
+	}
+
+	/**
+	 * A user can return a physical item
+	 * 
+	 * @param itemid
+	 * @param userid
+	 * @param rentalList
+	 */
+	@Override
+	public void returnItem(int rentalID, List&lt;RentalTransaction&gt; rentalList) {
+
+<span class="fc bfc" id="L179" title="All 2 branches covered.">		for (RentalTransaction rental : rentalList) {</span>
+
+<span class="fc bfc" id="L181" title="All 2 branches covered.">			if (rental.getTransactionID() == rentalID) {</span>
+
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">				if (rental.getLatePenalty() &gt; 0.00) {</span>
+
+<span class="fc" id="L185">					System.out.println(&quot;Late penalty of &quot; + rental.getLatePenalty() + &quot; must be paid.&quot;);</span>
+				}
+
+<span class="fc" id="L188">				rental.setReturned(true);</span>
+<span class="fc" id="L189">				rentalList.remove(rental);</span>
+<span class="fc" id="L190">				System.out.println(&quot;Item succesfully returned!&quot;);</span>
+			}
+		}
+
+<span class="fc" id="L194">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

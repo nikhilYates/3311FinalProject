@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>OnlineBook.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">itemManagement</a> &gt; <span class="el_source">OnlineBook.java</span></div><h1>OnlineBook.java</h1><pre class="source lang-java linenums">package itemManagement;
+
+public class OnlineBook extends PhysicalItem implements DigitalItem {
+	private String bookID;
+	private String title;
+	private String author;
+	private String[] topics; // Array of topics covered by the book
+	private boolean isAvailableForReading; // Indicates if the book is currently available for online reading
+
+	public OnlineBook(String bookID, String title, String author, String[] topics, int availableCopies) {
+<span class="fc" id="L11">		super(); // Call to the default constructor of PhysicalItem if no arguments are expected</span>
+<span class="fc" id="L12">		this.bookID = bookID;</span>
+<span class="fc" id="L13">		this.title = title;</span>
+<span class="fc" id="L14">		this.author = author;</span>
+<span class="fc" id="L15">		this.topics = topics;</span>
+<span class="fc" id="L16">		this.availableCopies = availableCopies;</span>
+<span class="fc" id="L17">		this.isAvailableForReading = true; // Assuming all online books are available for reading upon creation</span>
+<span class="fc" id="L18">	}</span>
+
+	// Method to open the book for reading
+	public void openBook() {
+<span class="fc bfc" id="L22" title="All 2 branches covered.">		if (isAvailableForReading) {</span>
+<span class="fc" id="L23">			System.out.println(&quot;Opening online book: &quot; + title + &quot; by &quot; + author);</span>
+			// Logic to open the book for online reading could be implemented here
+<span class="fc" id="L25">		} else {</span>
+<span class="fc" id="L26">			System.out.println(&quot;This book is currently not available for online reading.&quot;);</span>
+		}
+<span class="fc" id="L28">	}</span>
+
+	// Method to close the book after reading
+	public void closeBook() {
+<span class="fc" id="L32">		System.out.println(&quot;Closing the book: &quot; + title);</span>
+		// Logic to close the book and possibly update the reading progress
+<span class="fc" id="L34">	}</span>
+
+	// Getters and Setters
+	public String getBookID() {
+<span class="fc" id="L38">		return bookID;</span>
+	}
+
+	public void setBookID(String bookID) {
+<span class="fc" id="L42">		this.bookID = bookID;</span>
+<span class="fc" id="L43">	}</span>
+
+	public String getTitle() {
+<span class="fc" id="L46">		return title;</span>
+	}
+
+	public void setTitle(String title) {
+<span class="fc" id="L50">		this.title = title;</span>
+<span class="fc" id="L51">	}</span>
+
+	public String getAuthor() {
+<span class="fc" id="L54">		return author;</span>
+	}
+
+	public void setAuthor(String author) {
+<span class="fc" id="L58">		this.author = author;</span>
+<span class="fc" id="L59">	}</span>
+
+	public String[] getTopics() {
+<span class="fc" id="L62">		return topics;</span>
+	}
+
+	public void setTopics(String[] topics) {
+<span class="fc" id="L66">		this.topics = topics;</span>
+<span class="fc" id="L67">	}</span>
+
+	public boolean isAvailableForReading() {
+<span class="fc" id="L70">		return isAvailableForReading;</span>
+	}
+
+	public void setAvailableForReading(boolean isAvailableForReading) {
+<span class="fc" id="L74">		this.isAvailableForReading = isAvailableForReading;</span>
+<span class="fc" id="L75">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Item.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">itemManagement</a> &gt; <span class="el_source">Item.java</span></div><h1>Item.java</h1><pre class="source lang-java linenums">package itemManagement;
+
+public class Item implements DigitalItem {
+	private String id;
+	private String name;
+	private double price;
+	private double discountPrice;
+
+	// Constructor initializes the item with its ID, name, and prices
+<span class="fc" id="L10">	public Item(String id, String name, double price, double discountPrice) {</span>
+<span class="fc" id="L11">		this.id = id;</span>
+<span class="fc" id="L12">		this.name = name;</span>
+<span class="fc" id="L13">		this.price = price;</span>
+<span class="fc" id="L14">		this.discountPrice = discountPrice;</span>
+<span class="fc" id="L15">	}</span>
+
+<span class="fc" id="L17">	public Item(String string, String string2) {</span>
+<span class="fc" id="L18">		this.id = string;</span>
+<span class="fc" id="L19">		this.name = string2;</span>
+<span class="fc" id="L20">	}</span>
+
+	// Getters
+	public String getId() {
+<span class="fc" id="L24">		return id;</span>
+	}
+
+	public String getName() {
+<span class="fc" id="L28">		return name;</span>
+	}
+
+	public double getPrice() {
+<span class="fc" id="L32">		return price;</span>
+	}
+
+	public double getDiscountPrice() {
+<span class="fc" id="L36">		return discountPrice;</span>
+	}
+
+	// Setters
+	public void setId(String id) {
+<span class="fc" id="L41">		this.id = id;</span>
+<span class="fc" id="L42">	}</span>
+
+	public void setName(String name) {
+<span class="fc" id="L45">		this.name = name;</span>
+<span class="fc" id="L46">	}</span>
+
+	public void setPrice(double price) {
+<span class="fc bfc" id="L49" title="All 2 branches covered.">		if (price &lt; 0) {</span>
+<span class="fc" id="L50">			throw new IllegalArgumentException(&quot;Price cannot be negative&quot;);</span>
+		} else {
+<span class="fc" id="L52">			this.price = price;</span>
+		}
+<span class="fc" id="L54">	}</span>
+
+	public void setDiscountPrice(double discountPrice) {
+<span class="fc bfc" id="L57" title="All 2 branches covered.">		if (discountPrice &lt; 0) {</span>
+<span class="fc" id="L58">			throw new IllegalArgumentException(&quot;discountPrice cannot be negative&quot;);</span>
+		} else {
+<span class="fc" id="L60">			this.discountPrice = discountPrice;</span>
+		}
+<span class="fc" id="L62">	}</span>
+
+	// Additional methods for item behavior could be implemented here
+	// For example, method to calculate the percentage of discount, check stock
+	// levels, etc.
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

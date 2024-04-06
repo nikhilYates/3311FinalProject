@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>FacultyTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">projectTest</a> &gt; <span class="el_source">FacultyTest.java</span></div><h1>FacultyTest.java</h1><pre class="source lang-java linenums">package projectTest;
+
+import userManagement.*;
+import org.junit.Before;
+import org.junit.Test;
+
+import itemManagement.ItemRepo;
+import itemManagement.PhysicalItem;
+
+import static org.junit.Assert.*;
+import java.io.IOException;
+import java.time.LocalDate;
+
+<span class="fc" id="L14">public class FacultyTest {</span>
+
+	private Faculty faculty;
+
+	@Before
+	public void setUp() {
+		// Initialize Faculty with ID, email, row number, and department
+<span class="fc" id="L21">		faculty = new Faculty(1, &quot;faculty@example.com&quot;, 0, &quot;Engineering&quot;);</span>
+
+		// Reset and initialize ItemRepo with necessary items
+<span class="fc" id="L24">		ItemRepo.reset();</span>
+<span class="fc" id="L25">		ItemRepo.addItem(new PhysicalItem(&quot;001&quot;, &quot;Test Item 1&quot;, &quot;Location A&quot;, true));</span>
+<span class="fc" id="L26">		ItemRepo.addItem(new PhysicalItem(&quot;002&quot;, &quot;Test Item 2&quot;, &quot;Location B&quot;, true));</span>
+<span class="fc" id="L27">	}</span>
+
+	@Test
+	public void testFacultyDepartmentInitially() {
+<span class="fc" id="L31">		assertEquals(&quot;Engineering&quot;, faculty.getDepartment());</span>
+<span class="fc" id="L32">	}</span>
+
+	@Test
+	public void testSetDepartment() throws IOException {
+<span class="fc" id="L36">		faculty.setDepartment(&quot;Mathematics&quot;);</span>
+<span class="fc" id="L37">		assertEquals(&quot;Mathematics&quot;, faculty.getDepartment());</span>
+<span class="fc" id="L38">	}</span>
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetDepartmentWithNull() throws IOException {
+<span class="nc" id="L42">		faculty.setDepartment(null);</span>
+<span class="nc" id="L43">	}</span>
+
+	@Test
+	public void testFacultyEmail() {
+<span class="fc" id="L47">		assertEquals(&quot;faculty@example.com&quot;, faculty.getEmail());</span>
+<span class="fc" id="L48">	}</span>
+
+	@Test
+	public void testFacultyUserID() {
+<span class="fc" id="L52">		assertEquals(1, faculty.getUserID());</span>
+<span class="fc" id="L53">	}</span>
+
+	@Test
+	public void testFacultyUserType() {
+<span class="fc" id="L57">		assertEquals(&quot;Faculty&quot;, faculty.getUsertype());</span>
+<span class="fc" id="L58">	}</span>
+
+	@Test
+	public void testGetRentalListEmptyInitially() {
+<span class="fc" id="L62">		assertTrue(faculty.getRentalList().isEmpty());</span>
+<span class="fc" id="L63">	}</span>
+
+	@Test
+	public void testAddToRentalList() {
+		// Ensure the item with ID &quot;001&quot; exists in the ItemRepo
+<span class="fc" id="L68">		assertNotNull(&quot;Item with ID '001' should exist in ItemRepo&quot;, ItemRepo.getItemById(&quot;001&quot;));</span>
+
+<span class="fc" id="L70">		RentalTransaction rental = new RentalTransaction(1, 1, &quot;001&quot;, LocalDate.now(), LocalDate.now().plusDays(30),</span>
+<span class="fc" id="L71">				0.0, false);</span>
+<span class="fc" id="L72">		faculty.addToRentalList(rental);</span>
+<span class="fc" id="L73">		assertEquals(1, faculty.getRentalList().size());</span>
+<span class="fc" id="L74">	}</span>
+
+	@Test
+	public void testRemoveFromRentalList() {
+<span class="fc" id="L78">		RentalTransaction rental = new RentalTransaction(1, 1, &quot;001&quot;, LocalDate.now(), LocalDate.now().plusDays(30),</span>
+<span class="fc" id="L79">				0.0, false);</span>
+<span class="fc" id="L80">		faculty.addToRentalList(rental);</span>
+<span class="fc" id="L81">		faculty.removeFromRentalList(rental);</span>
+<span class="fc" id="L82">		assertTrue(faculty.getRentalList().isEmpty());</span>
+<span class="fc" id="L83">	}</span>
+
+	@Test
+	public void testRentalListSizeAfterMultipleAdditions() {
+<span class="fc" id="L87">		faculty.addToRentalList(</span>
+<span class="fc" id="L88">				new RentalTransaction(1, 1, &quot;001&quot;, LocalDate.now(), LocalDate.now().plusDays(30), 0.0, false));</span>
+<span class="fc" id="L89">		faculty.addToRentalList(</span>
+<span class="fc" id="L90">				new RentalTransaction(2, 1, &quot;002&quot;, LocalDate.now(), LocalDate.now().plusDays(15), 0.0, false));</span>
+<span class="fc" id="L91">		assertEquals(2, faculty.getRentalList().size());</span>
+<span class="fc" id="L92">	}</span>
+
+	@Test
+	public void testComprehensiveReportExecution() {
+		// Assuming comprehensiveReport() method prints a report to the console
+		// This test checks if the method can execute without throwing an exception
+<span class="fc" id="L98">		faculty.comprehensiveReport();</span>
+<span class="fc" id="L99">		assertTrue(true); // Pass if no exception is thrown</span>
+<span class="fc" id="L100">	}</span>
+
+	@Test
+	public void testChangeDepartmentAgain() throws IOException {
+<span class="fc" id="L104">		faculty.setDepartment(&quot;Physics&quot;);</span>
+<span class="fc" id="L105">		assertEquals(&quot;Physics&quot;, faculty.getDepartment());</span>
+<span class="fc" id="L106">	}</span>
+
+	@Test
+	public void testRentalListNotEmptyAfterAdding() {
+<span class="fc" id="L110">		RentalTransaction rental = new RentalTransaction(2, 1, &quot;003&quot;, LocalDate.now(), LocalDate.now().plusDays(20),</span>
+<span class="fc" id="L111">				0.0, false);</span>
+<span class="fc" id="L112">		faculty.addToRentalList(rental);</span>
+<span class="fc" id="L113">		assertFalse(faculty.getRentalList().isEmpty());</span>
+<span class="fc" id="L114">	}</span>
+
+	@Test
+	public void testMultipleDepartmentsChange() throws IOException {
+<span class="fc" id="L118">		faculty.setDepartment(&quot;Biology&quot;);</span>
+<span class="fc" id="L119">		faculty.setDepartment(&quot;Chemistry&quot;);</span>
+<span class="fc" id="L120">		assertEquals(&quot;Chemistry&quot;, faculty.getDepartment());</span>
+<span class="fc" id="L121">	}</span>
+
+	@Test
+	public void testRentalListContainsSpecificRental() {
+<span class="fc" id="L125">		RentalTransaction rental = new RentalTransaction(3, 1, &quot;004&quot;, LocalDate.now(), LocalDate.now().plusDays(10),</span>
+<span class="fc" id="L126">				0.0, false);</span>
+<span class="fc" id="L127">		faculty.addToRentalList(rental);</span>
+<span class="fc" id="L128">		assertTrue(faculty.getRentalList().contains(rental));</span>
+<span class="fc" id="L129">	}</span>
+
+	@Test
+	public void testRentalListDoesNotContainRemovedRental() {
+<span class="fc" id="L133">		RentalTransaction rental = new RentalTransaction(4, 1, &quot;005&quot;, LocalDate.now(), LocalDate.now().plusDays(25),</span>
+<span class="fc" id="L134">				0.0, false);</span>
+<span class="fc" id="L135">		faculty.addToRentalList(rental);</span>
+<span class="fc" id="L136">		faculty.removeFromRentalList(rental);</span>
+<span class="fc" id="L137">		assertFalse(faculty.getRentalList().contains(rental));</span>
+<span class="fc" id="L138">	}</span>
+
+	// You can add more tests here to cover further functionality as needed.
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

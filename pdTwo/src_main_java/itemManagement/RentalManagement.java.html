@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>RentalManagement.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">itemManagement</a> &gt; <span class="el_source">RentalManagement.java</span></div><h1>RentalManagement.java</h1><pre class="source lang-java linenums">package itemManagement;
+
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class RentalManagement {
+	private String userID;
+	private List&lt;Rental&gt; rentedItems;
+
+<span class="fc" id="L12">	public RentalManagement(String userID) {</span>
+<span class="fc" id="L13">		this.userID = userID;</span>
+<span class="fc" id="L14">		this.rentedItems = new LinkedList&lt;&gt;(); // A LinkedList is chosen for efficient removal of elements</span>
+<span class="fc" id="L15">	}</span>
+
+	// List all rented items for a given user
+	public List&lt;Rental&gt; listRentedItems() {
+<span class="fc" id="L19">		return new LinkedList&lt;&gt;(rentedItems);</span>
+	}
+
+	// Display due dates of all items rented by the user
+	public void displayDueDates() {
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">		for (Rental rental : rentedItems) {</span>
+<span class="nc" id="L25">			System.out.println(&quot;Item: &quot; + rental.getItem().getName() + &quot;, Due Date: &quot; + rental.getDueDate());</span>
+		}
+<span class="fc" id="L27">	}</span>
+
+	// Select a specific rental item using its ID
+	public Rental selectRentedItem(String itemID) {
+<span class="fc bfc" id="L31" title="All 2 branches covered.">		for (Rental rental : rentedItems) {</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">			if (rental.getItem().getId().equals(itemID)) {</span>
+<span class="fc" id="L33">				return rental;</span>
+			}
+		}
+<span class="fc" id="L36">		return null; // or throw an exception depending on your error handling strategy</span>
+	}
+
+	// Display details of a specific rental transaction
+	public void displayRentalDetails(Rental rental) {
+<span class="fc" id="L41">		System.out.println(&quot;Rental Details for item &quot; + rental.getItem().getName() + &quot;:&quot;);</span>
+<span class="fc" id="L42">		System.out.println(&quot;Rented on: &quot; + rental.getRentDate());</span>
+<span class="fc" id="L43">		System.out.println(&quot;Due on: &quot; + rental.getDueDate());</span>
+		// Additional details can be displayed as needed
+<span class="fc" id="L45">	}</span>
+
+	// Getters and Setters
+	public String getUserID() {
+<span class="fc" id="L49">		return userID;</span>
+	}
+
+	public void setUserID(String userID) {
+<span class="fc" id="L53">		this.userID = userID;</span>
+<span class="fc" id="L54">	}</span>
+
+	public void addRental(Rental rental) {
+<span class="fc" id="L57">		this.rentedItems.add(rental);</span>
+<span class="fc" id="L58">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

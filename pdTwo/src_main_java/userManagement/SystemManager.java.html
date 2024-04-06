@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SystemManager.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">userManagement</a> &gt; <span class="el_source">SystemManager.java</span></div><h1>SystemManager.java</h1><pre class="source lang-java linenums">package userManagement;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import itemManagement.BookRequestManagement;
+import itemManagement.PhysicalItem;
+import itemManagement.BookRequest;
+
+public class SystemManager {
+
+	// for user file
+	private static final int EMAILCELL = 2;
+	private static final int VALIDATIONCELL = 5;
+
+	// for item file
+	private static final int ITEMIDCELL = 0;
+	private static final int TITLECELL = 1;
+	private static final int RENTSTATUSCELL = 9;
+
+<span class="fc" id="L31">	private static final File file = new File(&quot;src/main/resources/csv/user.xlsx&quot;);</span>
+<span class="fc" id="L32">	private static final File fileItem = new File(&quot;src/main/resources/csv/item.xlsx&quot;);</span>
+
+	private static SystemManager instance;
+
+<span class="fc" id="L36">	private static final long actualCode = 1162070547; // Means EECS from EECS -&gt; bits -&gt; decimal</span>
+
+	private SystemManager() {
+	} // private constructor for singleton
+
+	public static SystemManager getSystemManager(long code) {
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">		if (code == getActualcode()) {</span>
+<span class="pc bpc" id="L43" title="1 of 2 branches missed.">			if (instance == null) { // lazy initialization of singleton</span>
+<span class="nc" id="L44">				instance = new SystemManager();</span>
+			}
+<span class="fc" id="L46">			return instance;</span>
+		}
+<span class="nc" id="L48">		return null;</span>
+	}
+
+	private Workbook getWorkbook() throws IOException {
+<span class="fc" id="L52">		FileInputStream fileInput = new FileInputStream(file);</span>
+
+<span class="fc" id="L54">		return new XSSFWorkbook(fileInput);</span>
+	}
+
+	private Workbook getWorkbookItem() throws IOException {
+<span class="fc" id="L58">		FileInputStream fileInput = new FileInputStream(fileItem);</span>
+
+<span class="fc" id="L60">		return new XSSFWorkbook(fileInput);</span>
+	}
+
+	public boolean verifyUser(String email) throws IOException {
+<span class="fc" id="L64">		Workbook workbook = getWorkbook();</span>
+
+<span class="fc" id="L66">		Sheet sheet = workbook.getSheetAt(0);</span>
+
+<span class="fc bfc" id="L68" title="All 2 branches covered.">		for (Row row : sheet) {</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">			if (email.equalsIgnoreCase(row.getCell(EMAILCELL).getStringCellValue())) {</span>
+<span class="nc" id="L70">				row.getCell(VALIDATIONCELL).setCellValue(true);</span>
+
+<span class="nc" id="L72">				FileOutputStream out = new FileOutputStream(file);</span>
+
+<span class="nc" id="L74">				workbook.write(out);</span>
+<span class="nc" id="L75">				workbook.close();</span>
+
+<span class="nc" id="L77">				return true;</span>
+			}
+		}
+
+<span class="fc" id="L81">		workbook.close();</span>
+
+<span class="fc" id="L83">		return false;</span>
+	}
+
+	// method to enable an item
+	public boolean enableItem(int itemId) throws IOException {
+<span class="fc" id="L88">		Workbook workbook = getWorkbookItem();</span>
+
+<span class="fc" id="L90">		Sheet sheet = workbook.getSheetAt(0);</span>
+
+<span class="fc bfc" id="L92" title="All 2 branches covered.">		for (Row row : sheet) {</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">			if (!row.getCell(ITEMIDCELL).getCellType().equals(CellType.NUMERIC)) {</span>
+<span class="fc" id="L94">				continue;</span>
+			}
+<span class="fc bfc" id="L96" title="All 2 branches covered.">			if (itemId == (int) row.getCell(ITEMIDCELL).getNumericCellValue()) {</span>
+<span class="fc" id="L97">				Cell cell = row.getCell(RENTSTATUSCELL);</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">				if (cell == null) {</span>
+<span class="fc" id="L99">					cell = row.createCell(RENTSTATUSCELL);</span>
+				}
+<span class="fc" id="L101">				cell.setCellValue(true);</span>
+
+<span class="fc" id="L103">				FileOutputStream out = new FileOutputStream(fileItem);</span>
+
+<span class="fc" id="L105">				workbook.write(out);</span>
+<span class="fc" id="L106">				workbook.close();</span>
+
+<span class="fc" id="L108">				return true;</span>
+			}
+		}
+
+<span class="fc" id="L112">		workbook.close();</span>
+
+<span class="fc" id="L114">		return false;</span>
+	}
+
+	// method to disable an item
+	public boolean disableItem(int itemId) throws IOException {
+<span class="fc" id="L119">		Workbook workbook = getWorkbookItem();</span>
+
+<span class="fc" id="L121">		Sheet sheet = workbook.getSheetAt(0);</span>
+
+<span class="fc bfc" id="L123" title="All 2 branches covered.">		for (Row row : sheet) {</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">			if (!row.getCell(ITEMIDCELL).getCellType().equals(CellType.NUMERIC)) {</span>
+<span class="fc" id="L125">				continue;</span>
+			}
+<span class="fc bfc" id="L127" title="All 2 branches covered.">			if (itemId == (int) row.getCell(ITEMIDCELL).getNumericCellValue()) {</span>
+<span class="fc" id="L128">				Cell cell = row.getCell(RENTSTATUSCELL);</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">				if (cell == null) {</span>
+<span class="nc" id="L130">					cell = row.createCell(RENTSTATUSCELL);</span>
+				}
+<span class="fc" id="L132">				cell.setCellValue(false);</span>
+
+<span class="fc" id="L134">				FileOutputStream out = new FileOutputStream(fileItem);</span>
+
+<span class="fc" id="L136">				workbook.write(out);</span>
+<span class="fc" id="L137">				workbook.close();</span>
+
+<span class="fc" id="L139">				return true;</span>
+			}
+		}
+
+<span class="fc" id="L143">		workbook.close();</span>
+
+<span class="fc" id="L145">		return false;</span>
+	}
+
+	// method to add an item
+	public boolean addItem(PhysicalItem item) throws IOException {
+<span class="fc" id="L150">		Workbook workbook = getWorkbookItem();</span>
+
+<span class="fc" id="L152">		Sheet sheet = workbook.getSheetAt(0);</span>
+
+<span class="fc bfc" id="L154" title="All 2 branches covered.">		for (Row row : sheet) {</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">			if (!row.getCell(ITEMIDCELL).getCellType().equals(CellType.NUMERIC)) {</span>
+<span class="fc" id="L156">				continue;</span>
+			}
+<span class="fc bfc" id="L158" title="All 2 branches covered.">			if ((int) row.getCell(ITEMIDCELL).getNumericCellValue() == Integer.parseInt(item.getItemID())) {</span>
+<span class="fc" id="L159">				workbook.close();</span>
+<span class="fc" id="L160">				return false;</span>
+			}
+		}
+
+<span class="fc" id="L164">		Row newRow = sheet.createRow(sheet.getLastRowNum() + 1);</span>
+
+<span class="fc" id="L166">		Cell itemId = newRow.createCell(ITEMIDCELL);</span>
+<span class="fc" id="L167">		Cell title = newRow.createCell(TITLECELL);</span>
+
+<span class="fc" id="L169">		itemId.setCellValue(Integer.parseInt(item.getItemID()));</span>
+<span class="fc" id="L170">		title.setCellValue(item.getTitle());</span>
+
+<span class="fc" id="L172">		FileOutputStream out = new FileOutputStream(fileItem);</span>
+
+<span class="fc" id="L174">		workbook.write(out);</span>
+<span class="fc" id="L175">		workbook.close();</span>
+
+<span class="fc" id="L177">		return true;</span>
+	}
+
+	public boolean deleteItem(PhysicalItem item) throws IOException {
+<span class="fc" id="L181">		Workbook workbook = getWorkbookItem();</span>
+
+<span class="fc" id="L183">		Sheet sheet = workbook.getSheetAt(0);</span>
+
+		Row row;
+		Cell cell;
+<span class="fc bfc" id="L187" title="All 2 branches covered.">		for (int i = sheet.getLastRowNum(); i &gt;= 0; i--) {</span>
+<span class="fc" id="L188">			row = sheet.getRow(i);</span>
+<span class="pc bpc" id="L189" title="1 of 2 branches missed.">			if (row != null) {</span>
+<span class="fc" id="L190">				cell = row.getCell(ITEMIDCELL);</span>
+<span class="pc bpc" id="L191" title="1 of 4 branches missed.">				if (cell != null &amp;&amp; cell.getCellType() == CellType.NUMERIC</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">						&amp;&amp; cell.getNumericCellValue() == Integer.parseInt(item.getItemID())) {</span>
+<span class="fc" id="L193">					sheet.removeRow(row);</span>
+<span class="pc bpc" id="L194" title="1 of 4 branches missed.">				} else if (cell != null &amp;&amp; cell.getCellType() == CellType.STRING</span>
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">						&amp;&amp; cell.getStringCellValue().equalsIgnoreCase(item.getItemID())) {</span>
+<span class="nc" id="L196">					sheet.removeRow(row); // in case its a string cell, not a numeric one</span>
+				}
+			}
+		}
+
+<span class="fc" id="L201">		FileOutputStream out = new FileOutputStream(fileItem);</span>
+
+<span class="fc" id="L203">		workbook.write(out);</span>
+<span class="fc" id="L204">		workbook.close();</span>
+
+<span class="fc" id="L206">		return true;</span>
+	}
+
+	// method to see all requests
+	public boolean printRequests(BookRequestManagement bookRequests) {
+<span class="fc" id="L211">		List&lt;BookRequest&gt; requests = bookRequests.getRequestsSystemManagerOnly(this);</span>
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">		if (requests != null) {</span>
+<span class="pc bpc" id="L213" title="1 of 2 branches missed.">			for (BookRequest request : requests) {</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">				if (request.isSubmitted()) {</span>
+<span class="nc" id="L215">					System.out.println(&quot;\nRequest ID: &quot; + request.getRequestID() + &quot;\nRequest Type: &quot;</span>
+<span class="nc" id="L216">							+ request.getRequestType() + &quot;\nTopics: &quot; + request.getTopics().toString());</span>
+				}
+			}
+<span class="fc" id="L219">			return true;</span>
+		}
+<span class="nc" id="L221">		return false;</span>
+	}
+
+	// Public static method to get the instance
+	public static SystemManager getInstance() {
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">		if (instance == null) {</span>
+<span class="fc" id="L227">			instance = new SystemManager();</span>
+		}
+<span class="fc" id="L229">		return instance;</span>
+	}
+
+	public static long getActualcode() {
+<span class="fc" id="L233">		return actualCode;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

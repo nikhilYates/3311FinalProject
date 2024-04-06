@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>TextbookAccessTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">projectTest</a> &gt; <span class="el_source">TextbookAccessTest.java</span></div><h1>TextbookAccessTest.java</h1><pre class="source lang-java linenums">package projectTest;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import itemManagement.Course;
+import itemManagement.Textbook;
+import itemManagement.TextbookAccess;
+
+import static org.junit.Assert.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+<span class="fc" id="L15">public class TextbookAccessTest {</span>
+	private TextbookAccess textbookAccess;
+	private List&lt;Course&gt; courses;
+	private List&lt;Textbook&gt; textbooks;
+
+	@Before
+	public void setUp() {
+<span class="fc" id="L22">		textbookAccess = new TextbookAccess(&quot;student123&quot;);</span>
+<span class="fc" id="L23">		courses = new ArrayList&lt;&gt;(</span>
+<span class="fc" id="L24">				Arrays.asList(new Course(&quot;CS101&quot;, &quot;Intro to CS&quot;), new Course(&quot;CS102&quot;, &quot;Data Structures&quot;)));</span>
+<span class="fc" id="L25">		textbooks = new ArrayList&lt;&gt;(Arrays.asList(new Textbook(&quot;TB101&quot;, &quot;Intro to CS Textbook&quot;),</span>
+<span class="fc" id="L26">				new Textbook(&quot;TB102&quot;, &quot;Data Structures Textbook&quot;)));</span>
+<span class="fc" id="L27">		textbookAccess.setCoursesEnrolled(courses);</span>
+<span class="fc" id="L28">		textbookAccess.setTextbooks(textbooks);</span>
+<span class="fc" id="L29">	}</span>
+
+	@Test
+	public void testGetStudentID() {
+<span class="fc" id="L33">		assertEquals(&quot;Student ID should match&quot;, &quot;student123&quot;, textbookAccess.getStudentID());</span>
+<span class="fc" id="L34">	}</span>
+
+	@Test
+	public void testListMyCourses() {
+<span class="fc" id="L38">		assertEquals(&quot;Should list all enrolled courses&quot;, courses, textbookAccess.listMyCourses(&quot;student123&quot;));</span>
+<span class="fc" id="L39">	}</span>
+
+	@Test
+	public void testListTextbooks() {
+<span class="fc" id="L43">		assertEquals(&quot;Should list all textbooks for a course&quot;, textbooks, textbookAccess.listTextbooks(&quot;CS101&quot;));</span>
+<span class="fc" id="L44">	}</span>
+
+	@Test
+	public void testAccessTextbook() {
+		// This test checks the console output, you might need a different approach to
+		// test this functionality
+<span class="fc" id="L50">		textbookAccess.accessTextbook(&quot;TB101&quot;);</span>
+<span class="fc" id="L51">	}</span>
+
+	@Test
+	public void testRemoveAccess() {
+<span class="fc" id="L55">		textbookAccess.removeAccess(textbooks.get(0));</span>
+<span class="fc" id="L56">		assertFalse(&quot;Textbook should be removed from the list&quot;,</span>
+<span class="fc" id="L57">				textbookAccess.getTextbooks().contains(textbooks.get(0)));</span>
+<span class="fc" id="L58">	}</span>
+
+	@Test
+	public void testSetCoursesEnrolled() {
+<span class="fc" id="L62">		List&lt;Course&gt; newCourses = Arrays.asList(new Course(&quot;CS103&quot;, &quot;Algorithms&quot;));</span>
+<span class="fc" id="L63">		textbookAccess.setCoursesEnrolled(newCourses);</span>
+<span class="fc" id="L64">		assertEquals(&quot;Courses should be updated&quot;, newCourses, textbookAccess.getCoursesEnrolled());</span>
+<span class="fc" id="L65">	}</span>
+
+	@Test
+	public void testSetTextbooks() {
+<span class="fc" id="L69">		List&lt;Textbook&gt; newTextbooks = Arrays.asList(new Textbook(&quot;TB103&quot;, &quot;Algorithms Textbook&quot;));</span>
+<span class="fc" id="L70">		textbookAccess.setTextbooks(newTextbooks);</span>
+<span class="fc" id="L71">		assertEquals(&quot;Textbooks should be updated&quot;, newTextbooks, textbookAccess.getTextbooks());</span>
+<span class="fc" id="L72">	}</span>
+
+	@Test
+	public void testCoursesEnrolledNotEmpty() {
+<span class="fc" id="L76">		assertFalse(&quot;Courses enrolled list should not be empty&quot;, textbookAccess.getCoursesEnrolled().isEmpty());</span>
+<span class="fc" id="L77">	}</span>
+
+	@Test
+	public void testTextbooksNotEmpty() {
+<span class="fc" id="L81">		assertFalse(&quot;Textbooks list should not be empty&quot;, textbookAccess.getTextbooks().isEmpty());</span>
+<span class="fc" id="L82">	}</span>
+
+	@Test
+	public void testAccessNonexistentTextbook() {
+		// Assuming there's a way to check if the textbook was not accessed, e.g.,
+		// through a flag or method
+<span class="fc" id="L88">	}</span>
+
+	@Test
+	public void testRemoveNonexistentTextbook() {
+<span class="fc" id="L92">		Textbook nonexistentTextbook = new Textbook(&quot;TB999&quot;, &quot;Nonexistent Textbook&quot;);</span>
+<span class="fc" id="L93">		textbookAccess.removeAccess(nonexistentTextbook);</span>
+		// Assuming there's a way to verify that the removal did not affect the
+		// textbooks list
+<span class="fc" id="L96">	}</span>
+
+	@Test
+	public void testTextbookAccessAfterRemoval() {
+<span class="fc" id="L100">		textbookAccess.removeAccess(textbooks.get(0));</span>
+		// Assuming there's a way to check that the textbook is no longer accessible
+<span class="fc" id="L102">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>CommonUserOperationsTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">projectTest</a> &gt; <span class="el_source">CommonUserOperationsTest.java</span></div><h1>CommonUserOperationsTest.java</h1><pre class="source lang-java linenums">package projectTest;
+
+import userManagement.*;
+import itemManagement.*;
+import org.junit.Before;
+import org.junit.Test;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import static org.junit.Assert.*;
+
+<span class="fc" id="L15">public class CommonUserOperationsTest {</span>
+
+	private CommonUserOperations operations;
+	private List&lt;RentalTransaction&gt; rentalList;
+	private Map&lt;String, PhysicalItem&gt; itemRepository;
+
+	@Before
+	public void setUp() {
+<span class="fc" id="L23">		ItemRepo.reset();</span>
+<span class="fc" id="L24">		operations = new CommonUserOperations();</span>
+<span class="fc" id="L25">		rentalList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L26">		itemRepository = new HashMap&lt;&gt;();</span>
+
+		// Initialize item repository with sample items
+<span class="fc" id="L29">		itemRepository.put(&quot;001&quot;, new PhysicalItem(&quot;001&quot;, &quot;Test Item 1&quot;, &quot;Location A&quot;, true));</span>
+<span class="fc" id="L30">		itemRepository.put(&quot;002&quot;, new PhysicalItem(&quot;002&quot;, &quot;Test Item 2&quot;, &quot;Location B&quot;, true));</span>
+
+		// Assuming this method clears the repository and sets up initial conditions
+<span class="fc" id="L33">		ItemRepo.initializeWithDefaultItems(); // Implement this method as needed</span>
+		// Ensure the item with ID &quot;001&quot; has less than 20 available copies before the
+		// test
+<span class="fc" id="L36">		PhysicalItem item = ItemRepo.getItemById(&quot;001&quot;);</span>
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">		if (item != null) {</span>
+<span class="fc" id="L38">			item.setAvailableCopies(19); // Set to one less than the max for this test</span>
+		}
+<span class="fc" id="L40">	}</span>
+
+	private RentalTransaction createRentalTransaction(String itemId, boolean isReturned) {
+<span class="fc" id="L43">		LocalDate today = LocalDate.now();</span>
+<span class="fc" id="L44">		return new RentalTransaction(rentalList.size() + 1, 1, itemId, today.minusDays(5), // Rented 5 days ago</span>
+<span class="fc" id="L45">				today.plusDays(25), // Due in 25 days</span>
+<span class="fc" id="L46">				0.0, // No late penalty</span>
+<span class="fc" id="L47">				isReturned);</span>
+	}
+
+	@Test
+	public void testRentPhysicalItem_Success() {
+<span class="fc" id="L52">		RentalTransaction transaction = createRentalTransaction(&quot;001&quot;, false);</span>
+<span class="fc" id="L53">		assertTrue(&quot;The item should be rented successfully.&quot;, operations.rentPhysicalItem(transaction, rentalList));</span>
+<span class="fc" id="L54">		assertEquals(&quot;The rental list should contain the rented item.&quot;, 1, rentalList.size());</span>
+<span class="fc" id="L55">	}</span>
+
+	@Test
+	public void testRentPhysicalItem_Failure_MaxRentals() {
+<span class="fc bfc" id="L59" title="All 2 branches covered.">		for (int i = 0; i &lt; 10; i++) {</span>
+<span class="fc" id="L60">			rentalList.add(createRentalTransaction(&quot;002&quot;, false));</span>
+		}
+<span class="fc" id="L62">		RentalTransaction transaction = createRentalTransaction(&quot;001&quot;, false);</span>
+<span class="fc" id="L63">		assertFalse(&quot;Renting should fail due to max rentals reached.&quot;,</span>
+<span class="fc" id="L64">				operations.rentPhysicalItem(transaction, rentalList));</span>
+<span class="fc" id="L65">	}</span>
+
+	@Test
+	public void testUpdatePhysicalItemInventory_Return() {
+<span class="fc" id="L69">		RentalTransaction transaction = createRentalTransaction(&quot;001&quot;, true);</span>
+<span class="fc" id="L70">		operations.updatePhysicalItemInventory(transaction, true);</span>
+		// Now the assertion should pass if the available copies are correctly
+		// incremented but capped at 20
+<span class="fc" id="L73">		assertEquals(&quot;The available copies should not exceed 20.&quot;, 20,</span>
+<span class="fc" id="L74">				ItemRepo.getItemById(&quot;001&quot;).getAvailableCopies());</span>
+<span class="fc" id="L75">	}</span>
+
+	@Test
+	public void testUpdatePhysicalItemInventory_Rent() {
+<span class="fc" id="L79">		PhysicalItem testItem = ItemRepo.getItemById(&quot;001&quot;);</span>
+<span class="fc" id="L80">		assertNotNull(&quot;Item should exist before test.&quot;, testItem);</span>
+
+		// Directly manipulate available copies before method call
+<span class="fc" id="L83">		testItem.setAvailableCopies(20);</span>
+
+<span class="fc" id="L85">		RentalTransaction transaction = createRentalTransaction(&quot;001&quot;, false);</span>
+<span class="fc" id="L86">		operations.updatePhysicalItemInventory(transaction, false);</span>
+
+		// Assert available copies after method call
+<span class="fc" id="L89">		assertEquals(&quot;Available copies should decrement by 1.&quot;, 19, testItem.getAvailableCopies());</span>
+<span class="fc" id="L90">	}</span>
+
+	@Test
+	public void testCheckRentalAbility_Success() {
+<span class="fc" id="L94">		assertTrue(&quot;The user should be able to rent items.&quot;, operations.checkRentalAbility(rentalList));</span>
+<span class="fc" id="L95">	}</span>
+
+	@Test
+	public void testCheckRentalAbility_Failure_MaxRentals() {
+<span class="fc bfc" id="L99" title="All 2 branches covered.">		for (int i = 0; i &lt; 10; i++) {</span>
+<span class="fc" id="L100">			rentalList.add(createRentalTransaction(&quot;002&quot;, false));</span>
+		}
+<span class="fc" id="L102">		assertFalse(&quot;The user should not be able to rent more items.&quot;, operations.checkRentalAbility(rentalList));</span>
+<span class="fc" id="L103">	}</span>
+
+	@Test
+	public void testCountOverdueItems_None() {
+<span class="fc" id="L107">		rentalList.add(createRentalTransaction(&quot;001&quot;, false));</span>
+<span class="fc" id="L108">		List&lt;RentalTransaction&gt; overdueItems = operations.countOverdueItems(rentalList);</span>
+<span class="fc" id="L109">		assertTrue(&quot;There should be no overdue items.&quot;, overdueItems.isEmpty());</span>
+<span class="fc" id="L110">	}</span>
+
+	@Test
+	public void testCountOverdueItems_Some() {
+<span class="fc" id="L114">		RentalTransaction overdueTransaction = createRentalTransaction(&quot;002&quot;, false);</span>
+<span class="fc" id="L115">		overdueTransaction.setDueDate(LocalDate.now().minusDays(1)); // Set overdue</span>
+<span class="fc" id="L116">		rentalList.add(overdueTransaction);</span>
+<span class="fc" id="L117">		List&lt;RentalTransaction&gt; overdueItems = operations.countOverdueItems(rentalList);</span>
+<span class="fc" id="L118">		assertEquals(&quot;There should be one overdue item.&quot;, 1, overdueItems.size());</span>
+<span class="fc" id="L119">	}</span>
+
+	@Test
+	public void testGetCurrentHardcoverRentals() {
+		// Ensure the item ID matches the criterion used by getCurrentHardcoverRentals
+		// to identify hardcover books
+<span class="fc" id="L125">		rentalList.add(createRentalTransaction(&quot;BK001&quot;, false)); // Updated item ID to &quot;BK001&quot;</span>
+<span class="fc" id="L126">		List&lt;RentalTransaction&gt; hardcoverRentals = operations.getCurrentHardcoverRentals(rentalList);</span>
+<span class="fc" id="L127">		assertEquals(&quot;There should be one hardcover rental.&quot;, 1, hardcoverRentals.size());</span>
+<span class="fc" id="L128">	}</span>
+
+	@Test
+	public void testRentalDueSoonPrompt_DueSoon() {
+<span class="fc" id="L132">		RentalTransaction dueSoonTransaction = createRentalTransaction(&quot;001&quot;, false);</span>
+		// Set the due date to be less than 24 hours away, using LocalDateTime for more
+		// precise control
+<span class="fc" id="L135">		dueSoonTransaction.setDueDate(LocalDateTime.now().plusHours(23).toLocalDate()); // Assuming setDueDate accepts</span>
+																						// LocalDate
+<span class="fc" id="L137">		assertTrue(&quot;The rental should be considered due soon.&quot;, operations.rentalDueSoonPrompt(dueSoonTransaction));</span>
+<span class="fc" id="L138">	}</span>
+
+	@Test
+	public void testRentalDueSoonPrompt_NotDueSoon() {
+<span class="fc" id="L142">		RentalTransaction notDueSoonTransaction = createRentalTransaction(&quot;001&quot;, false);</span>
+<span class="fc" id="L143">		assertFalse(&quot;The rental is not due soon.&quot;, operations.rentalDueSoonPrompt(notDueSoonTransaction));</span>
+<span class="fc" id="L144">	}</span>
+
+	@Test
+	public void testCalculateLateFees_None() {
+<span class="fc" id="L148">		rentalList.add(createRentalTransaction(&quot;001&quot;, false));</span>
+<span class="fc" id="L149">		assertEquals(&quot;There should be no late fees.&quot;, 0.0, operations.calculateLateFees(rentalList), 0.01);</span>
+<span class="fc" id="L150">	}</span>
+
+	@Test
+	public void testCalculateLateFees_Some() {
+<span class="fc" id="L154">		RentalTransaction lateTransaction = createRentalTransaction(&quot;002&quot;, false);</span>
+<span class="fc" id="L155">		lateTransaction.setLatePenalty(5.0); // Set late penalty</span>
+<span class="fc" id="L156">		rentalList.add(lateTransaction);</span>
+<span class="fc" id="L157">		assertEquals(&quot;The total late fees should be calculated.&quot;, 5.0, operations.calculateLateFees(rentalList), 0.01);</span>
+<span class="fc" id="L158">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

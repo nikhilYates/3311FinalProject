@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Main.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">main</a> &gt; <span class="el_source">Main.java</span></div><h1>Main.java</h1><pre class="source lang-java linenums">package main;
+
+import java.time.LocalDate;
+import java.util.*;
+
+import itemManagement.*;
+import userManagement.*;
+
+<span class="nc" id="L9">public class Main {</span>
+
+	public static void main(String[] args) {
+
+<span class="nc" id="L13">		ItemRepo.addItem(new PhysicalItem(&quot;001&quot;, &quot;The Great Gatsby&quot;, &quot;Shelf A1&quot;, true));</span>
+<span class="nc" id="L14">		ItemRepo.addItem(new PhysicalItem(&quot;002&quot;, &quot;1984&quot;, &quot;Shelf B2&quot;, false));</span>
+<span class="nc" id="L15">		ItemRepo.addItem(new PhysicalItem(&quot;003&quot;, &quot;To Kill a Mockingbird&quot;, &quot;Shelf C3&quot;, true));</span>
+<span class="nc" id="L16">		ItemRepo.addItem(new PhysicalItem(&quot;004&quot;, &quot;Moby Dick&quot;, &quot;Shelf D4&quot;, false));</span>
+<span class="nc" id="L17">		ItemRepo.addItem(new PhysicalItem(&quot;005&quot;, &quot;Pride and Prejudice&quot;, &quot;Shelf E5&quot;, true));</span>
+
+<span class="nc" id="L19">		ItemRepo.printList(ItemRepo.allPhysicalItems);</span>
+
+		// Assuming RentalTransaction class and constructor are defined correctly
+
+<span class="nc" id="L23">		RentalTransaction transaction1 = new RentalTransaction(1, 1, &quot;001&quot;, LocalDate.of(2024, 3, 1),</span>
+<span class="nc" id="L24">				LocalDate.of(2024, 3, 15), 1.50, false);</span>
+<span class="nc" id="L25">		RentalTransaction transaction2 = new RentalTransaction(2, 1, &quot;003&quot;, LocalDate.of(2024, 3, 5),</span>
+<span class="nc" id="L26">				LocalDate.of(2024, 3, 19), 2.00, false);</span>
+<span class="nc" id="L27">		RentalTransaction transaction3 = new RentalTransaction(3, 1, &quot;005&quot;, LocalDate.of(2024, 3, 10),</span>
+<span class="nc" id="L28">				LocalDate.of(2024, 3, 24), 2.50, true);</span>
+
+<span class="nc" id="L30">		List&lt;RentalTransaction&gt; userRentals = new ArrayList&lt;&gt;();</span>
+
+		/**
+		 * NEED a method in User that creates a list of rentals (i.e add to constructor)
+		 */
+
+<span class="nc" id="L36">		UserManager userOps = new CommonUserOperations();</span>
+
+<span class="nc" id="L38">		User user = new Student(1, &quot;nikhil.yates&quot;, 10, &quot;ComputerScience&quot;, 4);</span>
+
+<span class="nc" id="L40">		user.addToRentalList(transaction1);</span>
+<span class="nc" id="L41">		user.addToRentalList(transaction2);</span>
+<span class="nc" id="L42">		user.addToRentalList(transaction3);</span>
+
+<span class="nc" id="L44">		user.comprehensiveReport();</span>
+
+<span class="nc" id="L46">		User user2 = new Student(2, &quot;bob.smalls&quot;, 11, &quot;ComputerScience&quot;, 4);</span>
+
+<span class="nc" id="L48">		user2.getRentalList();</span>
+<span class="nc" id="L49">		user2.addToRentalList(transaction3);</span>
+<span class="nc" id="L50">		user2.getRentalList();</span>
+
+<span class="nc" id="L52">		Scanner scanner = new Scanner(System.in);</span>
+<span class="nc" id="L53">		System.out.print(&quot;Enter search term: &quot;);</span>
+<span class="nc" id="L54">		String searchTerm = scanner.nextLine();</span>
+<span class="nc" id="L55">		ItemRepo.searchItem(searchTerm);</span>
+<span class="nc" id="L56">		scanner.close();</span>
+
+		/*
+		 * CourseManagement (REQ 6)
+		 * 
+		 */
+		// Create a CourseManagement instance for a faculty member
+<span class="nc" id="L63">		CourseManagement courseManagement = new CourseManagement(&quot;faculty123&quot;);</span>
+
+		// Assuming methods to add courses and textbooks are implemented
+<span class="nc" id="L66">		courseManagement.getCoursesTaught().add(new Course(&quot;CS101&quot;, &quot;Introduction to Computer Science&quot;));</span>
+<span class="nc" id="L67">		courseManagement.getTextbooksUsed().add(new Textbook(&quot;TXB123&quot;, &quot;Computer Science: An Overview&quot;));</span>
+
+		// Track courses for the faculty member (for now, this will do nothing)
+<span class="nc" id="L70">		courseManagement.trackCourses(&quot;faculty123&quot;);</span>
+
+		// Notify the faculty member about new editions of textbooks
+<span class="nc" id="L73">		courseManagement.notifyNewEditions(&quot;TXB123&quot;);</span>
+
+		// Notify the faculty member about the unavailability of a textbook
+<span class="nc" id="L76">		courseManagement.notifyUnavailability(&quot;TXB456&quot;); // TXB456 is a dummy ID for the test</span>
+
+		// Output the courses and textbooks for verification
+<span class="nc" id="L79">		System.out.println(&quot;Courses taught by faculty123:&quot;);</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">		for (Course course : courseManagement.getCoursesTaught()) {</span>
+<span class="nc" id="L81">			System.out.println(course.getCourseID() + &quot;: &quot; + course.getCourseName());</span>
+		}
+
+<span class="nc" id="L84">		System.out.println(&quot;\nTextbooks used by faculty123:&quot;);</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">		for (Textbook textbook : courseManagement.getTextbooksUsed()) {</span>
+<span class="nc" id="L86">			System.out.println(textbook.getTextbookID() + &quot;: &quot; + textbook.getTitle());</span>
+		}
+
+		/*
+		 * TextBookAccess (REQ 8)
+		 * 
+		 */
+
+		// Sample data setup
+<span class="nc" id="L95">		Course course1 = new Course(&quot;CSE101&quot;, &quot;Introduction to Computer Science&quot;);</span>
+<span class="nc" id="L96">		Course course2 = new Course(&quot;CSE102&quot;, &quot;Data Structures and Algorithms&quot;);</span>
+<span class="nc" id="L97">		List&lt;Course&gt; courses = new ArrayList&lt;&gt;(Arrays.asList(course1, course2));</span>
+
+<span class="nc" id="L99">		Textbook textbook1 = new Textbook(&quot;TB101&quot;, &quot;Computer Science: An Overview&quot;);</span>
+<span class="nc" id="L100">		Textbook textbook2 = new Textbook(&quot;TB102&quot;, &quot;Algorithms Unlocked&quot;);</span>
+<span class="nc" id="L101">		List&lt;Textbook&gt; textbooks = new ArrayList&lt;&gt;(Arrays.asList(textbook1, textbook2));</span>
+
+		// Testing TextbookAccess
+<span class="nc" id="L104">		TextbookAccess textbookAccess = new TextbookAccess(&quot;student456&quot;);</span>
+
+		// Mocking the lists that would be retrieved from a database
+<span class="nc" id="L107">		textbookAccess.setCoursesEnrolled(courses);</span>
+<span class="nc" id="L108">		textbookAccess.setTextbooks(textbooks);</span>
+
+		// Listing courses enrolled
+<span class="nc" id="L111">		System.out.println(&quot;Courses enrolled by the student:&quot;);</span>
+<span class="nc" id="L112">		List&lt;Course&gt; enrolledCourses = textbookAccess.listMyCourses(textbookAccess.getStudentID());</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">		for (Course course : enrolledCourses) {</span>
+<span class="nc" id="L114">			System.out.println(course.getCourseName());</span>
+		}
+
+		// Listing textbooks for a course
+<span class="nc" id="L118">		System.out.println(&quot;\nTextbooks for course &quot; + course1.getCourseName() + &quot;:&quot;);</span>
+<span class="nc" id="L119">		List&lt;Textbook&gt; courseTextbooks = textbookAccess.listTextbooks(course1.getCourseID());</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		for (Textbook tb : courseTextbooks) {</span>
+<span class="nc" id="L121">			System.out.println(tb.getTitle());</span>
+		}
+
+		// Accessing a textbook
+<span class="nc" id="L125">		textbookAccess.accessTextbook(textbook1.getTextbookID());</span>
+
+		// Removing access to a textbook
+<span class="nc" id="L128">		textbookAccess.removeAccess(textbook2);</span>
+<span class="nc" id="L129">		System.out.println(&quot;\nUpdated textbooks after removal:&quot;);</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		for (Textbook tb : textbookAccess.getTextbooks()) {</span>
+<span class="nc" id="L131">			System.out.println(tb.getTitle());</span>
+		}
+
+		/*
+		 * Newsletter Subscription (REQ 4)
+		 * 
+		 */
+
+		// Creating a new newsletter
+<span class="nc" id="L140">		Newsletter newsletter = new Newsletter(&quot;NL001&quot;, &quot;Weekly Tech Roundup&quot;);</span>
+
+		// Attempting to read the newsletter before subscribing
+<span class="nc" id="L143">		System.out.println(&quot;\nAttempting to read before subscribing:&quot;);</span>
+<span class="nc" id="L144">		newsletter.readOnline();</span>
+
+		// Subscribing to the newsletter
+<span class="nc" id="L147">		System.out.println(&quot;\nSubscribing to the newsletter:&quot;);</span>
+<span class="nc" id="L148">		newsletter.subscribe();</span>
+
+		// Reading the newsletter after subscribing
+<span class="nc" id="L151">		System.out.println(&quot;\nReading after subscribing:&quot;);</span>
+<span class="nc" id="L152">		newsletter.readOnline();</span>
+
+		// Unsubscribing from the newsletter
+<span class="nc" id="L155">		System.out.println(&quot;\nUnsubscribing from the newsletter:&quot;);</span>
+<span class="nc" id="L156">		newsletter.unsubscribe();</span>
+
+		// Attempting to read the newsletter after unsubscribing
+<span class="nc" id="L159">		System.out.println(&quot;\nAttempting to read after unsubscribing:&quot;);</span>
+<span class="nc" id="L160">		newsletter.readOnline();</span>
+
+		// Listing subscriptions (assumed to be populated somewhere within the class or
+		// externally)
+<span class="nc" id="L164">		System.out.println(&quot;\nListing all subscriptions:&quot;);</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">		for (Subscription sub : newsletter.listSubscriptions()) {</span>
+<span class="nc" id="L166">			System.out.println(&quot;Subscription ID: &quot; + sub.getSubscriptionID());</span>
+		}
+
+		// Cancelling a subscription by ID
+<span class="nc" id="L170">		System.out.println(&quot;\nCancelling a subscription:&quot;);</span>
+<span class="nc" id="L171">		String subscriptionIdToCancel = &quot;sub001&quot;; // Assuming this is a valid subscription ID</span>
+<span class="nc" id="L172">		newsletter.cancelSubscription(subscriptionIdToCancel);</span>
+
+		// Confirming cancellation (simulated confirmation step)
+<span class="nc" id="L175">		newsletter.confirmCancellation();</span>
+
+		/*
+		 * RentalManagement (REQ 4)
+		 * 
+		 */
+
+		// Create some sample items
+<span class="nc" id="L183">		Item item1 = new Item(&quot;item1&quot;, &quot;Item 1 Name&quot;);</span>
+<span class="nc" id="L184">		Item item2 = new Item(&quot;item2&quot;, &quot;Item 2 Name&quot;);</span>
+
+		// Create some sample rentals
+<span class="nc" id="L187">		Rental rental1 = new Rental(item1, new Date(), new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000)); // Due</span>
+																														// in
+																														// one
+																														// week
+<span class="nc" id="L191">		Rental rental2 = new Rental(item2, new Date(), new Date(System.currentTimeMillis() + 14 * 24 * 60 * 60 * 1000)); // Due</span>
+																															// in
+																															// two
+																															// weeks
+
+		// Initialize RentalManagement and add rentals
+<span class="nc" id="L197">		RentalManagement rentalManagement = new RentalManagement(&quot;user123&quot;);</span>
+<span class="nc" id="L198">		rentalManagement.listRentedItems().add(rental1);</span>
+<span class="nc" id="L199">		rentalManagement.listRentedItems().add(rental2);</span>
+
+		// Display due dates for all rented items
+<span class="nc" id="L202">		rentalManagement.displayDueDates();</span>
+
+		// Display details for a specific rental
+<span class="nc" id="L205">		Rental selectedRental = rentalManagement.selectRentedItem(&quot;item1&quot;);</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">		if (selectedRental != null) {</span>
+<span class="nc" id="L207">			rentalManagement.displayRentalDetails(selectedRental);</span>
+<span class="nc" id="L208">		} else {</span>
+<span class="nc" id="L209">			System.out.println(&quot;Item with ID item1 not found in rentals.&quot;);</span>
+		}
+
+		/*
+		 * BookRequestManagement (REQ 9)
+		 * 
+		 */
+
+		// Initialize BookRequestManagement with a sample user ID
+<span class="nc" id="L218">		BookRequestManagement bookRequestManager = new BookRequestManagement(&quot;user123&quot;);</span>
+
+		// Initiating a new book request
+<span class="nc" id="L221">		String requestType = &quot;Research&quot;;</span>
+<span class="nc" id="L222">		List&lt;String&gt; topics = Arrays.asList(&quot;Artificial Intelligence&quot;, &quot;Machine Learning&quot;);</span>
+<span class="nc" id="L223">		String requestId = bookRequestManager.initiateBookRequest(requestType, topics);</span>
+
+		// Specifying more details for the book request
+<span class="nc" id="L226">		List&lt;String&gt; updatedTopics = Arrays.asList(&quot;Deep Learning&quot;, &quot;Neural Networks&quot;);</span>
+<span class="nc" id="L227">		bookRequestManager.specifyRequestDetails(requestId, requestType, updatedTopics);</span>
+
+		// Submitting the book request for processing
+<span class="nc" id="L230">		boolean isSubmitted = bookRequestManager.submitRequest(requestId);</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">		if (isSubmitted) {</span>
+<span class="nc" id="L232">			System.out.println(&quot;Request &quot; + requestId + &quot; submitted successfully.&quot;);</span>
+<span class="nc" id="L233">		} else {</span>
+<span class="nc" id="L234">			System.out.println(&quot;Failed to submit request &quot; + requestId + &quot;.&quot;);</span>
+		}
+
+		// Prioritizing the book request
+<span class="nc" id="L238">		bookRequestManager.prioritizeRequest(requestId);</span>
+<span class="nc" id="L239">		System.out.println(&quot;Request &quot; + requestId + &quot; has been prioritized.&quot;);</span>
+
+		/*
+		 * Discounted Notification (REQ 9)
+		 * 
+		 */
+
+		// Initialize DiscountedNotification with a sample client ID
+<span class="nc" id="L247">		DiscountedNotification discountedNotification = new DiscountedNotification(&quot;client001&quot;);</span>
+
+		// Create some sample discounted items
+<span class="nc" id="L250">		Item item1a = new Item(&quot;item1a&quot;, &quot;Gadget 1&quot;, 100.00, 80.00); // Original price $100, discounted price $80</span>
+<span class="nc" id="L251">		Item item2a = new Item(&quot;item2a&quot;, &quot;Gadget 2&quot;, 200.00, 150.00); // Original price $200, discounted price $150</span>
+
+		// Set the discounted items for the notification
+<span class="nc" id="L254">		discountedNotification.setDiscountedItems(new ArrayList&lt;&gt;(Arrays.asList(item1a, item2a)));</span>
+
+		// Notify the client about the discounted items
+<span class="nc" id="L257">		System.out.println(&quot;Notifying about discounts:&quot;);</span>
+<span class="nc" id="L258">		discountedNotification.notifyDiscounts();</span>
+
+		// Listing all discounted items
+<span class="nc" id="L261">		System.out.println(&quot;\nListing discounted items:&quot;);</span>
+<span class="nc" id="L262">		List&lt;Item&gt; discountedItems = discountedNotification.listDiscountedItems();</span>
+<span class="nc bnc" id="L263" title="All 2 branches missed.">		for (Item item : discountedItems) {</span>
+<span class="nc" id="L264">			System.out.println(item.getName() + &quot; is now $&quot; + item.getDiscountPrice());</span>
+		}
+
+		// Simulate selecting an item for purchase and processing the purchase
+<span class="nc" id="L268">		String selectedItemId = &quot;item1a&quot;; // Assuming the client selects item1</span>
+<span class="nc" id="L269">		System.out.println(&quot;\nSelecting an item for purchase:&quot;);</span>
+<span class="nc" id="L270">		boolean isSelected = discountedNotification.selectItemForPurchase(selectedItemId);</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">		if (isSelected) {</span>
+<span class="nc" id="L272">			System.out.println(&quot;Processing the purchase for &quot; + selectedItemId + &quot;:&quot;);</span>
+<span class="nc" id="L273">			boolean isPurchased = discountedNotification.processPurchase(item1a); // Assuming the item object is</span>
+																					// available
+<span class="nc bnc" id="L275" title="All 2 branches missed.">			if (isPurchased) {</span>
+<span class="nc" id="L276">				System.out.println(&quot;Purchase completed for &quot; + item1a.getName());</span>
+<span class="nc" id="L277">			} else {</span>
+<span class="nc" id="L278">				System.out.println(&quot;Failed to process purchase for &quot; + item1a.getName());</span>
+			}
+<span class="nc" id="L280">		} else {</span>
+<span class="nc" id="L281">			System.out.println(&quot;Item with ID &quot; + selectedItemId + &quot; not found or already purchased.&quot;);</span>
+		}
+
+<span class="nc" id="L284">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

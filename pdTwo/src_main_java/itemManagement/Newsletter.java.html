@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Newsletter.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">itemManagement</a> &gt; <span class="el_source">Newsletter.java</span></div><h1>Newsletter.java</h1><pre class="source lang-java linenums">package itemManagement;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Newsletter implements DigitalItem {
+	private String newsletterID;
+	private String title;
+	private boolean subscriptionStatus; // true if the user is subscribed, false otherwise
+	private List&lt;Subscription&gt; subscriptions;
+
+<span class="fc" id="L12">	public Newsletter(String newsletterID, String title) {</span>
+<span class="fc" id="L13">		this.newsletterID = newsletterID;</span>
+<span class="fc" id="L14">		this.title = title;</span>
+<span class="fc" id="L15">		this.subscriptionStatus = false; // Default status</span>
+<span class="fc" id="L16">		this.subscriptions = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L17">	}</span>
+
+	public void subscribe() {
+<span class="fc" id="L20">		this.subscriptionStatus = true;</span>
+<span class="fc" id="L21">		System.out.println(&quot;Subscription to &quot; + title + &quot; is now active.&quot;);</span>
+<span class="fc" id="L22">	}</span>
+
+	public void unsubscribe() {
+<span class="fc" id="L25">		this.subscriptionStatus = false;</span>
+<span class="fc" id="L26">		System.out.println(&quot;Subscription to &quot; + title + &quot; has been cancelled.&quot;);</span>
+<span class="fc" id="L27">	}</span>
+
+	public void readOnline() {
+<span class="fc bfc" id="L30" title="All 2 branches covered.">		if (this.subscriptionStatus) {</span>
+<span class="fc" id="L31">			System.out.println(&quot;Reading the newsletter: &quot; + title);</span>
+			// Here, the logic to display the newsletter content would be implemented
+<span class="fc" id="L33">		} else {</span>
+<span class="fc" id="L34">			System.out.println(&quot;You must subscribe to read the newsletter.&quot;);</span>
+		}
+<span class="fc" id="L36">	}</span>
+
+	public List&lt;Newsletter&gt; listNewsletters() {
+		// This would normally be fetched from a database or external source
+		// Dummy implementation with empty list to comply with the method's signature
+<span class="fc" id="L41">		return new ArrayList&lt;&gt;();</span>
+	}
+
+	public Newsletter chooseNewsletter(String newsletterID) {
+		// Search for the newsletter by ID and return it if found
+		// Dummy implementation returns the same newsletter
+<span class="fc" id="L47">		return new Newsletter(newsletterID, &quot;Dummy Newsletter Title&quot;);</span>
+	}
+
+	public void loadNewsletterFrame(Newsletter newsletter) {
+		// This method would open a new frame and load the newsletter content
+		// For now, it just prints a message
+<span class="nc" id="L53">		System.out.println(&quot;Opening newsletter frame for: &quot; + newsletter.getTitle());</span>
+<span class="nc" id="L54">	}</span>
+
+	public List&lt;Subscription&gt; listSubscriptions() {
+		// Return a list of all active subscriptions
+<span class="fc" id="L58">		return subscriptions;</span>
+	}
+
+	public boolean cancelSubscription(String subscriptionID) {
+<span class="fc bfc" id="L62" title="All 2 branches covered.">		for (Subscription subscription : subscriptions) {</span>
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">			if (subscription.getSubscriptionID().equals(subscriptionID)) {</span>
+<span class="fc" id="L64">				subscriptions.remove(subscription);</span>
+<span class="fc" id="L65">				System.out.println(&quot;Subscription with ID &quot; + subscriptionID + &quot; has been cancelled.&quot;);</span>
+<span class="fc" id="L66">				return true;</span>
+			}
+		}
+<span class="fc" id="L69">		System.out.println(&quot;Subscription with ID &quot; + subscriptionID + &quot; not found.&quot;);</span>
+<span class="fc" id="L70">		return false;</span>
+	}
+
+	public boolean confirmCancellation() {
+		// This method would typically confirm the cancellation action with the user
+<span class="fc" id="L75">		System.out.println(&quot;Cancellation confirmed.&quot;);</span>
+<span class="fc" id="L76">		return true;</span>
+	}
+
+	// Getters and setters
+	public String getNewsletterID() {
+<span class="fc" id="L81">		return newsletterID;</span>
+	}
+
+	public void setNewsletterID(String newsletterID) {
+<span class="fc" id="L85">		this.newsletterID = newsletterID;</span>
+<span class="fc" id="L86">	}</span>
+
+	public String getTitle() {
+<span class="fc" id="L89">		return title;</span>
+	}
+
+	public void setTitle(String title) {
+<span class="fc" id="L93">		this.title = title;</span>
+<span class="fc" id="L94">	}</span>
+
+	public boolean isSubscriptionStatus() {
+<span class="fc" id="L97">		return subscriptionStatus;</span>
+	}
+
+	public void setSubscriptionStatus(boolean subscriptionStatus) {
+<span class="nc" id="L101">		this.subscriptionStatus = subscriptionStatus;</span>
+<span class="nc" id="L102">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>
