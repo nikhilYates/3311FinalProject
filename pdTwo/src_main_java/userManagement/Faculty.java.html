@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Faculty.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">userManagement</a> &gt; <span class="el_source">Faculty.java</span></div><h1>Faculty.java</h1><pre class="source lang-java linenums">package userManagement;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+
+public class Faculty extends User {
+
+	/**
+	 * Faculty Constructor
+	 * 
+	 * @param userID
+	 * @param email
+	 * @param password
+	 * @param usertype
+	 * @param department
+	 */
+	public Faculty(int userID, String email, int rowNum, String department) {
+
+<span class="fc" id="L24">		super(userID, email, rowNum);</span>
+<span class="fc" id="L25">		this.department = department;</span>
+<span class="fc" id="L26">	}</span>
+
+	// to set the department, at the Beginning it's empty
+	@Override
+	public void setDepartment(String department) throws IOException {
+<span class="fc bfc" id="L31" title="All 2 branches covered.">	    if (department == null) {</span>
+<span class="fc" id="L32">	        throw new IllegalArgumentException(&quot;Department cannot be null&quot;);</span>
+	    }
+<span class="fc" id="L34">	    this.department = department; // Update the department in memory</span>
+
+	    // If you're using an Excel file to store data persistently
+<span class="fc" id="L37">	    Workbook workbook = getWorkbook(); // Method to get the Excel workbook</span>
+<span class="fc" id="L38">	    Sheet sheet = workbook.getSheetAt(0);</span>
+<span class="fc" id="L39">	    Row row = sheet.getRow(this.rowNum); // `rowNum` should correspond to this faculty's row in the Excel file</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">	    if (row != null) {</span>
+<span class="nc" id="L41">	        Cell departmentCell = row.createCell(DEPARTMENTCELL); // DEPARTMENTCELL is the index of the department column</span>
+<span class="nc" id="L42">	        departmentCell.setCellValue(department);</span>
+<span class="nc" id="L43">	        try (FileOutputStream outputStream = new FileOutputStream(User.file)) { // User.file should be the path to the Excel file</span>
+<span class="nc" id="L44">	            workbook.write(outputStream);</span>
+	        }
+	    }
+<span class="fc" id="L47">	    workbook.close(); // Make sure to close the workbook to avoid resource leaks</span>
+<span class="fc" id="L48">	}</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

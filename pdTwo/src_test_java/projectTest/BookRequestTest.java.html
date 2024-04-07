@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>BookRequestTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">projectTest</a> &gt; <span class="el_source">BookRequestTest.java</span></div><h1>BookRequestTest.java</h1><pre class="source lang-java linenums">package projectTest;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import itemManagement.BookRequest;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.*;
+
+<span class="fc" id="L13">public class BookRequestTest {</span>
+	private BookRequest bookRequest;
+<span class="fc" id="L15">	private String userID = &quot;user123&quot;;</span>
+<span class="fc" id="L16">	private String requestType = &quot;Research&quot;;</span>
+<span class="fc" id="L17">	private List&lt;String&gt; topics = Arrays.asList(&quot;AI&quot;, &quot;ML&quot;);</span>
+
+	@Before
+	public void setUp() {
+<span class="fc" id="L21">		bookRequest = new BookRequest(userID, requestType, topics);</span>
+<span class="fc" id="L22">	}</span>
+
+	@Test
+	public void testConstructorAndGetter() {
+<span class="fc" id="L26">		assertNotNull(bookRequest.getRequestID());</span>
+<span class="fc" id="L27">		assertEquals(userID, bookRequest.getUserID());</span>
+<span class="fc" id="L28">		assertEquals(requestType, bookRequest.getRequestType());</span>
+<span class="fc" id="L29">		assertEquals(topics, bookRequest.getTopics());</span>
+<span class="fc" id="L30">		assertFalse(bookRequest.isSubmitted());</span>
+<span class="fc" id="L31">		assertFalse(bookRequest.isPriority());</span>
+<span class="fc" id="L32">	}</span>
+
+	@Test
+	public void testSetRequestType() {
+<span class="fc" id="L36">		String newType = &quot;Review&quot;;</span>
+<span class="fc" id="L37">		bookRequest.setRequestType(newType);</span>
+<span class="fc" id="L38">		assertEquals(newType, bookRequest.getRequestType());</span>
+<span class="fc" id="L39">	}</span>
+
+	@Test
+	public void testSetTopics() {
+<span class="fc" id="L43">		List&lt;String&gt; newTopics = Arrays.asList(&quot;Blockchain&quot;, &quot;Quantum Computing&quot;);</span>
+<span class="fc" id="L44">		bookRequest.setTopics(newTopics);</span>
+<span class="fc" id="L45">		assertEquals(newTopics, bookRequest.getTopics());</span>
+<span class="fc" id="L46">	}</span>
+
+	@Test
+	public void testSetSubmitted() {
+<span class="fc" id="L50">		bookRequest.setSubmitted(true);</span>
+<span class="fc" id="L51">		assertTrue(bookRequest.isSubmitted());</span>
+<span class="fc" id="L52">	}</span>
+
+	@Test
+	public void testSetPriority() {
+<span class="fc" id="L56">		bookRequest.setPriority(true);</span>
+<span class="fc" id="L57">		assertTrue(bookRequest.isPriority());</span>
+<span class="fc" id="L58">	}</span>
+
+	@Test
+	public void testRequestIdUniqueness() {
+<span class="fc" id="L62">		BookRequest anotherRequest = new BookRequest(userID, requestType, topics);</span>
+<span class="fc" id="L63">		assertNotEquals(bookRequest.getRequestID(), anotherRequest.getRequestID());</span>
+<span class="fc" id="L64">	}</span>
+
+	@Test
+	public void testSetSubmittedFalse() {
+<span class="fc" id="L68">		bookRequest.setSubmitted(false);</span>
+<span class="fc" id="L69">		assertFalse(bookRequest.isSubmitted());</span>
+<span class="fc" id="L70">	}</span>
+
+	@Test
+	public void testSetPriorityFalse() {
+<span class="fc" id="L74">		bookRequest.setPriority(false);</span>
+<span class="fc" id="L75">		assertFalse(bookRequest.isPriority());</span>
+<span class="fc" id="L76">	}</span>
+
+	@Test
+	public void testAddTopic() {
+<span class="fc" id="L80">		String newTopic = &quot;Cybersecurity&quot;;</span>
+<span class="fc" id="L81">		bookRequest.getTopics().add(newTopic);</span>
+<span class="fc" id="L82">		assertTrue(bookRequest.getTopics().contains(newTopic));</span>
+<span class="fc" id="L83">	}</span>
+
+	@Test
+	public void testRemoveTopic() {
+<span class="fc" id="L87">		String topicToRemove = &quot;AI&quot;;</span>
+<span class="fc" id="L88">		bookRequest.getTopics().remove(topicToRemove);</span>
+<span class="fc" id="L89">		assertFalse(bookRequest.getTopics().contains(topicToRemove));</span>
+<span class="fc" id="L90">	}</span>
+
+	@Test
+	public void testChangeUserID() {
+<span class="fc" id="L94">		String newUserID = &quot;user456&quot;;</span>
+<span class="fc" id="L95">		bookRequest.setUserID(newUserID);</span>
+<span class="fc" id="L96">		assertEquals(newUserID, bookRequest.getUserID());</span>
+<span class="fc" id="L97">	}</span>
+
+	@Test
+	public void testEmptyTopicsList() {
+<span class="fc" id="L101">		bookRequest.setTopics(Arrays.asList());</span>
+<span class="fc" id="L102">		assertTrue(bookRequest.getTopics().isEmpty());</span>
+<span class="fc" id="L103">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

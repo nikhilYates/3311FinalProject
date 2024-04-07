@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>TextbookAccess.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">itemManagement</a> &gt; <span class="el_source">TextbookAccess.java</span></div><h1>TextbookAccess.java</h1><pre class="source lang-java linenums">package itemManagement;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class TextbookAccess {
+	private String studentID;
+	private List&lt;Course&gt; coursesEnrolled;
+	private List&lt;Textbook&gt; textbooks;
+
+<span class="fc" id="L11">	public TextbookAccess(String studentID) {</span>
+<span class="fc" id="L12">		this.studentID = studentID;</span>
+		// Lists should be populated based on the student's enrollment records
+<span class="fc" id="L14">	}</span>
+
+	public List&lt;Course&gt; listMyCourses(String studentID) {
+		// Logic to return a list of courses the student is enrolled in
+<span class="fc" id="L18">		return coursesEnrolled; // Placeholder for actual logic</span>
+	}
+
+	public List&lt;Textbook&gt; listTextbooks(String courseID) {
+		// Logic to list textbooks for a given course
+		// This is a placeholder, as the actual implementation would require course
+		// details
+<span class="fc" id="L25">		return textbooks; // Placeholder for actual logic</span>
+	}
+
+	public void accessTextbook(String textbookID) {
+		// Logic for a student to access a textbook
+<span class="fc" id="L30">		System.out.println(&quot;Accessing textbook: &quot; + textbookID);</span>
+<span class="fc" id="L31">	}</span>
+
+	public void removeAccess(Textbook textbook) {
+		// Logic to remove access to a textbook, such as at the end of a course
+<span class="fc" id="L35">		textbooks.remove(textbook);</span>
+<span class="fc" id="L36">		System.out.println(&quot;Access removed for textbook: &quot; + textbook.getTitle());</span>
+<span class="fc" id="L37">	}</span>
+
+	// Getters and Setters
+	public String getStudentID() {
+<span class="fc" id="L41">		return studentID;</span>
+	}
+
+	public List&lt;Course&gt; getCoursesEnrolled() {
+<span class="fc" id="L45">		return coursesEnrolled;</span>
+	}
+
+	public List&lt;Textbook&gt; getTextbooks() {
+<span class="fc" id="L49">		return textbooks;</span>
+	}
+
+	public void setCoursesEnrolled(List&lt;Course&gt; courses) {
+<span class="fc" id="L53">		this.coursesEnrolled = courses;</span>
+
+<span class="fc" id="L55">	}</span>
+
+	public void setTextbooks(List&lt;Textbook&gt; textbooks) {
+<span class="fc" id="L58">		this.textbooks = new ArrayList&lt;&gt;(textbooks); // Create a new list based on the provided list</span>
+<span class="fc" id="L59">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

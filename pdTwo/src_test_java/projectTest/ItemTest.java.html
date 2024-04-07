@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ItemTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">projectTest</a> &gt; <span class="el_source">ItemTest.java</span></div><h1>ItemTest.java</h1><pre class="source lang-java linenums">package projectTest;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import itemManagement.Item;
+
+import static org.junit.Assert.*;
+
+<span class="fc" id="L10">public class ItemTest {</span>
+	private Item item;
+<span class="fc" id="L12">	private String id = &quot;item1&quot;;</span>
+<span class="fc" id="L13">	private String name = &quot;Gadget&quot;;</span>
+<span class="fc" id="L14">	private double price = 100.0;</span>
+<span class="fc" id="L15">	private double discountPrice = 80.0;</span>
+
+	@Before
+	public void setUp() {
+<span class="fc" id="L19">		item = new Item(id, name, price, discountPrice);</span>
+<span class="fc" id="L20">	}</span>
+
+	@Test
+	public void testConstructorWithFourParameters() {
+<span class="fc" id="L24">		assertEquals(&quot;ID should match constructor argument&quot;, id, item.getId());</span>
+<span class="fc" id="L25">		assertEquals(&quot;Name should match constructor argument&quot;, name, item.getName());</span>
+<span class="fc" id="L26">		assertEquals(&quot;Price should match constructor argument&quot;, price, item.getPrice(), 0.01);</span>
+<span class="fc" id="L27">		assertEquals(&quot;Discount price should match constructor argument&quot;, discountPrice, item.getDiscountPrice(), 0.01);</span>
+<span class="fc" id="L28">	}</span>
+
+	@Test
+	public void testConstructorWithTwoParameters() {
+<span class="fc" id="L32">		Item itemTwoParams = new Item(id, name);</span>
+<span class="fc" id="L33">		assertEquals(&quot;ID should match constructor argument&quot;, id, itemTwoParams.getId());</span>
+<span class="fc" id="L34">		assertEquals(&quot;Name should match constructor argument&quot;, name, itemTwoParams.getName());</span>
+<span class="fc" id="L35">	}</span>
+
+	@Test
+	public void testSetId() {
+<span class="fc" id="L39">		String newId = &quot;item2&quot;;</span>
+<span class="fc" id="L40">		item.setId(newId);</span>
+<span class="fc" id="L41">		assertEquals(&quot;ID should be updated by setId&quot;, newId, item.getId());</span>
+<span class="fc" id="L42">	}</span>
+
+	@Test
+	public void testSetName() {
+<span class="fc" id="L46">		String newName = &quot;New Gadget&quot;;</span>
+<span class="fc" id="L47">		item.setName(newName);</span>
+<span class="fc" id="L48">		assertEquals(&quot;Name should be updated by setName&quot;, newName, item.getName());</span>
+<span class="fc" id="L49">	}</span>
+
+	@Test
+	public void testSetPrice() {
+<span class="fc" id="L53">		double newPrice = 150.0;</span>
+<span class="fc" id="L54">		item.setPrice(newPrice);</span>
+<span class="fc" id="L55">		assertEquals(&quot;Price should be updated by setPrice&quot;, newPrice, item.getPrice(), 0.01);</span>
+<span class="fc" id="L56">	}</span>
+
+	@Test
+	public void testSetDiscountPrice() {
+<span class="fc" id="L60">		double newDiscountPrice = 120.0;</span>
+<span class="fc" id="L61">		item.setDiscountPrice(newDiscountPrice);</span>
+<span class="fc" id="L62">		assertEquals(&quot;Discount price should be updated by setDiscountPrice&quot;, newDiscountPrice, item.getDiscountPrice(),</span>
+<span class="fc" id="L63">				0.01);</span>
+<span class="fc" id="L64">	}</span>
+
+	@Test
+	public void testPriceGreaterThanZero() {
+<span class="fc" id="L68">		item.setPrice(1.0);</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">		assertTrue(&quot;Price should be greater than 0&quot;, item.getPrice() &gt; 0);</span>
+<span class="fc" id="L70">	}</span>
+
+	@Test
+	public void testDiscountPriceGreaterThanZero() {
+<span class="fc" id="L74">		item.setDiscountPrice(1.0);</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">		assertTrue(&quot;Discount price should be greater than 0&quot;, item.getDiscountPrice() &gt; 0);</span>
+<span class="fc" id="L76">	}</span>
+
+	@Test
+	public void testDiscountPriceLessThanPrice() {
+<span class="fc" id="L80">		assertTrue(&quot;Discount price should be less than or equal to the price&quot;,</span>
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">				item.getDiscountPrice() &lt;= item.getPrice());</span>
+<span class="fc" id="L82">	}</span>
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testPriceNotNegative() {
+<span class="nc" id="L86">		item.setPrice(-1.0);</span>
+<span class="nc" id="L87">	}</span>
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testDiscountPriceNotNegative() {
+<span class="nc" id="L91">		item.setDiscountPrice(-1.0);</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">		assertFalse(&quot;Discount price should not be negative&quot;, item.getDiscountPrice() &lt; 0);</span>
+<span class="nc" id="L93">	}</span>
+
+	@Test
+	public void testDiscountCalculation() {
+<span class="fc" id="L97">		double expectedDiscount = ((price - discountPrice) / price) * 100;</span>
+<span class="fc" id="L98">		double actualDiscount = ((item.getPrice() - item.getDiscountPrice()) / item.getPrice()) * 100;</span>
+<span class="fc" id="L99">		assertEquals(&quot;Discount calculation should be correct&quot;, expectedDiscount, actualDiscount, 0.01);</span>
+<span class="fc" id="L100">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

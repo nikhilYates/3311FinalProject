@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Subscription.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">itemManagement</a> &gt; <span class="el_source">Subscription.java</span></div><h1>Subscription.java</h1><pre class="source lang-java linenums">package itemManagement;
+
+import java.util.Objects;
+
+public class Subscription implements Product {
+	private String subscriptionID;
+	private String userEmail;
+	private boolean isActive; // Represents the status of the subscription
+
+	// Constructor to create a new Subscription object
+<span class="fc" id="L11">	public Subscription(String subscriptionID, String userEmail) {</span>
+<span class="fc" id="L12">		this.subscriptionID = subscriptionID;</span>
+<span class="fc" id="L13">		this.userEmail = userEmail;</span>
+<span class="fc" id="L14">		this.isActive = true; // When a subscription is created, it's active by default</span>
+<span class="fc" id="L15">	}</span>
+
+	// Method to cancel the subscription
+	public void cancel() {
+		// Set the subscription as inactive
+<span class="fc" id="L20">		this.isActive = false;</span>
+<span class="fc" id="L21">	}</span>
+
+	// Getters and Setters
+	public String getSubscriptionID() {
+<span class="fc" id="L25">		return subscriptionID;</span>
+	}
+
+	public void setSubscriptionID(String subscriptionID) {
+<span class="fc" id="L29">		this.subscriptionID = subscriptionID;</span>
+<span class="fc" id="L30">	}</span>
+
+	public String getUserEmail() {
+<span class="fc" id="L33">		return userEmail;</span>
+	}
+
+	public void setUserEmail(String userEmail) {
+<span class="fc" id="L37">		this.userEmail = userEmail;</span>
+<span class="fc" id="L38">	}</span>
+
+	public boolean isActive() {
+<span class="fc" id="L41">		return isActive;</span>
+	}
+
+	public void setActive(boolean active) {
+<span class="fc" id="L45">		isActive = active;</span>
+<span class="fc" id="L46">	}</span>
+
+	@Override
+	public boolean equals(Object o) {
+<span class="fc bfc" id="L50" title="All 2 branches covered.">		if (this == o)</span>
+<span class="fc" id="L51">			return true;</span>
+<span class="pc bpc" id="L52" title="2 of 4 branches missed.">		if (o == null || getClass() != o.getClass())</span>
+<span class="nc" id="L53">			return false;</span>
+<span class="fc" id="L54">		Subscription that = (Subscription) o;</span>
+<span class="pc bpc" id="L55" title="2 of 4 branches missed.">		return Objects.equals(subscriptionID, that.subscriptionID) &amp;&amp; Objects.equals(userEmail, that.userEmail);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

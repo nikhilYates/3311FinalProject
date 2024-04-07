@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ItemRepoTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">projectTest</a> &gt; <span class="el_source">ItemRepoTest.java</span></div><h1>ItemRepoTest.java</h1><pre class="source lang-java linenums">package projectTest;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import itemManagement.ItemRepo;
+import itemManagement.PhysicalItem;
+
+import static org.junit.Assert.*;
+
+<span class="fc" id="L11">public class ItemRepoTest {</span>
+
+	@Before
+	public void setUp() {
+		// Ensure a fresh start for each test by clearing the items list
+<span class="fc" id="L16">		ItemRepo.reset();</span>
+<span class="fc" id="L17">	}</span>
+
+	@Test
+	public void testAddItem() {
+<span class="fc" id="L21">		PhysicalItem item = new PhysicalItem(&quot;006&quot;, &quot;Test Item&quot;, &quot;Test Location&quot;, true);</span>
+<span class="fc" id="L22">		ItemRepo.addItem(item);</span>
+<span class="fc" id="L23">		assertEquals(&quot;Item should be added to the repository&quot;, 1, ItemRepo.allPhysicalItems.size());</span>
+<span class="fc" id="L24">	}</span>
+
+	@Test
+	public void testGetItemByIdExists() {
+<span class="fc" id="L28">		PhysicalItem item = new PhysicalItem(&quot;007&quot;, &quot;Existing Item&quot;, &quot;Existing Location&quot;, true);</span>
+<span class="fc" id="L29">		ItemRepo.addItem(item);</span>
+<span class="fc" id="L30">		PhysicalItem retrievedItem = ItemRepo.getItemById(&quot;007&quot;);</span>
+<span class="fc" id="L31">		assertNotNull(&quot;Item should be found by ID&quot;, retrievedItem);</span>
+<span class="fc" id="L32">	}</span>
+
+	@Test
+	public void testGetItemByIdDoesNotExist() {
+<span class="fc" id="L36">		PhysicalItem retrievedItem = ItemRepo.getItemById(&quot;999&quot;);</span>
+<span class="fc" id="L37">		assertNull(&quot;Item should not be found for an invalid ID&quot;, retrievedItem);</span>
+<span class="fc" id="L38">	}</span>
+
+	@Test
+	public void testSearchItemFound() {
+<span class="fc" id="L42">		PhysicalItem item = new PhysicalItem(&quot;008&quot;, &quot;Searchable Item&quot;, &quot;Searchable Location&quot;, true);</span>
+<span class="fc" id="L43">		ItemRepo.addItem(item);</span>
+<span class="fc" id="L44">		ItemRepo.searchItem(&quot;Searchable&quot;);</span>
+<span class="fc" id="L45">	}</span>
+
+	@Test
+	public void testSearchItemNotFound() {
+		// Assuming 'searchItem' method will print a 'not found' message
+<span class="fc" id="L50">		ItemRepo.searchItem(&quot;Nonexistent&quot;);</span>
+		// No direct assertion here due to the method's nature of printing results
+<span class="fc" id="L52">	}</span>
+
+	@Test
+	public void testInitializeWithDefaultItems() {
+<span class="fc" id="L56">		ItemRepo.initializeWithDefaultItems();</span>
+<span class="fc" id="L57">		assertEquals(&quot;Default items should be initialized in the repository&quot;, 5, ItemRepo.allPhysicalItems.size());</span>
+<span class="fc" id="L58">	}</span>
+
+	@Test
+	public void testReset() {
+<span class="fc" id="L62">		ItemRepo.initializeWithDefaultItems();</span>
+<span class="fc" id="L63">		ItemRepo.reset();</span>
+<span class="fc" id="L64">		assertTrue(&quot;Item repository should be empty after reset&quot;, ItemRepo.allPhysicalItems.isEmpty());</span>
+<span class="fc" id="L65">	}</span>
+
+	@Test
+	public void testItemUniqueness() {
+<span class="fc" id="L69">		PhysicalItem item1 = new PhysicalItem(&quot;009&quot;, &quot;Unique Item&quot;, &quot;Unique Location&quot;, true);</span>
+<span class="fc" id="L70">		PhysicalItem item2 = new PhysicalItem(&quot;010&quot;, &quot;Another Unique Item&quot;, &quot;Another Unique Location&quot;, true);</span>
+<span class="fc" id="L71">		ItemRepo.addItem(item1);</span>
+<span class="fc" id="L72">		ItemRepo.addItem(item2);</span>
+<span class="fc" id="L73">		assertEquals(&quot;Each item added should be unique&quot;, 2, ItemRepo.allPhysicalItems.size());</span>
+<span class="fc" id="L74">	}</span>
+
+	@Test
+	public void testMultipleSearchResults() {
+<span class="fc" id="L78">		PhysicalItem item1 = new PhysicalItem(&quot;011&quot;, &quot;Multi Search 1&quot;, &quot;Location 1&quot;, true);</span>
+<span class="fc" id="L79">		PhysicalItem item2 = new PhysicalItem(&quot;012&quot;, &quot;Multi Search 2&quot;, &quot;Location 2&quot;, true);</span>
+<span class="fc" id="L80">		ItemRepo.addItem(item1);</span>
+<span class="fc" id="L81">		ItemRepo.addItem(item2);</span>
+<span class="fc" id="L82">		ItemRepo.searchItem(&quot;Multi Search&quot;);</span>
+		// Again, no direct assertion due to method's nature of printing results
+<span class="fc" id="L84">	}</span>
+
+	@Test
+	public void testItemDeletionNotSupported() {
+<span class="fc" id="L88">		PhysicalItem item = new PhysicalItem(&quot;013&quot;, &quot;Deletable Item&quot;, &quot;Deletable Location&quot;, true);</span>
+<span class="fc" id="L89">		ItemRepo.addItem(item);</span>
+<span class="fc" id="L90">		assertEquals(&quot;Items should not be deletable from the repository&quot;, 1, ItemRepo.allPhysicalItems.size());</span>
+<span class="fc" id="L91">	}</span>
+
+	@Test
+	public void testItemDetailsAfterReset() {
+<span class="fc" id="L95">		PhysicalItem item = new PhysicalItem(&quot;014&quot;, &quot;Detail Test Item&quot;, &quot;Detail Test Location&quot;, true);</span>
+<span class="fc" id="L96">		ItemRepo.addItem(item);</span>
+<span class="fc" id="L97">		ItemRepo.reset();</span>
+<span class="fc" id="L98">		ItemRepo.initializeWithDefaultItems();</span>
+<span class="fc" id="L99">		assertNull(&quot;Item added before reset should not exist after reset and reinitialization&quot;,</span>
+<span class="fc" id="L100">				ItemRepo.getItemById(&quot;014&quot;));</span>
+<span class="fc" id="L101">	}</span>
+
+	@Test
+	public void testAddingSameItemId() {
+<span class="fc" id="L105">		PhysicalItem item1 = new PhysicalItem(&quot;015&quot;, &quot;First Item Same ID&quot;, &quot;Location 1&quot;, true);</span>
+<span class="fc" id="L106">		PhysicalItem item2 = new PhysicalItem(&quot;015&quot;, &quot;Second Item Same ID&quot;, &quot;Location 2&quot;, true);</span>
+<span class="fc" id="L107">		ItemRepo.addItem(item1);</span>
+<span class="fc" id="L108">		ItemRepo.addItem(item2);</span>
+		// Assuming that items with the same ID are treated as different entries
+<span class="fc" id="L110">		assertEquals(&quot;Two items with the same ID should both be added to the repository&quot;, 2,</span>
+<span class="fc" id="L111">				ItemRepo.allPhysicalItems.size());</span>
+<span class="fc" id="L112">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

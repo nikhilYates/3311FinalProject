@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>User.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">userManagement</a> &gt; <span class="el_source">User.java</span></div><h1>User.java</h1><pre class="source lang-java linenums">package userManagement;
+
+import java.io.File;
+import java.util.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import itemManagement.ItemRepo;
+import itemManagement.PhysicalItem;
+
+public abstract class User {
+
+	protected static final int USERIDCELL = 1;
+	protected static final int EMAILCELL = 2;
+	protected static final int PASSWORDCELL = 3;
+	protected static final int USERTYPECELL = 4;
+	protected static final int VALIDATIONCELL = 5;
+	protected static final int DEPARTMENTCELL = 6;
+	protected static final int MAJORCELL = 7;
+	protected static final int YEARCELL = 8;
+
+<span class="fc" id="L29">	protected static final File file = new File(&quot;src/main/resources/csv/user.xlsx&quot;);</span>
+	protected final int rowNum;
+
+	private int userID;
+	private String email;
+	private String usertype;
+
+	protected String department;
+	protected String major;
+	protected int year;
+
+<span class="fc" id="L40">	private List&lt;RentalTransaction&gt; rentalList = new ArrayList&lt;&gt;();</span>
+
+	/**
+	 * Protected paramaterized constructor
+	 * 
+	 * @param userID
+	 * @param email
+	 * @param password
+	 */
+<span class="fc" id="L49">	protected User(int userID, String email, int rowNum) {</span>
+<span class="fc" id="L50">		this.userID = userID;</span>
+<span class="fc" id="L51">		this.email = email;</span>
+<span class="fc" id="L52">		this.rowNum = rowNum;</span>
+<span class="fc" id="L53">		this.usertype = this.getClass().getSimpleName();</span>
+<span class="fc" id="L54">	}</span>
+
+	public List&lt;RentalTransaction&gt; getRentalList() {
+<span class="fc" id="L57">	    UserManager userOps = new CommonUserOperations();</span>
+
+<span class="fc" id="L59">	    System.out.println(&quot;\nRental List for &quot; + this.email + &quot;: &quot;);</span>
+<span class="fc" id="L60">	    System.out.println(&quot;---------------------------------------------------&quot;);</span>
+
+<span class="fc bfc" id="L62" title="All 2 branches covered.">	    if (this.rentalList.isEmpty()) {</span>
+<span class="fc" id="L63">	        System.out.println(&quot;You have not rented anything yet. You can rent up to 10 items from the library.&quot;);</span>
+<span class="fc" id="L64">	    } else {</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">	        for (RentalTransaction rentedItem : this.rentalList) {</span>
+<span class="fc" id="L66">	            PhysicalItem itemOfInterest = ItemRepo.getItemById(rentedItem.getItemid());</span>
+
+<span class="fc" id="L68">	            System.out.println(&quot;Item ID: &quot; + rentedItem.getItemid());</span>
+	            // Check if itemOfInterest is not null before accessing its properties
+<span class="fc bfc" id="L70" title="All 2 branches covered.">	            if (itemOfInterest != null) {</span>
+<span class="fc" id="L71">	                System.out.println(&quot;Title: &quot; + itemOfInterest.getTitle());</span>
+<span class="fc" id="L72">	            } else {</span>
+<span class="fc" id="L73">	                System.out.println(&quot;Title: [Item not found]&quot;);</span>
+	            }
+<span class="fc" id="L75">	            System.out.println(&quot;Rented on: &quot; + rentedItem.getRentalDate());</span>
+<span class="fc" id="L76">	            System.out.println(&quot;Due by: &quot; + rentedItem.getDueDate());</span>
+
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">	            if (userOps.rentalDueSoonPrompt(rentedItem)) {</span>
+<span class="nc" id="L79">	                System.out.println(&quot;RENTAL DUE IN THE NEXT 24 HOURS.&quot;);</span>
+	            }
+
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">	            if (rentedItem.getLatePenalty() &gt; 0) {</span>
+<span class="nc" id="L83">	                System.out.println(&quot;LATE ITEM - PENALTY OF $&quot; + rentedItem.getLatePenalty() + &quot; applied to your account.&quot;);</span>
+	            }
+
+<span class="fc" id="L86">	            System.out.println(&quot;---------------------------------------------------&quot;);</span>
+	        }
+	    }
+
+<span class="fc" id="L90">	    return this.rentalList;</span>
+	}
+
+
+	public void addToRentalList(RentalTransaction rental) {
+
+<span class="fc" id="L96">		UserManager userOps = new CommonUserOperations();</span>
+
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">		if (userOps.checkRentalAbility(rentalList)) {</span>
+
+<span class="fc" id="L100">			rentalList.add(rental);</span>
+<span class="fc" id="L101">			System.out.println(&quot;Client Side - Item added to rental list&quot;);</span>
+<span class="fc" id="L102">			System.out.println(&quot;Updated List: &quot;);</span>
+
+<span class="fc bfc" id="L104" title="All 2 branches covered.">			for (RentalTransaction rentedItem : rentalList) {</span>
+
+<span class="fc" id="L106">				System.out.println(rentedItem.getItemid());</span>
+
+			}
+		}
+
+<span class="fc" id="L111">	}</span>
+	
+	public void removeFromRentalList(RentalTransaction rental) {
+	    //check
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		if (rentalList.contains(rental)) {</span>
+<span class="fc" id="L116">	        rentalList.remove(rental);</span>
+<span class="fc" id="L117">	        System.out.println(&quot;Client Side - Item removed from rental list&quot;);</span>
+<span class="fc" id="L118">	        System.out.println(&quot;Updated List: &quot;);</span>
+
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">	        for (RentalTransaction rentedItem : rentalList) {</span>
+<span class="nc" id="L121">	            System.out.println(rentedItem.getItemid());</span>
+	        }
+<span class="fc" id="L123">	    } else {</span>
+<span class="nc" id="L124">	        System.out.println(&quot;The item to be removed was not found in the rental list.&quot;);</span>
+	    }
+<span class="fc" id="L126">	}</span>
+
+
+	/**
+	 * To showcase all the functionality of the CommonOperations class
+	 */
+	public void comprehensiveReport() {
+
+<span class="fc" id="L134">		UserManager userOps = new CommonUserOperations();</span>
+<span class="fc" id="L135">		System.out.println(</span>
+<span class="fc" id="L136">				&quot;------------------------------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L137">		System.out.println(&quot;COMPREHENSIVE USER REPORT FOR &quot; + this.email + '\n');</span>
+
+<span class="fc" id="L139">		System.out.println(&quot;User ID: &quot; + this.userID);</span>
+<span class="fc" id="L140">		System.out.println(&quot;User Category: &quot; + this.usertype);</span>
+<span class="fc" id="L141">		this.getRentalList();</span>
+
+<span class="fc" id="L143">		System.out.println(&quot;All HardCover Rentals: &quot;);</span>
+<span class="fc" id="L144">		List&lt;RentalTransaction&gt; hardcoverRentals = userOps.getCurrentHardcoverRentals(this.rentalList);</span>
+
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">		for (RentalTransaction hardcoverRental : hardcoverRentals) {</span>
+
+<span class="nc" id="L148">			System.out.println(&quot;Hardcover item id: &quot; + hardcoverRental.getItemid());</span>
+		}
+
+<span class="fc" id="L151">		List&lt;RentalTransaction&gt; lateItems = userOps.countOverdueItems(this.rentalList);</span>
+
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">		if (lateItems.size() &gt;= 3) {</span>
+
+<span class="nc" id="L155">			System.out.println(</span>
+<span class="nc" id="L156">					&quot;ALERT. Your account's ability to rent items has been suspended due to at least 3 late items. Please return these items to regain rent ability.&quot;);</span>
+		}
+
+<span class="fc" id="L159">		double totalLateBalance = userOps.calculateLateFees(rentalList);</span>
+
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">		if (totalLateBalance &gt; 0) {</span>
+
+<span class="nc" id="L163">			System.out.println(&quot;ALERT. You have an outstanding balance of $&quot; + totalLateBalance</span>
+<span class="nc" id="L164">					+ &quot;. Pay the balance immediately.&quot;);</span>
+
+		}
+
+<span class="fc" id="L168">		System.out.println(</span>
+<span class="fc" id="L169">				&quot;------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L171">	}</span>
+
+	/**
+	 * Getter methods down here
+	 * 
+	 * @return
+	 */
+
+	public int getUserID() {
+<span class="fc" id="L180">		return userID;</span>
+	}
+
+	/**
+	 * 
+	 * @return get the user email
+	 */
+	public String getEmail() {
+<span class="fc" id="L188">		return email;</span>
+	}
+
+	/**
+	 * 
+	 * @return get the usertype
+	 */
+	public String getUsertype() {
+<span class="fc" id="L196">		return usertype;</span>
+	}
+
+	// to be used by only faculty, null for others
+	public String getDepartment() {
+<span class="fc" id="L201">		return department;</span>
+	}
+
+	// to be used by only student, null for others
+	public String getMajor() {
+<span class="fc" id="L206">		return major;</span>
+	}
+
+	// to be used by only student, null for others
+	public int getYear() {
+<span class="fc" id="L211">		return year;</span>
+	}
+
+	// to be overridden
+	public void setDepartment(String department) throws IOException {
+<span class="nc" id="L216">	}</span>
+
+	// to be overridden
+	public void setMajor(String major) throws IOException {
+<span class="nc" id="L220">	}</span>
+
+	// to be overridden
+	public void setYear(int year) throws IOException {
+<span class="nc" id="L224">	}</span>
+
+	// subclasses might want access this for additional attributes
+	protected static Workbook getWorkbook() throws IOException {
+<span class="fc" id="L228">		FileInputStream fileInput = new FileInputStream(file);</span>
+
+<span class="fc" id="L230">		return new XSSFWorkbook(fileInput);</span>
+	}
+
+	public static User login(String email, String password) throws IOException {
+		; // login logic using csv file
+<span class="fc" id="L235">		Workbook workbook = getWorkbook();</span>
+
+<span class="fc" id="L237">		Sheet sheet = workbook.getSheetAt(0);</span>
+
+<span class="fc bfc" id="L239" title="All 2 branches covered.">		for (Row row : sheet) { // checks for email, and if password matches</span>
+<span class="fc bfc" id="L240" title="All 2 branches covered.">			if (email.equalsIgnoreCase(row.getCell(EMAILCELL).getStringCellValue())) { // based on current positioning</span>
+<span class="pc bpc" id="L241" title="1 of 2 branches missed.">				if (password.equalsIgnoreCase(row.getCell(PASSWORDCELL).getStringCellValue())) {</span>
+<span class="fc" id="L242">					int thisRowNum = row.getRowNum();</span>
+<span class="fc" id="L243">					String userType = row.getCell(USERTYPECELL).getStringCellValue();</span>
+<span class="fc" id="L244">					boolean validated = row.getCell(VALIDATIONCELL).getBooleanCellValue();</span>
+<span class="fc bfc" id="L245" title="All 2 branches covered.">					if (!validated) {</span>
+<span class="fc" id="L246">						break;</span>
+					}
+<span class="fc" id="L248">					workbook.close();</span>
+<span class="pc bpc" id="L249" title="1 of 2 branches missed.">					if (userType.equalsIgnoreCase(Faculty.class.getSimpleName())) {</span>
+<span class="nc" id="L250">						return new Faculty((int) row.getCell(USERIDCELL).getNumericCellValue(), email, thisRowNum,</span>
+<span class="nc" id="L251">								row.getCell(DEPARTMENTCELL).getStringCellValue());</span>
+<span class="pc bpc" id="L252" title="1 of 2 branches missed.">					} else if (userType.equalsIgnoreCase(NonFaculty.class.getSimpleName())) {</span>
+<span class="nc" id="L253">						return new NonFaculty((int) row.getCell(USERIDCELL).getNumericCellValue(), email, thisRowNum);</span>
+<span class="fc bfc" id="L254" title="All 2 branches covered.">					} else if (userType.equalsIgnoreCase(Student.class.getSimpleName())) {</span>
+<span class="fc" id="L255">						return new Student((int) row.getCell(USERIDCELL).getNumericCellValue(), email, thisRowNum,</span>
+<span class="fc" id="L256">								row.getCell(MAJORCELL).getStringCellValue(),</span>
+<span class="fc" id="L257">								(int) row.getCell(YEARCELL).getNumericCellValue());</span>
+<span class="pc bpc" id="L258" title="1 of 2 branches missed.">					} else if (userType.equalsIgnoreCase(Visitor.class.getSimpleName())) {</span>
+<span class="fc" id="L259">						return new Visitor((int) row.getCell(USERIDCELL).getNumericCellValue(), email, thisRowNum);</span>
+					}
+				} else {
+					break;
+				}
+			}
+		}
+
+<span class="fc" id="L267">		workbook.close();</span>
+
+<span class="fc" id="L269">		return null;</span>
+	}
+
+	public static boolean signup(int userId, String email, String password, Class&lt;? extends User&gt; userType)
+			throws IOException {
+		; // sign up logic using csv file and doing some basic validation, maybe
+<span class="fc" id="L275">		Workbook workbook = getWorkbook();</span>
+
+<span class="fc" id="L277">		Sheet sheet = workbook.getSheetAt(0);</span>
+
+<span class="fc bfc" id="L279" title="All 2 branches covered.">		for (Row row : sheet) { // checks if email already exists; also doesn't work</span>
+<span class="fc bfc" id="L280" title="All 2 branches covered.">			if (email.equalsIgnoreCase(row.getCell(EMAILCELL).getStringCellValue())) { // based on current positioning</span>
+<span class="fc" id="L281">				workbook.close();</span>
+<span class="fc" id="L282">				return false;</span>
+			}
+		}
+
+<span class="fc" id="L286">		int rowNum = sheet.getLastRowNum() + 1;</span>
+<span class="fc" id="L287">		Row newRow = sheet.createRow(rowNum);</span>
+
+<span class="fc" id="L289">		Cell userIdCell = newRow.createCell(USERIDCELL);</span>
+<span class="fc" id="L290">		Cell emailCell = newRow.createCell(EMAILCELL);</span>
+<span class="fc" id="L291">		Cell passwordCell = newRow.createCell(PASSWORDCELL);</span>
+<span class="fc" id="L292">		Cell userTypeCell = newRow.createCell(USERTYPECELL);</span>
+<span class="fc" id="L293">		Cell validationCell = newRow.createCell(VALIDATIONCELL);</span>
+<span class="fc" id="L294">		Cell departmentCell = newRow.createCell(DEPARTMENTCELL);</span>
+<span class="fc" id="L295">		Cell majorCell = newRow.createCell(MAJORCELL);</span>
+<span class="fc" id="L296">		Cell yearCell = newRow.createCell(YEARCELL);</span>
+
+<span class="fc" id="L298">		userIdCell.setCellValue(userId);</span>
+<span class="fc" id="L299">		emailCell.setCellValue(email);</span>
+<span class="fc" id="L300">		passwordCell.setCellValue(password);</span>
+<span class="fc" id="L301">		userTypeCell.setCellValue(userType.getSimpleName());</span>
+<span class="fc" id="L302">		departmentCell.setCellValue(&quot;&quot;);</span>
+<span class="fc" id="L303">		majorCell.setCellValue(&quot;&quot;);</span>
+<span class="fc" id="L304">		yearCell.setCellValue(0);</span>
+
+<span class="pc bpc" id="L306" title="1 of 2 branches missed.">		if (userType.getSimpleName().equalsIgnoreCase(Visitor.class.getSimpleName())) {</span>
+<span class="fc" id="L307">			validationCell.setCellValue(true);</span>
+<span class="fc" id="L308">		} else {</span>
+<span class="nc" id="L309">			validationCell.setCellValue(false);</span>
+		}
+
+<span class="fc" id="L312">		FileOutputStream out = new FileOutputStream(file);</span>
+
+<span class="fc" id="L314">		workbook.write(out);</span>
+<span class="fc" id="L315">		workbook.close();</span>
+
+<span class="fc" id="L317">		return true; // false if not valid</span>
+	}
+
+	// add a row delete method, wither static and find email and delete, or via
+	// class and change constructor to initiate with row instead of email
+	// or do both, one can be for testing and one for client, testing will be the
+	// static
+	public boolean deleteUser() throws IOException { // you need to be logged in and use that session object
+<span class="fc" id="L325">		Workbook workbook = getWorkbook();</span>
+
+<span class="fc" id="L327">		Sheet sheet = workbook.getSheetAt(0);</span>
+
+<span class="fc" id="L329">		Row theRow = sheet.getRow(this.rowNum);</span>
+<span class="pc bpc" id="L330" title="1 of 2 branches missed.">		if (theRow != null) {</span>
+<span class="fc" id="L331">			sheet.removeRow(sheet.getRow(this.rowNum));</span>
+
+<span class="fc" id="L333">			FileOutputStream out = new FileOutputStream(file);</span>
+
+<span class="fc" id="L335">			workbook.write(out);</span>
+<span class="fc" id="L336">			workbook.close();</span>
+<span class="fc" id="L337">			return true;</span>
+		}
+
+<span class="nc" id="L340">		workbook.close();</span>
+<span class="nc" id="L341">		return false;</span>
+	}
+
+	// temporary
+	public static void verifyUser(String email) throws IOException {
+<span class="fc" id="L346">		Workbook workbook = getWorkbook();</span>
+
+<span class="fc" id="L348">		Sheet sheet = workbook.getSheetAt(0);</span>
+
+<span class="fc bfc" id="L350" title="All 2 branches covered.">		for (Row row : sheet) {</span>
+<span class="fc bfc" id="L351" title="All 2 branches covered.">			if (email.equalsIgnoreCase(row.getCell(EMAILCELL).getStringCellValue())) {</span>
+<span class="fc" id="L352">				row.getCell(VALIDATIONCELL).setCellValue(true);</span>
+
+<span class="fc" id="L354">				FileOutputStream out = new FileOutputStream(file);</span>
+
+<span class="fc" id="L356">				workbook.write(out);</span>
+<span class="fc" id="L357">				workbook.close();</span>
+			}
+		}
+<span class="fc" id="L360">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

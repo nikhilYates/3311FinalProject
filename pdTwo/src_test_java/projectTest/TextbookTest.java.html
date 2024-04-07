@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>TextbookTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">projectTest</a> &gt; <span class="el_source">TextbookTest.java</span></div><h1>TextbookTest.java</h1><pre class="source lang-java linenums">package projectTest;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import itemManagement.Textbook;
+
+import static org.junit.Assert.*;
+
+<span class="fc" id="L10">public class TextbookTest {</span>
+
+	private Textbook textbook;
+
+	@Before
+	public void setUp() {
+<span class="fc" id="L16">		textbook = new Textbook(&quot;TB001&quot;, &quot;Introduction to Programming&quot;);</span>
+<span class="fc" id="L17">	}</span>
+
+	@Test
+	public void testTextbookID() {
+<span class="fc" id="L21">		assertEquals(&quot;Textbook ID should be TB001&quot;, &quot;TB001&quot;, textbook.getTextbookID());</span>
+<span class="fc" id="L22">	}</span>
+
+	@Test
+	public void testTitle() {
+<span class="fc" id="L26">		assertEquals(&quot;Title should be Introduction to Programming&quot;, &quot;Introduction to Programming&quot;, textbook.getTitle());</span>
+<span class="fc" id="L27">	}</span>
+
+	@Test
+	public void testTextbookIDNotNull() {
+<span class="fc" id="L31">		assertNotNull(&quot;Textbook ID should not be null&quot;, textbook.getTextbookID());</span>
+<span class="fc" id="L32">	}</span>
+
+	@Test
+	public void testTitleNotNull() {
+<span class="fc" id="L36">		assertNotNull(&quot;Title should not be null&quot;, textbook.getTitle());</span>
+<span class="fc" id="L37">	}</span>
+
+	@Test
+	public void testTextbookIDNotEmpty() {
+<span class="fc" id="L41">		assertFalse(&quot;Textbook ID should not be empty&quot;, textbook.getTextbookID().isEmpty());</span>
+<span class="fc" id="L42">	}</span>
+
+	@Test
+	public void testTitleNotEmpty() {
+<span class="fc" id="L46">		assertFalse(&quot;Title should not be empty&quot;, textbook.getTitle().isEmpty());</span>
+<span class="fc" id="L47">	}</span>
+
+	@Test
+	public void testTextbookIDAndTitleNotNull() {
+<span class="fc" id="L51">		Textbook textbook = new Textbook(&quot;TB001&quot;, &quot;Introduction to Algorithms&quot;);</span>
+<span class="fc" id="L52">		assertNotNull(&quot;Textbook ID should not be null&quot;, textbook.getTextbookID());</span>
+<span class="fc" id="L53">		assertNotNull(&quot;Textbook title should not be null&quot;, textbook.getTitle());</span>
+<span class="fc" id="L54">	}</span>
+
+	@Test
+	public void testTextbookIDIsConsistent() {
+<span class="fc" id="L58">		String expectedID = &quot;TB001&quot;;</span>
+<span class="fc" id="L59">		Textbook textbook = new Textbook(expectedID, &quot;Introduction to Algorithms&quot;);</span>
+<span class="fc" id="L60">		assertEquals(&quot;Textbook ID should remain consistent&quot;, expectedID, textbook.getTextbookID());</span>
+<span class="fc" id="L61">	}</span>
+
+	@Test
+	public void testTextbookEquality() {
+<span class="fc" id="L65">		Textbook textbook1 = new Textbook(&quot;TB001&quot;, &quot;Introduction to Algorithms&quot;);</span>
+<span class="fc" id="L66">		Textbook textbook2 = new Textbook(&quot;TB001&quot;, &quot;Introduction to Algorithms&quot;);</span>
+<span class="fc" id="L67">		assertEquals(&quot;Two textbooks with the same ID and title should be equal&quot;, textbook1, textbook2);</span>
+<span class="fc" id="L68">	}</span>
+
+	@Test
+	public void testTitleIsConsistent() {
+<span class="fc" id="L72">		String expectedTitle = &quot;Introduction to Algorithms&quot;;</span>
+<span class="fc" id="L73">		Textbook textbook = new Textbook(&quot;TB001&quot;, expectedTitle);</span>
+<span class="fc" id="L74">		assertEquals(&quot;Title should remain consistent&quot;, expectedTitle, textbook.getTitle());</span>
+<span class="fc" id="L75">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

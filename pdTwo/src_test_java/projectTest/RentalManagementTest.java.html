@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>RentalManagementTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">projectTest</a> &gt; <span class="el_source">RentalManagementTest.java</span></div><h1>RentalManagementTest.java</h1><pre class="source lang-java linenums">package projectTest;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import itemManagement.Item;
+import itemManagement.Rental;
+import itemManagement.RentalManagement;
+
+import java.util.Date;
+import java.util.List;
+
+import static org.junit.Assert.*;
+
+<span class="fc" id="L15">public class RentalManagementTest {</span>
+	private RentalManagement rentalManagement;
+<span class="fc" id="L17">	private String userID = &quot;user123&quot;;</span>
+	private Rental rental1, rental2;
+
+	@Before
+	public void setUp() {
+<span class="fc" id="L22">		rentalManagement = new RentalManagement(userID);</span>
+		// Sample rental items setup
+<span class="fc" id="L24">		Item item1 = new Item(&quot;item1&quot;, &quot;Book1&quot;);</span>
+<span class="fc" id="L25">		Item item2 = new Item(&quot;item2&quot;, &quot;Book2&quot;);</span>
+<span class="fc" id="L26">		Date rentDate = new Date();</span>
+<span class="fc" id="L27">		Date dueDate = new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000); // Due in one week</span>
+<span class="fc" id="L28">		rental1 = new Rental(item1, rentDate, dueDate);</span>
+<span class="fc" id="L29">		rental2 = new Rental(item2, rentDate, dueDate);</span>
+<span class="fc" id="L30">	}</span>
+
+	@Test
+	public void testConstructor() {
+<span class="fc" id="L34">		assertEquals(&quot;UserID should be set correctly&quot;, userID, rentalManagement.getUserID());</span>
+<span class="fc" id="L35">		assertTrue(&quot;Rented items list should be empty initially&quot;, rentalManagement.listRentedItems().isEmpty());</span>
+<span class="fc" id="L36">	}</span>
+
+	@Test
+	public void testAddRentalItem() {
+		// Assuming addRental method is implemented in the RentalManagement class
+<span class="fc" id="L41">		rentalManagement.addRental(rental1);</span>
+
+<span class="fc" id="L43">		List&lt;Rental&gt; rentedItems = rentalManagement.listRentedItems();</span>
+<span class="fc" id="L44">		assertFalse(&quot;Rented items list should not be empty after adding an item&quot;, rentedItems.isEmpty());</span>
+<span class="fc" id="L45">		assertEquals(&quot;Rented items list should contain 1 item&quot;, 1, rentedItems.size());</span>
+<span class="fc" id="L46">	}</span>
+
+	@Test
+	public void testListRentedItems() {
+<span class="fc" id="L50">		rentalManagement.addRental(rental1);</span>
+<span class="fc" id="L51">		rentalManagement.addRental(rental2);</span>
+<span class="fc" id="L52">		List&lt;Rental&gt; rentedItems = rentalManagement.listRentedItems();</span>
+<span class="fc" id="L53">		assertEquals(&quot;Expected 2 rented items&quot;, 2, rentedItems.size());</span>
+<span class="fc" id="L54">	}</span>
+
+	@Test
+	public void testSelectRentedItemFound() {
+		// Ensure the rental item is added to the internal list through the appropriate
+		// method
+<span class="fc" id="L60">		rentalManagement.addRental(rental1);</span>
+		// Now attempt to select the rental item
+<span class="fc" id="L62">		Rental selectedRental = rentalManagement.selectRentedItem(&quot;item1&quot;);</span>
+<span class="fc" id="L63">		assertNotNull(&quot;Selected rental should not be null&quot;, selectedRental);</span>
+<span class="fc" id="L64">		assertEquals(&quot;Selected item ID should match&quot;, &quot;item1&quot;, selectedRental.getItem().getId());</span>
+<span class="fc" id="L65">	}</span>
+
+	@Test
+	public void testSelectRentedItemNotFound() {
+<span class="fc" id="L69">		assertNull(&quot;Selecting a non-existent item should return null&quot;,</span>
+<span class="fc" id="L70">				rentalManagement.selectRentedItem(&quot;nonExistentID&quot;));</span>
+<span class="fc" id="L71">	}</span>
+
+	@Test
+	public void testDisplayDueDates() {
+<span class="fc" id="L75">		rentalManagement.listRentedItems().add(rental1);</span>
+<span class="fc" id="L76">		rentalManagement.listRentedItems().add(rental2);</span>
+		// This test assumes the method prints to the console. In a real test, you'd
+		// capture stdout or refactor to be more testable.
+<span class="fc" id="L79">		rentalManagement.displayDueDates();</span>
+<span class="fc" id="L80">	}</span>
+
+	@Test
+	public void testDisplayRentalDetails() {
+<span class="fc" id="L84">		rentalManagement.listRentedItems().add(rental1);</span>
+		// Similarly, this assumes console output. Actual testing might need a different
+		// approach.
+<span class="fc" id="L87">		rentalManagement.displayRentalDetails(rental1);</span>
+<span class="fc" id="L88">	}</span>
+
+	@Test
+	public void testSetUserID() {
+<span class="fc" id="L92">		String newUserID = &quot;newUser123&quot;;</span>
+<span class="fc" id="L93">		rentalManagement.setUserID(newUserID);</span>
+<span class="fc" id="L94">		assertEquals(&quot;UserID should be updated&quot;, newUserID, rentalManagement.getUserID());</span>
+<span class="fc" id="L95">	}</span>
+
+	@Test
+	public void testRentalItemRemoval() {
+<span class="fc" id="L99">		rentalManagement.listRentedItems().add(rental1);</span>
+<span class="fc" id="L100">		rentalManagement.listRentedItems().remove(rental1);</span>
+<span class="fc" id="L101">		assertTrue(&quot;Rented items list should be empty after removing the item&quot;,</span>
+<span class="fc" id="L102">				rentalManagement.listRentedItems().isEmpty());</span>
+<span class="fc" id="L103">	}</span>
+
+	@Test
+	public void testDueDateExtension() {
+<span class="fc" id="L107">		rentalManagement.listRentedItems().add(rental1);</span>
+<span class="fc" id="L108">		Date newDueDate = new Date(rental1.getDueDate().getTime() + 3 * 24 * 60 * 60 * 1000); // Extend due date by 3</span>
+																								// days
+<span class="fc" id="L110">		rental1.setDueDate(newDueDate);</span>
+<span class="fc" id="L111">		assertEquals(&quot;Due date should be extended&quot;, newDueDate, rental1.getDueDate());</span>
+<span class="fc" id="L112">	}</span>
+
+	@Test
+	public void testEmptyRentalListAfterUserIDChange() {
+<span class="fc" id="L116">		rentalManagement.listRentedItems().add(rental1);</span>
+<span class="fc" id="L117">		rentalManagement.setUserID(&quot;newUser123&quot;);</span>
+<span class="fc" id="L118">		assertTrue(&quot;Rented items list should be empty after changing the userID&quot;,</span>
+<span class="fc" id="L119">				rentalManagement.listRentedItems().isEmpty());</span>
+<span class="fc" id="L120">	}</span>
+
+	@Test
+	public void testRentalListImmutableFromOutside() {
+<span class="fc" id="L124">		List&lt;Rental&gt; externalList = rentalManagement.listRentedItems();</span>
+<span class="fc" id="L125">		externalList.add(rental1);</span>
+<span class="fc" id="L126">		assertTrue(&quot;Changes to external list should not affect internal rented items list&quot;,</span>
+<span class="fc" id="L127">				rentalManagement.listRentedItems().isEmpty());</span>
+<span class="fc" id="L128">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

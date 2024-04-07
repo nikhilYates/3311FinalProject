@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>StudentTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">projectTest</a> &gt; <span class="el_source">StudentTest.java</span></div><h1>StudentTest.java</h1><pre class="source lang-java linenums">package projectTest;
+
+import userManagement.*;
+import org.junit.Before;
+import org.junit.Test;
+
+import itemManagement.ItemRepo;
+import itemManagement.PhysicalItem;
+
+import static org.junit.Assert.*;
+import java.io.IOException;
+import java.time.LocalDate;
+
+<span class="fc" id="L14">public class StudentTest {</span>
+
+	private Student student;
+
+	@Before
+	public void setUp() {
+		// Initialize Student with ID, email, row number, major, and year
+<span class="fc" id="L21">		student = new Student(1, &quot;student@example.com&quot;, 0, &quot;Science&quot;, 3);</span>
+
+		// Reset and initialize ItemRepo with necessary items
+<span class="fc" id="L24">		ItemRepo.reset();</span>
+<span class="fc" id="L25">		ItemRepo.addItem(new PhysicalItem(&quot;003&quot;, &quot;Test Book 1&quot;, &quot;Library Section A&quot;, true));</span>
+<span class="fc" id="L26">		ItemRepo.addItem(new PhysicalItem(&quot;004&quot;, &quot;Test Book 2&quot;, &quot;Library Section B&quot;, true));</span>
+<span class="fc" id="L27">	}</span>
+
+	@Test
+	public void testStudentMajorInitially() {
+<span class="fc" id="L31">		assertEquals(&quot;Science&quot;, student.getMajor());</span>
+<span class="fc" id="L32">	}</span>
+
+	@Test
+	public void testSetMajor() throws IOException {
+<span class="fc" id="L36">		student.setMajor(&quot;Mathematics&quot;);</span>
+<span class="fc" id="L37">		assertEquals(&quot;Mathematics&quot;, student.getMajor());</span>
+<span class="fc" id="L38">	}</span>
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetMajorWithNull() throws IOException {
+<span class="nc" id="L42">		student.setMajor(null);</span>
+<span class="nc" id="L43">	}</span>
+
+	@Test
+	public void testStudentYearInitially() {
+<span class="fc" id="L47">		assertEquals(3, student.getYear());</span>
+<span class="fc" id="L48">	}</span>
+
+	@Test
+	public void testSetYear() throws IOException {
+<span class="fc" id="L52">		student.setYear(4);</span>
+<span class="fc" id="L53">		assertEquals(4, student.getYear());</span>
+<span class="fc" id="L54">	}</span>
+
+	@Test
+	public void testStudentEmail() {
+<span class="fc" id="L58">		assertEquals(&quot;student@example.com&quot;, student.getEmail());</span>
+<span class="fc" id="L59">	}</span>
+
+	@Test
+	public void testStudentUserID() {
+<span class="fc" id="L63">		assertEquals(1, student.getUserID());</span>
+<span class="fc" id="L64">	}</span>
+
+	@Test
+	public void testStudentUserType() {
+<span class="fc" id="L68">		assertEquals(&quot;Student&quot;, student.getUsertype());</span>
+<span class="fc" id="L69">	}</span>
+
+	@Test
+	public void testGetRentalListEmptyInitially() {
+<span class="fc" id="L73">		assertTrue(student.getRentalList().isEmpty());</span>
+<span class="fc" id="L74">	}</span>
+
+	@Test
+	public void testAddToRentalList() {
+		// Ensure the item with ID &quot;003&quot; exists in the ItemRepo
+<span class="fc" id="L79">		assertNotNull(&quot;Item with ID '003' should exist in ItemRepo&quot;, ItemRepo.getItemById(&quot;003&quot;));</span>
+
+<span class="fc" id="L81">		RentalTransaction rental = new RentalTransaction(1, 1, &quot;003&quot;, LocalDate.now(), LocalDate.now().plusDays(30),</span>
+<span class="fc" id="L82">				0.0, false);</span>
+<span class="fc" id="L83">		student.addToRentalList(rental);</span>
+<span class="fc" id="L84">		assertEquals(1, student.getRentalList().size());</span>
+<span class="fc" id="L85">	}</span>
+
+	@Test
+	public void testRemoveFromRentalList() {
+<span class="fc" id="L89">		RentalTransaction rental = new RentalTransaction(1, 1, &quot;003&quot;, LocalDate.now(), LocalDate.now().plusDays(30),</span>
+<span class="fc" id="L90">				0.0, false);</span>
+<span class="fc" id="L91">		student.addToRentalList(rental);</span>
+<span class="fc" id="L92">		student.removeFromRentalList(rental);</span>
+<span class="fc" id="L93">		assertTrue(student.getRentalList().isEmpty());</span>
+<span class="fc" id="L94">	}</span>
+
+	@Test
+	public void testRentalListSizeAfterMultipleAdditions() {
+<span class="fc" id="L98">		student.addToRentalList(</span>
+<span class="fc" id="L99">				new RentalTransaction(1, 1, &quot;003&quot;, LocalDate.now(), LocalDate.now().plusDays(30), 0.0, false));</span>
+<span class="fc" id="L100">		student.addToRentalList(</span>
+<span class="fc" id="L101">				new RentalTransaction(2, 1, &quot;004&quot;, LocalDate.now(), LocalDate.now().plusDays(15), 0.0, false));</span>
+<span class="fc" id="L102">		assertEquals(2, student.getRentalList().size());</span>
+<span class="fc" id="L103">	}</span>
+
+	@Test
+	public void testComprehensiveReportExecution() {
+		// Assuming comprehensiveReport() method prints a report to the console
+		// This test checks if the method can execute without throwing an exception
+<span class="fc" id="L109">		student.comprehensiveReport();</span>
+<span class="fc" id="L110">		assertTrue(true); // Pass if no exception is thrown</span>
+<span class="fc" id="L111">	}</span>
+
+	@Test
+	public void testChangeMajorAgain() throws IOException {
+<span class="fc" id="L115">		student.setMajor(&quot;Biology&quot;);</span>
+<span class="fc" id="L116">		assertEquals(&quot;Biology&quot;, student.getMajor());</span>
+<span class="fc" id="L117">	}</span>
+
+	@Test
+	public void testRentalListNotEmptyAfterAdding() {
+<span class="fc" id="L121">		RentalTransaction rental = new RentalTransaction(2, 1, &quot;004&quot;, LocalDate.now(), LocalDate.now().plusDays(20),</span>
+<span class="fc" id="L122">				0.0, false);</span>
+<span class="fc" id="L123">		student.addToRentalList(rental);</span>
+<span class="fc" id="L124">		assertFalse(student.getRentalList().isEmpty());</span>
+<span class="fc" id="L125">	}</span>
+
+	@Test
+	public void testChangeYearAgain() throws IOException {
+<span class="fc" id="L129">		student.setYear(2);</span>
+<span class="fc" id="L130">		assertEquals(2, student.getYear());</span>
+<span class="fc" id="L131">	}</span>
+
+	// You can add more tests here to cover further functionality as needed.
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

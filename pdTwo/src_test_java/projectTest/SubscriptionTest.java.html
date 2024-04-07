@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SubscriptionTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">projectTest</a> &gt; <span class="el_source">SubscriptionTest.java</span></div><h1>SubscriptionTest.java</h1><pre class="source lang-java linenums">package projectTest;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import itemManagement.Subscription;
+
+import static org.junit.Assert.*;
+
+<span class="fc" id="L10">public class SubscriptionTest {</span>
+	private Subscription subscription;
+
+	@Before
+	public void setUp() {
+<span class="fc" id="L15">		subscription = new Subscription(&quot;sub123&quot;, &quot;user@example.com&quot;);</span>
+<span class="fc" id="L16">	}</span>
+
+	@Test
+	public void testSubscriptionIsActiveOnCreation() {
+<span class="fc" id="L20">		assertTrue(&quot;Subscription should be active upon creation&quot;, subscription.isActive());</span>
+<span class="fc" id="L21">	}</span>
+
+	@Test
+	public void testCancelSubscription() {
+<span class="fc" id="L25">		subscription.cancel();</span>
+<span class="fc" id="L26">		assertFalse(&quot;Subscription should be inactive after cancellation&quot;, subscription.isActive());</span>
+<span class="fc" id="L27">	}</span>
+
+	@Test
+	public void testGetSubscriptionID() {
+<span class="fc" id="L31">		assertEquals(&quot;Subscription ID should match&quot;, &quot;sub123&quot;, subscription.getSubscriptionID());</span>
+<span class="fc" id="L32">	}</span>
+
+	@Test
+	public void testSetSubscriptionID() {
+<span class="fc" id="L36">		subscription.setSubscriptionID(&quot;sub456&quot;);</span>
+<span class="fc" id="L37">		assertEquals(&quot;Subscription ID should be updated&quot;, &quot;sub456&quot;, subscription.getSubscriptionID());</span>
+<span class="fc" id="L38">	}</span>
+
+	@Test
+	public void testGetUserEmail() {
+<span class="fc" id="L42">		assertEquals(&quot;User email should match&quot;, &quot;user@example.com&quot;, subscription.getUserEmail());</span>
+<span class="fc" id="L43">	}</span>
+
+	@Test
+	public void testSetUserEmail() {
+<span class="fc" id="L47">		subscription.setUserEmail(&quot;newuser@example.com&quot;);</span>
+<span class="fc" id="L48">		assertEquals(&quot;User email should be updated&quot;, &quot;newuser@example.com&quot;, subscription.getUserEmail());</span>
+<span class="fc" id="L49">	}</span>
+
+	@Test
+	public void testSetActiveTrue() {
+<span class="fc" id="L53">		subscription.setActive(true);</span>
+<span class="fc" id="L54">		assertTrue(&quot;Subscription should be active&quot;, subscription.isActive());</span>
+<span class="fc" id="L55">	}</span>
+
+	@Test
+	public void testSetActiveFalse() {
+<span class="fc" id="L59">		subscription.setActive(false);</span>
+<span class="fc" id="L60">		assertFalse(&quot;Subscription should be inactive&quot;, subscription.isActive());</span>
+<span class="fc" id="L61">	}</span>
+
+	@Test
+	public void testSubscriptionIDNotNull() {
+<span class="fc" id="L65">		assertNotNull(&quot;Subscription ID should not be null&quot;, subscription.getSubscriptionID());</span>
+<span class="fc" id="L66">	}</span>
+
+	@Test
+	public void testUserEmailNotNull() {
+<span class="fc" id="L70">		assertNotNull(&quot;User email should not be null&quot;, subscription.getUserEmail());</span>
+<span class="fc" id="L71">	}</span>
+
+	@Test
+	public void testReactivateSubscription() {
+<span class="fc" id="L75">		subscription.cancel();</span>
+<span class="fc" id="L76">		subscription.setActive(true);</span>
+<span class="fc" id="L77">		assertTrue(&quot;Subscription should be reactivated&quot;, subscription.isActive());</span>
+<span class="fc" id="L78">	}</span>
+
+	@Test
+	public void testSubscriptionEquality() {
+<span class="fc" id="L82">		Subscription anotherSubscription = new Subscription(&quot;sub123&quot;, &quot;user@example.com&quot;);</span>
+<span class="fc" id="L83">		assertEquals(&quot;Subscriptions with the same ID and email should be equal&quot;, subscription, anotherSubscription);</span>
+<span class="fc" id="L84">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

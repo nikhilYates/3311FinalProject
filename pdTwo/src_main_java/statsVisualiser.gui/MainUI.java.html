@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>MainUI.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">statsVisualiser.gui</a> &gt; <span class="el_source">MainUI.java</span></div><h1>MainUI.java</h1><pre class="source lang-java linenums">/*************************************************
+ * FALL 2022
+ * EECS 3311 GUI SAMPLE CODE
+ * ONLT AS A REFERENCE TO SEE THE USE OF THE jFree FRAMEWORK
+ * THE CODE BELOW DOES NOT DEPICT THE DESIGN TO BE FOLLOWED 
+ */
+package statsVisualiser.gui;
+
+import java.awt.BasicStroke;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.util.Vector;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.block.BlockBorder;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.renderer.xy.XYSplineRenderer;
+import org.jfree.chart.title.TextTitle;
+import org.jfree.chart.util.TableOrder;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.data.time.Year;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
+public class MainUI extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private static MainUI instance;
+
+	public static MainUI getInstance() {
+<span class="nc bnc" id="L58" title="All 2 branches missed.">		if (instance == null)</span>
+<span class="nc" id="L59">			instance = new MainUI();</span>
+
+<span class="nc" id="L61">		return instance;</span>
+	}
+
+	private MainUI() {
+		// Set window title
+<span class="nc" id="L66">		super(&quot;YU Library Management App&quot;);</span>
+
+		// Set top bar
+<span class="nc" id="L69">		JLabel chooseUserType = new JLabel(&quot;Register As: &quot;);</span>
+<span class="nc" id="L70">		Vector&lt;String&gt; countriesNames = new Vector&lt;String&gt;();</span>
+<span class="nc" id="L71">		countriesNames.add(&quot;Student&quot;);</span>
+<span class="nc" id="L72">		countriesNames.add(&quot;Faculty&quot;);</span>
+<span class="nc" id="L73">		countriesNames.add(&quot;Teacher&quot;);</span>
+<span class="nc" id="L74">		countriesNames.add(&quot;Visitor&quot;);</span>
+<span class="nc" id="L75">		countriesNames.sort(null);</span>
+<span class="nc" id="L76">		JComboBox&lt;String&gt; countriesList = new JComboBox&lt;String&gt;(countriesNames);</span>
+
+<span class="nc" id="L78">		JLabel from = new JLabel(&quot;From&quot;);</span>
+<span class="nc" id="L79">		JLabel to = new JLabel(&quot;To&quot;);</span>
+<span class="nc" id="L80">		Vector&lt;String&gt; years = new Vector&lt;String&gt;();</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">		for (int i = 2021; i &gt;= 2010; i--) {</span>
+<span class="nc" id="L82">			years.add(&quot;&quot; + i);</span>
+		}
+<span class="nc" id="L84">		JComboBox&lt;String&gt; fromList = new JComboBox&lt;String&gt;(years);</span>
+<span class="nc" id="L85">		JComboBox&lt;String&gt; toList = new JComboBox&lt;String&gt;(years);</span>
+
+<span class="nc" id="L87">		JPanel north = new JPanel();</span>
+<span class="nc" id="L88">		north.add(chooseUserType);</span>
+<span class="nc" id="L89">		north.add(countriesList);</span>
+<span class="nc" id="L90">		north.add(from);</span>
+<span class="nc" id="L91">		north.add(fromList);</span>
+<span class="nc" id="L92">		north.add(to);</span>
+<span class="nc" id="L93">		north.add(toList);</span>
+
+		// Set bottom bar
+<span class="nc" id="L96">		JButton recalculate = new JButton(&quot;Recalculate&quot;);</span>
+
+<span class="nc" id="L98">		JLabel viewsLabel = new JLabel(&quot;Available Views: &quot;);</span>
+
+<span class="nc" id="L100">		Vector&lt;String&gt; viewsNames = new Vector&lt;String&gt;();</span>
+<span class="nc" id="L101">		viewsNames.add(&quot;Pie Chart&quot;);</span>
+<span class="nc" id="L102">		viewsNames.add(&quot;Line Chart&quot;);</span>
+<span class="nc" id="L103">		viewsNames.add(&quot;Bar Chart&quot;);</span>
+<span class="nc" id="L104">		viewsNames.add(&quot;Scatter Chart&quot;);</span>
+<span class="nc" id="L105">		viewsNames.add(&quot;Report&quot;);</span>
+<span class="nc" id="L106">		JComboBox&lt;String&gt; viewsList = new JComboBox&lt;String&gt;(viewsNames);</span>
+<span class="nc" id="L107">		JButton addView = new JButton(&quot;+&quot;);</span>
+<span class="nc" id="L108">		JButton removeView = new JButton(&quot;-&quot;);</span>
+
+<span class="nc" id="L110">		JLabel methodLabel = new JLabel(&quot;        Choose analysis method: &quot;);</span>
+
+<span class="nc" id="L112">		Vector&lt;String&gt; methodsNames = new Vector&lt;String&gt;();</span>
+<span class="nc" id="L113">		methodsNames.add(&quot;Mortality&quot;);</span>
+<span class="nc" id="L114">		methodsNames.add(&quot;Mortality vs Expenses&quot;);</span>
+<span class="nc" id="L115">		methodsNames.add(&quot;Mortality vs Expenses &amp; Hospital Beds&quot;);</span>
+<span class="nc" id="L116">		methodsNames.add(&quot;Mortality vs GDP&quot;);</span>
+<span class="nc" id="L117">		methodsNames.add(&quot;Unemployment vs GDP&quot;);</span>
+<span class="nc" id="L118">		methodsNames.add(&quot;Unemployment&quot;);</span>
+
+<span class="nc" id="L120">		JComboBox&lt;String&gt; methodsList = new JComboBox&lt;String&gt;(methodsNames);</span>
+
+<span class="nc" id="L122">		JPanel south = new JPanel();</span>
+<span class="nc" id="L123">		south.add(viewsLabel);</span>
+<span class="nc" id="L124">		south.add(viewsList);</span>
+<span class="nc" id="L125">		south.add(addView);</span>
+<span class="nc" id="L126">		south.add(removeView);</span>
+
+<span class="nc" id="L128">		south.add(methodLabel);</span>
+<span class="nc" id="L129">		south.add(methodsList);</span>
+<span class="nc" id="L130">		south.add(recalculate);</span>
+
+<span class="nc" id="L132">		JPanel east = new JPanel();</span>
+
+		// Set charts region
+<span class="nc" id="L135">		JPanel west = new JPanel();</span>
+<span class="nc" id="L136">		west.setLayout(new GridLayout(2, 0));</span>
+<span class="nc" id="L137">		createCharts(west);</span>
+
+<span class="nc" id="L139">		getContentPane().add(north, BorderLayout.NORTH);</span>
+<span class="nc" id="L140">		getContentPane().add(east, BorderLayout.EAST);</span>
+<span class="nc" id="L141">		getContentPane().add(south, BorderLayout.SOUTH);</span>
+<span class="nc" id="L142">		getContentPane().add(west, BorderLayout.WEST);</span>
+<span class="nc" id="L143">	}</span>
+
+	private void createCharts(JPanel west) {
+<span class="nc" id="L146">		createLine(west);</span>
+<span class="nc" id="L147">		createTimeSeries(west);</span>
+<span class="nc" id="L148">		createBar(west);</span>
+<span class="nc" id="L149">		createPie(west);</span>
+<span class="nc" id="L150">		createScatter(west);</span>
+<span class="nc" id="L151">		createReport(west);</span>
+
+<span class="nc" id="L153">	}</span>
+
+	private void createReport(JPanel west) {
+<span class="nc" id="L156">		JTextArea report = new JTextArea();</span>
+<span class="nc" id="L157">		report.setEditable(false);</span>
+<span class="nc" id="L158">		report.setPreferredSize(new Dimension(400, 300));</span>
+<span class="nc" id="L159">		report.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));</span>
+<span class="nc" id="L160">		report.setBackground(Color.white);</span>
+		String reportMessage, reportMessage2;
+
+<span class="nc" id="L163">		reportMessage = &quot;Mortality vs Expenses &amp; Hospital Beds\n&quot; + &quot;==============================\n&quot; + &quot;Year 2018:\n&quot;</span>
+				+ &quot;\tMortality/1000 births =&gt; 5.6\n&quot; + &quot;\tHealth Expenditure per Capita =&gt; 10624\n&quot;
+				+ &quot;\tHospital Beds/1000 people =&gt; 2.92\n&quot; + &quot;\n&quot; + &quot;Year 2017:\n&quot; + &quot;\tMortality/1000 births =&gt; 5.7\n&quot;
+				+ &quot;\tHealth Expenditure per Capita =&gt; 10209\n&quot; + &quot;\tHospital Beds/1000 people =&gt; 2.87\n&quot; + &quot;\n&quot;
+				+ &quot;Year 2016:\n&quot; + &quot;\tMortality/1000 births =&gt; 5.8\n&quot; + &quot;\tHealth Expenditure per Capita =&gt; 9877\n&quot;
+				+ &quot;\tHospital Beds/1000 people =&gt; 2.77\n&quot;;
+
+<span class="nc" id="L170">		reportMessage2 = &quot;Unemployment: Mev vs Women\n&quot; + &quot;==========================\n&quot; + &quot;Men=&gt;\n&quot;</span>
+				+ &quot;\tEmployed: 96.054%\n&quot; + &quot;\tUnemployed: 3.946%\n&quot; + &quot;\n&quot; + &quot;Women=&gt;\n&quot; + &quot;\tEmployed: 96.163%\n&quot;
+				+ &quot;\tUnemployed: 3.837%\n&quot;;
+
+<span class="nc" id="L174">		report.setText(reportMessage);</span>
+<span class="nc" id="L175">		JScrollPane outputScrollPane = new JScrollPane(report);</span>
+<span class="nc" id="L176">		west.add(outputScrollPane);</span>
+<span class="nc" id="L177">	}</span>
+
+	private void createScatter(JPanel west) {
+<span class="nc" id="L180">		TimeSeries series1 = new TimeSeries(&quot;Mortality/1000 births&quot;);</span>
+<span class="nc" id="L181">		series1.add(new Year(2018), 5.6);</span>
+<span class="nc" id="L182">		series1.add(new Year(2017), 5.7);</span>
+<span class="nc" id="L183">		series1.add(new Year(2016), 5.8);</span>
+<span class="nc" id="L184">		series1.add(new Year(2015), 5.8);</span>
+<span class="nc" id="L185">		series1.add(new Year(2014), 5.9);</span>
+<span class="nc" id="L186">		series1.add(new Year(2013), 6.0);</span>
+<span class="nc" id="L187">		series1.add(new Year(2012), 6.1);</span>
+<span class="nc" id="L188">		series1.add(new Year(2011), 6.2);</span>
+<span class="nc" id="L189">		series1.add(new Year(2010), 6.4);</span>
+
+<span class="nc" id="L191">		TimeSeries series2 = new TimeSeries(&quot;Health Expenditure per Capita&quot;);</span>
+<span class="nc" id="L192">		series2.add(new Year(2018), 10624);</span>
+<span class="nc" id="L193">		series2.add(new Year(2017), 10209);</span>
+<span class="nc" id="L194">		series2.add(new Year(2016), 9877);</span>
+<span class="nc" id="L195">		series2.add(new Year(2015), 9491);</span>
+<span class="nc" id="L196">		series2.add(new Year(2014), 9023);</span>
+<span class="nc" id="L197">		series2.add(new Year(2013), 8599);</span>
+<span class="nc" id="L198">		series2.add(new Year(2012), 8399);</span>
+<span class="nc" id="L199">		series2.add(new Year(2011), 8130);</span>
+<span class="nc" id="L200">		series2.add(new Year(2010), 7930);</span>
+<span class="nc" id="L201">		TimeSeriesCollection dataset2 = new TimeSeriesCollection();</span>
+<span class="nc" id="L202">		dataset2.addSeries(series2);</span>
+
+<span class="nc" id="L204">		TimeSeries series3 = new TimeSeries(&quot;Hospital Beds/1000 people&quot;);</span>
+<span class="nc" id="L205">		series3.add(new Year(2018), 2.92);</span>
+<span class="nc" id="L206">		series3.add(new Year(2017), 2.87);</span>
+<span class="nc" id="L207">		series3.add(new Year(2016), 2.77);</span>
+<span class="nc" id="L208">		series3.add(new Year(2015), 2.8);</span>
+<span class="nc" id="L209">		series3.add(new Year(2014), 2.83);</span>
+<span class="nc" id="L210">		series3.add(new Year(2013), 2.89);</span>
+<span class="nc" id="L211">		series3.add(new Year(2012), 2.93);</span>
+<span class="nc" id="L212">		series3.add(new Year(2011), 2.97);</span>
+<span class="nc" id="L213">		series3.add(new Year(2010), 3.05);</span>
+
+<span class="nc" id="L215">		TimeSeriesCollection dataset = new TimeSeriesCollection();</span>
+<span class="nc" id="L216">		dataset.addSeries(series1);</span>
+<span class="nc" id="L217">		dataset.addSeries(series3);</span>
+
+<span class="nc" id="L219">		XYPlot plot = new XYPlot();</span>
+<span class="nc" id="L220">		XYItemRenderer itemrenderer1 = new XYLineAndShapeRenderer(false, true);</span>
+<span class="nc" id="L221">		XYItemRenderer itemrenderer2 = new XYLineAndShapeRenderer(false, true);</span>
+
+<span class="nc" id="L223">		plot.setDataset(0, dataset);</span>
+<span class="nc" id="L224">		plot.setRenderer(0, itemrenderer1);</span>
+<span class="nc" id="L225">		DateAxis domainAxis = new DateAxis(&quot;Year&quot;);</span>
+<span class="nc" id="L226">		plot.setDomainAxis(domainAxis);</span>
+<span class="nc" id="L227">		plot.setRangeAxis(new NumberAxis(&quot;&quot;));</span>
+
+<span class="nc" id="L229">		plot.setDataset(1, dataset2);</span>
+<span class="nc" id="L230">		plot.setRenderer(1, itemrenderer2);</span>
+<span class="nc" id="L231">		plot.setRangeAxis(1, new NumberAxis(&quot;US$&quot;));</span>
+
+<span class="nc" id="L233">		plot.mapDatasetToRangeAxis(0, 0);// 1st dataset to 1st y-axis</span>
+<span class="nc" id="L234">		plot.mapDatasetToRangeAxis(1, 1); // 2nd dataset to 2nd y-axis</span>
+
+<span class="nc" id="L236">		JFreeChart scatterChart = new JFreeChart(&quot;Mortality vs Expenses &amp; Hospital Beds&quot;,</span>
+<span class="nc" id="L237">				new Font(&quot;Serif&quot;, java.awt.Font.BOLD, 18), plot, true);</span>
+
+<span class="nc" id="L239">		ChartPanel chartPanel = new ChartPanel(scatterChart);</span>
+<span class="nc" id="L240">		chartPanel.setPreferredSize(new Dimension(400, 300));</span>
+<span class="nc" id="L241">		chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));</span>
+<span class="nc" id="L242">		chartPanel.setBackground(Color.white);</span>
+<span class="nc" id="L243">		west.add(chartPanel);</span>
+<span class="nc" id="L244">	}</span>
+
+	private void createPie(JPanel west) {
+		// Different way to create pie chart
+		/*
+		 * var dataset = new DefaultPieDataset(); dataset.setValue(&quot;Unemployed&quot;, 3.837);
+		 * dataset.setValue(&quot;Employed&quot;, 96.163);
+		 * 
+		 * JFreeChart pieChart = ChartFactory.createPieChart(&quot;Women's Unemployment&quot;,
+		 * dataset, true, true, false);
+		 */
+
+<span class="nc" id="L256">		DefaultCategoryDataset dataset = new DefaultCategoryDataset();</span>
+<span class="nc" id="L257">		dataset.addValue(3.946, &quot;Unemployed&quot;, &quot;Men&quot;);</span>
+<span class="nc" id="L258">		dataset.addValue(96.054, &quot;Employed&quot;, &quot;Men&quot;);</span>
+<span class="nc" id="L259">		dataset.addValue(3.837, &quot;Unemployed&quot;, &quot;Women&quot;);</span>
+<span class="nc" id="L260">		dataset.addValue(96.163, &quot;Employed&quot;, &quot;Women&quot;);</span>
+
+<span class="nc" id="L262">		JFreeChart pieChart = ChartFactory.createMultiplePieChart(&quot;Unemployment: Men vs Women&quot;, dataset,</span>
+<span class="nc" id="L263">				TableOrder.BY_COLUMN, true, true, false);</span>
+
+<span class="nc" id="L265">		ChartPanel chartPanel = new ChartPanel(pieChart);</span>
+<span class="nc" id="L266">		chartPanel.setPreferredSize(new Dimension(400, 300));</span>
+<span class="nc" id="L267">		chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));</span>
+<span class="nc" id="L268">		chartPanel.setBackground(Color.white);</span>
+<span class="nc" id="L269">		west.add(chartPanel);</span>
+<span class="nc" id="L270">	}</span>
+
+	private void createBar(JPanel west) {
+<span class="nc" id="L273">		DefaultCategoryDataset dataset = new DefaultCategoryDataset();</span>
+<span class="nc" id="L274">		dataset.setValue(5.6, &quot;Mortality/1000 births&quot;, &quot;2018&quot;);</span>
+<span class="nc" id="L275">		dataset.setValue(5.7, &quot;Mortality/1000 births&quot;, &quot;2017&quot;);</span>
+<span class="nc" id="L276">		dataset.setValue(5.8, &quot;Mortality/1000 births&quot;, &quot;2016&quot;);</span>
+<span class="nc" id="L277">		dataset.setValue(5.8, &quot;Mortality/1000 births&quot;, &quot;2015&quot;);</span>
+<span class="nc" id="L278">		dataset.setValue(5.9, &quot;Mortality/1000 births&quot;, &quot;2014&quot;);</span>
+<span class="nc" id="L279">		dataset.setValue(6, &quot;Mortality/1000 births&quot;, &quot;2013&quot;);</span>
+<span class="nc" id="L280">		dataset.setValue(6.1, &quot;Mortality/1000 births&quot;, &quot;2012&quot;);</span>
+<span class="nc" id="L281">		dataset.setValue(6.2, &quot;Mortality/1000 births&quot;, &quot;2011&quot;);</span>
+<span class="nc" id="L282">		dataset.setValue(6.4, &quot;Mortality/1000 births&quot;, &quot;2010&quot;);</span>
+
+<span class="nc" id="L284">		dataset.setValue(2.92, &quot;Hospital beds/1000 people&quot;, &quot;2018&quot;);</span>
+<span class="nc" id="L285">		dataset.setValue(2.87, &quot;Hospital beds/1000 people&quot;, &quot;2017&quot;);</span>
+<span class="nc" id="L286">		dataset.setValue(2.77, &quot;Hospital beds/1000 people&quot;, &quot;2016&quot;);</span>
+<span class="nc" id="L287">		dataset.setValue(2.8, &quot;Hospital beds/1000 people&quot;, &quot;2015&quot;);</span>
+<span class="nc" id="L288">		dataset.setValue(2.83, &quot;Hospital beds/1000 people&quot;, &quot;2014&quot;);</span>
+<span class="nc" id="L289">		dataset.setValue(2.89, &quot;Hospital beds/1000 people&quot;, &quot;2013&quot;);</span>
+<span class="nc" id="L290">		dataset.setValue(2.93, &quot;Hospital beds/1000 people&quot;, &quot;2012&quot;);</span>
+<span class="nc" id="L291">		dataset.setValue(2.97, &quot;Hospital beds/1000 people&quot;, &quot;2011&quot;);</span>
+<span class="nc" id="L292">		dataset.setValue(3.05, &quot;Hospital beds/1000 people&quot;, &quot;2010&quot;);</span>
+
+<span class="nc" id="L294">		DefaultCategoryDataset dataset2 = new DefaultCategoryDataset();</span>
+
+<span class="nc" id="L296">		dataset2.setValue(10623, &quot;Health Expenditure per Capita&quot;, &quot;2018&quot;);</span>
+<span class="nc" id="L297">		dataset2.setValue(10209, &quot;Health Expenditure per Capita&quot;, &quot;2017&quot;);</span>
+<span class="nc" id="L298">		dataset2.setValue(9877, &quot;Health Expenditure per Capita&quot;, &quot;2016&quot;);</span>
+<span class="nc" id="L299">		dataset2.setValue(9491, &quot;Health Expenditure per Capita&quot;, &quot;2015&quot;);</span>
+<span class="nc" id="L300">		dataset2.setValue(9023, &quot;Health Expenditure per Capita&quot;, &quot;2014&quot;);</span>
+<span class="nc" id="L301">		dataset2.setValue(8599, &quot;Health Expenditure per Capita&quot;, &quot;2013&quot;);</span>
+<span class="nc" id="L302">		dataset2.setValue(8399, &quot;Health Expenditure per Capita&quot;, &quot;2012&quot;);</span>
+<span class="nc" id="L303">		dataset2.setValue(8130, &quot;Health Expenditure per Capita&quot;, &quot;2011&quot;);</span>
+<span class="nc" id="L304">		dataset2.setValue(7930, &quot;Health Expenditure per Capita&quot;, &quot;2010&quot;);</span>
+
+<span class="nc" id="L306">		CategoryPlot plot = new CategoryPlot();</span>
+<span class="nc" id="L307">		BarRenderer barrenderer1 = new BarRenderer();</span>
+<span class="nc" id="L308">		BarRenderer barrenderer2 = new BarRenderer();</span>
+
+<span class="nc" id="L310">		plot.setDataset(0, dataset);</span>
+<span class="nc" id="L311">		plot.setRenderer(0, barrenderer1);</span>
+<span class="nc" id="L312">		CategoryAxis domainAxis = new CategoryAxis(&quot;Year&quot;);</span>
+<span class="nc" id="L313">		plot.setDomainAxis(domainAxis);</span>
+<span class="nc" id="L314">		plot.setRangeAxis(new NumberAxis(&quot;&quot;));</span>
+
+<span class="nc" id="L316">		plot.setDataset(1, dataset2);</span>
+<span class="nc" id="L317">		plot.setRenderer(1, barrenderer2);</span>
+<span class="nc" id="L318">		plot.setRangeAxis(1, new NumberAxis(&quot;US$&quot;));</span>
+
+<span class="nc" id="L320">		plot.mapDatasetToRangeAxis(0, 0);// 1st dataset to 1st y-axis</span>
+<span class="nc" id="L321">		plot.mapDatasetToRangeAxis(1, 1); // 2nd dataset to 2nd y-axis</span>
+
+<span class="nc" id="L323">		JFreeChart barChart = new JFreeChart(&quot;Mortality vs Expenses &amp; Hospital Beds&quot;,</span>
+<span class="nc" id="L324">				new Font(&quot;Serif&quot;, java.awt.Font.BOLD, 18), plot, true);</span>
+
+		// Different way to create bar chart
+		/*
+		 * dataset = new DefaultCategoryDataset();
+		 * 
+		 * dataset.addValue(3.946, &quot;Unemployed&quot;, &quot;Men&quot;); dataset.addValue(96.054,
+		 * &quot;Employed&quot;, &quot;Men&quot;); dataset.addValue(3.837, &quot;Unemployed&quot;, &quot;Women&quot;);
+		 * dataset.addValue(96.163, &quot;Employed&quot;, &quot;Women&quot;); barChart =
+		 * ChartFactory.createBarChart(&quot;Unemployment: Men vs Women&quot;, &quot;Gender&quot;,
+		 * &quot;Percentage&quot;, dataset, PlotOrientation.VERTICAL, true, true, false);
+		 */
+
+<span class="nc" id="L337">		ChartPanel chartPanel = new ChartPanel(barChart);</span>
+<span class="nc" id="L338">		chartPanel.setPreferredSize(new Dimension(400, 300));</span>
+<span class="nc" id="L339">		chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));</span>
+<span class="nc" id="L340">		chartPanel.setBackground(Color.white);</span>
+<span class="nc" id="L341">		west.add(chartPanel);</span>
+<span class="nc" id="L342">	}</span>
+
+	private void createLine(JPanel west) {
+<span class="nc" id="L345">		XYSeries series1 = new XYSeries(&quot;Mortality/1000 births&quot;);</span>
+<span class="nc" id="L346">		series1.add(2018, 5.6);</span>
+<span class="nc" id="L347">		series1.add(2017, 5.7);</span>
+<span class="nc" id="L348">		series1.add(2016, 5.8);</span>
+<span class="nc" id="L349">		series1.add(2015, 5.8);</span>
+<span class="nc" id="L350">		series1.add(2014, 5.9);</span>
+<span class="nc" id="L351">		series1.add(2013, 6.0);</span>
+<span class="nc" id="L352">		series1.add(2012, 6.1);</span>
+<span class="nc" id="L353">		series1.add(2011, 6.2);</span>
+<span class="nc" id="L354">		series1.add(2010, 6.4);</span>
+
+<span class="nc" id="L356">		XYSeries series2 = new XYSeries(&quot;Health Expenditure per Capita&quot;);</span>
+<span class="nc" id="L357">		series2.add(2018, 10624);</span>
+<span class="nc" id="L358">		series2.add(2017, 10209);</span>
+<span class="nc" id="L359">		series2.add(2016, 9877);</span>
+<span class="nc" id="L360">		series2.add(2015, 9491);</span>
+<span class="nc" id="L361">		series2.add(2014, 9023);</span>
+<span class="nc" id="L362">		series2.add(2013, 8599);</span>
+<span class="nc" id="L363">		series2.add(2012, 8399);</span>
+<span class="nc" id="L364">		series2.add(2011, 8130);</span>
+<span class="nc" id="L365">		series2.add(2010, 7930);</span>
+
+<span class="nc" id="L367">		XYSeries series3 = new XYSeries(&quot;Hospital Beds/1000 people&quot;);</span>
+<span class="nc" id="L368">		series3.add(2018, 2.92);</span>
+<span class="nc" id="L369">		series3.add(2017, 2.87);</span>
+<span class="nc" id="L370">		series3.add(2016, 2.77);</span>
+<span class="nc" id="L371">		series3.add(2015, 2.8);</span>
+<span class="nc" id="L372">		series3.add(2014, 2.83);</span>
+<span class="nc" id="L373">		series3.add(2013, 2.89);</span>
+<span class="nc" id="L374">		series3.add(2012, 2.93);</span>
+<span class="nc" id="L375">		series3.add(2011, 2.97);</span>
+<span class="nc" id="L376">		series3.add(2010, 3.05);</span>
+
+<span class="nc" id="L378">		XYSeriesCollection dataset = new XYSeriesCollection();</span>
+<span class="nc" id="L379">		dataset.addSeries(series1);</span>
+<span class="nc" id="L380">		dataset.addSeries(series2);</span>
+<span class="nc" id="L381">		dataset.addSeries(series3);</span>
+
+<span class="nc" id="L383">		JFreeChart chart = ChartFactory.createXYLineChart(&quot;Mortality vs Expenses &amp; Hospital Beds&quot;, &quot;Year&quot;, &quot;&quot;, dataset,</span>
+<span class="nc" id="L384">				PlotOrientation.VERTICAL, true, true, false);</span>
+
+<span class="nc" id="L386">		XYPlot plot = chart.getXYPlot();</span>
+
+<span class="nc" id="L388">		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();</span>
+<span class="nc" id="L389">		renderer.setSeriesPaint(0, Color.RED);</span>
+<span class="nc" id="L390">		renderer.setSeriesStroke(0, new BasicStroke(2.0f));</span>
+
+<span class="nc" id="L392">		plot.setRenderer(renderer);</span>
+<span class="nc" id="L393">		plot.setBackgroundPaint(Color.white);</span>
+
+<span class="nc" id="L395">		plot.setRangeGridlinesVisible(true);</span>
+<span class="nc" id="L396">		plot.setRangeGridlinePaint(Color.BLACK);</span>
+
+<span class="nc" id="L398">		plot.setDomainGridlinesVisible(true);</span>
+<span class="nc" id="L399">		plot.setDomainGridlinePaint(Color.BLACK);</span>
+
+<span class="nc" id="L401">		chart.getLegend().setFrame(BlockBorder.NONE);</span>
+
+<span class="nc" id="L403">		chart.setTitle(</span>
+<span class="nc" id="L404">				new TextTitle(&quot;Mortality vs Expenses &amp; Hospital Beds&quot;, new Font(&quot;Serif&quot;, java.awt.Font.BOLD, 18)));</span>
+
+<span class="nc" id="L406">		ChartPanel chartPanel = new ChartPanel(chart);</span>
+<span class="nc" id="L407">		chartPanel.setPreferredSize(new Dimension(400, 300));</span>
+<span class="nc" id="L408">		chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));</span>
+<span class="nc" id="L409">		chartPanel.setBackground(Color.white);</span>
+<span class="nc" id="L410">		west.add(chartPanel);</span>
+
+<span class="nc" id="L412">	}</span>
+
+	private void createTimeSeries(JPanel west) {
+<span class="nc" id="L415">		TimeSeries series1 = new TimeSeries(&quot;Mortality/1000 births&quot;);</span>
+<span class="nc" id="L416">		series1.add(new Year(2018), 5.6);</span>
+<span class="nc" id="L417">		series1.add(new Year(2017), 5.7);</span>
+<span class="nc" id="L418">		series1.add(new Year(2016), 5.8);</span>
+<span class="nc" id="L419">		series1.add(new Year(2015), 5.8);</span>
+<span class="nc" id="L420">		series1.add(new Year(2014), 5.9);</span>
+<span class="nc" id="L421">		series1.add(new Year(2013), 6.0);</span>
+<span class="nc" id="L422">		series1.add(new Year(2012), 6.1);</span>
+<span class="nc" id="L423">		series1.add(new Year(2011), 6.2);</span>
+<span class="nc" id="L424">		series1.add(new Year(2010), 6.4);</span>
+
+<span class="nc" id="L426">		TimeSeries series2 = new TimeSeries(&quot;Health Expenditure per Capita&quot;);</span>
+<span class="nc" id="L427">		series2.add(new Year(2018), 10624);</span>
+<span class="nc" id="L428">		series2.add(new Year(2017), 10209);</span>
+<span class="nc" id="L429">		series2.add(new Year(2016), 9877);</span>
+<span class="nc" id="L430">		series2.add(new Year(2015), 9491);</span>
+<span class="nc" id="L431">		series2.add(new Year(2014), 9023);</span>
+<span class="nc" id="L432">		series2.add(new Year(2013), 8599);</span>
+<span class="nc" id="L433">		series2.add(new Year(2012), 8399);</span>
+<span class="nc" id="L434">		series2.add(new Year(2011), 8130);</span>
+<span class="nc" id="L435">		series2.add(new Year(2010), 7930);</span>
+<span class="nc" id="L436">		TimeSeriesCollection dataset2 = new TimeSeriesCollection();</span>
+<span class="nc" id="L437">		dataset2.addSeries(series2);</span>
+
+<span class="nc" id="L439">		TimeSeries series3 = new TimeSeries(&quot;Hospital Beds/1000 people&quot;);</span>
+<span class="nc" id="L440">		series3.add(new Year(2018), 2.92);</span>
+<span class="nc" id="L441">		series3.add(new Year(2017), 2.87);</span>
+<span class="nc" id="L442">		series3.add(new Year(2016), 2.77);</span>
+<span class="nc" id="L443">		series3.add(new Year(2015), 2.8);</span>
+<span class="nc" id="L444">		series3.add(new Year(2014), 2.83);</span>
+<span class="nc" id="L445">		series3.add(new Year(2013), 2.89);</span>
+<span class="nc" id="L446">		series3.add(new Year(2012), 2.93);</span>
+<span class="nc" id="L447">		series3.add(new Year(2011), 2.97);</span>
+<span class="nc" id="L448">		series3.add(new Year(2010), 3.05);</span>
+
+<span class="nc" id="L450">		TimeSeriesCollection dataset = new TimeSeriesCollection();</span>
+<span class="nc" id="L451">		dataset.addSeries(series1);</span>
+<span class="nc" id="L452">		dataset.addSeries(series3);</span>
+
+<span class="nc" id="L454">		XYPlot plot = new XYPlot();</span>
+<span class="nc" id="L455">		XYSplineRenderer splinerenderer1 = new XYSplineRenderer();</span>
+<span class="nc" id="L456">		XYSplineRenderer splinerenderer2 = new XYSplineRenderer();</span>
+
+<span class="nc" id="L458">		plot.setDataset(0, dataset);</span>
+<span class="nc" id="L459">		plot.setRenderer(0, splinerenderer1);</span>
+<span class="nc" id="L460">		DateAxis domainAxis = new DateAxis(&quot;Year&quot;);</span>
+<span class="nc" id="L461">		plot.setDomainAxis(domainAxis);</span>
+<span class="nc" id="L462">		plot.setRangeAxis(new NumberAxis(&quot;&quot;));</span>
+
+<span class="nc" id="L464">		plot.setDataset(1, dataset2);</span>
+<span class="nc" id="L465">		plot.setRenderer(1, splinerenderer2);</span>
+<span class="nc" id="L466">		plot.setRangeAxis(1, new NumberAxis(&quot;US$&quot;));</span>
+
+<span class="nc" id="L468">		plot.mapDatasetToRangeAxis(0, 0);// 1st dataset to 1st y-axis</span>
+<span class="nc" id="L469">		plot.mapDatasetToRangeAxis(1, 1); // 2nd dataset to 2nd y-axis</span>
+
+<span class="nc" id="L471">		JFreeChart chart = new JFreeChart(&quot;Mortality vs Expenses &amp; Hospital Beds&quot;,</span>
+<span class="nc" id="L472">				new Font(&quot;Serif&quot;, java.awt.Font.BOLD, 18), plot, true);</span>
+
+<span class="nc" id="L474">		ChartPanel chartPanel = new ChartPanel(chart);</span>
+<span class="nc" id="L475">		chartPanel.setPreferredSize(new Dimension(400, 300));</span>
+<span class="nc" id="L476">		chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));</span>
+<span class="nc" id="L477">		chartPanel.setBackground(Color.white);</span>
+<span class="nc" id="L478">		west.add(chartPanel);</span>
+
+<span class="nc" id="L480">	}</span>
+
+	public static void main(String[] args) {
+
+<span class="nc" id="L484">		JFrame frame = MainUI.getInstance();</span>
+<span class="nc" id="L485">		frame.setSize(900, 600);</span>
+<span class="nc" id="L486">		frame.pack();</span>
+<span class="nc" id="L487">		frame.setVisible(true);</span>
+<span class="nc" id="L488">	}</span>
+	// TODO Auto-generated method stub
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

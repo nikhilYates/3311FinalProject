@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>RentalTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">projectTest</a> &gt; <span class="el_source">RentalTest.java</span></div><h1>RentalTest.java</h1><pre class="source lang-java linenums">package projectTest;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import itemManagement.Item;
+import itemManagement.Rental;
+
+import java.util.Date;
+import static org.junit.Assert.*;
+
+<span class="fc" id="L12">public class RentalTest {</span>
+	private Rental rental;
+	private Item item;
+	private Date rentDate;
+	private Date dueDate;
+
+	@Before
+	public void setUp() {
+<span class="fc" id="L20">		item = new Item(&quot;001&quot;, &quot;Book&quot;, 10.0, 8.0);</span>
+<span class="fc" id="L21">		rentDate = new Date();</span>
+<span class="fc" id="L22">		dueDate = new Date(rentDate.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 days later</span>
+<span class="fc" id="L23">		rental = new Rental(item, rentDate, dueDate);</span>
+<span class="fc" id="L24">	}</span>
+
+	@Test
+	public void testGetItem() {
+<span class="fc" id="L28">		assertEquals(&quot;Should return the correct item&quot;, item, rental.getItem());</span>
+<span class="fc" id="L29">	}</span>
+
+	@Test
+	public void testSetItem() {
+<span class="fc" id="L33">		Item newItem = new Item(&quot;002&quot;, &quot;New Book&quot;, 12.0, 10.0);</span>
+<span class="fc" id="L34">		rental.setItem(newItem);</span>
+<span class="fc" id="L35">		assertEquals(&quot;Should set a new item&quot;, newItem, rental.getItem());</span>
+<span class="fc" id="L36">	}</span>
+
+	@Test
+	public void testGetRentDate() {
+<span class="fc" id="L40">		assertEquals(&quot;Should return the correct rent date&quot;, rentDate, rental.getRentDate());</span>
+<span class="fc" id="L41">	}</span>
+
+	@Test
+	public void testSetRentDate() {
+<span class="fc" id="L45">		Date newRentDate = new Date();</span>
+<span class="fc" id="L46">		rental.setRentDate(newRentDate);</span>
+<span class="fc" id="L47">		assertEquals(&quot;Should set a new rent date&quot;, newRentDate, rental.getRentDate());</span>
+<span class="fc" id="L48">	}</span>
+
+	@Test
+	public void testGetDueDate() {
+<span class="fc" id="L52">		assertEquals(&quot;Should return the correct due date&quot;, dueDate, rental.getDueDate());</span>
+<span class="fc" id="L53">	}</span>
+
+	@Test
+	public void testSetDueDate() {
+<span class="fc" id="L57">		Date newDueDate = new Date(dueDate.getTime() + 7 * 24 * 60 * 60 * 1000); // Extend due date by 7 days</span>
+<span class="fc" id="L58">		rental.setDueDate(newDueDate);</span>
+<span class="fc" id="L59">		assertEquals(&quot;Should set a new due date&quot;, newDueDate, rental.getDueDate());</span>
+<span class="fc" id="L60">	}</span>
+
+	@Test
+	public void testDueDateAfterRentDate() {
+<span class="fc" id="L64">		assertTrue(&quot;Due date should be after rent date&quot;, rental.getDueDate().after(rental.getRentDate()));</span>
+<span class="fc" id="L65">	}</span>
+
+	@Test
+	public void testRentDateBeforeDueDate() {
+<span class="fc" id="L69">		assertTrue(&quot;Rent date should be before due date&quot;, rental.getRentDate().before(rental.getDueDate()));</span>
+<span class="fc" id="L70">	}</span>
+
+	@Test
+	public void testExtendDueDate() {
+<span class="fc" id="L74">		Date extendedDueDate = new Date(dueDate.getTime() + 3 * 24 * 60 * 60 * 1000); // Extend due date by 3 days</span>
+<span class="fc" id="L75">		rental.setDueDate(extendedDueDate);</span>
+<span class="fc" id="L76">		assertEquals(&quot;Due date should be extended&quot;, extendedDueDate, rental.getDueDate());</span>
+<span class="fc" id="L77">	}</span>
+
+	@Test
+	public void testShortenDueDate() {
+<span class="fc" id="L81">		Date shortenedDueDate = new Date(dueDate.getTime() - 3 * 24 * 60 * 60 * 1000); // Shorten due date by 3 days</span>
+<span class="fc" id="L82">		rental.setDueDate(shortenedDueDate);</span>
+<span class="fc" id="L83">		assertEquals(&quot;Due date should be shortened&quot;, shortenedDueDate, rental.getDueDate());</span>
+<span class="fc" id="L84">	}</span>
+
+	@Test
+	public void testChangeItemPrice() {
+<span class="fc" id="L88">		double newPrice = 9.0;</span>
+<span class="fc" id="L89">		item.setPrice(newPrice);</span>
+<span class="fc" id="L90">		assertEquals(&quot;Item price should be updated&quot;, newPrice, rental.getItem().getPrice(), 0.0);</span>
+<span class="fc" id="L91">	}</span>
+
+	@Test
+	public void testChangeItemDiscountPrice() {
+<span class="fc" id="L95">		double newDiscountPrice = 7.0;</span>
+<span class="fc" id="L96">		item.setDiscountPrice(newDiscountPrice);</span>
+<span class="fc" id="L97">		assertEquals(&quot;Item discount price should be updated&quot;, newDiscountPrice, rental.getItem().getDiscountPrice(),</span>
+<span class="fc" id="L98">				0.0);</span>
+<span class="fc" id="L99">	}</span>
+
+	@Test
+	public void testChangeItemName() {
+<span class="fc" id="L103">		String newName = &quot;Updated Book&quot;;</span>
+<span class="fc" id="L104">		item.setName(newName);</span>
+<span class="fc" id="L105">		assertEquals(&quot;Item name should be updated&quot;, newName, rental.getItem().getName());</span>
+<span class="fc" id="L106">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

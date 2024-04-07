@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>BookRequestManagement.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">itemManagement</a> &gt; <span class="el_source">BookRequestManagement.java</span></div><h1>BookRequestManagement.java</h1><pre class="source lang-java linenums">package itemManagement;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.stream.Collectors;
+import java.util.List;
+
+import userManagement.SystemManager;
+
+// Assuming that BookRequest is a class that encapsulates details of a book request
+// If not, a placeholder implementation is provided below
+
+public class BookRequestManagement {
+	private String userID;
+	private List&lt;BookRequest&gt; requests;
+
+<span class="fc" id="L17">	public BookRequestManagement(String userID) {</span>
+<span class="fc" id="L18">		this.userID = userID;</span>
+<span class="fc" id="L19">		this.requests = new ArrayList&lt;&gt;(); // Starting with an empty list of book requests</span>
+<span class="fc" id="L20">	}</span>
+
+<span class="fc" id="L22">	public BookRequestManagement() {</span>
+<span class="fc" id="L23">		requests = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L24">	}</span>
+
+	// Initiates a book request, it will create a new request and add it to the
+	// requests list
+	public String initiateBookRequest(String requestType, List&lt;String&gt; topics) { // returns requestID
+<span class="fc" id="L29">		BookRequest newRequest = new BookRequest(userID, requestType, topics);</span>
+<span class="fc" id="L30">		requests.add(newRequest);</span>
+<span class="fc" id="L31">		System.out.println(&quot;A new book request has been initiated for topics: &quot; + String.join(&quot;, &quot;, topics));</span>
+<span class="fc" id="L32">		return newRequest.getRequestID();</span>
+	}
+
+	// Specifies details of a book request after it has been initiated
+	public void specifyRequestDetails(String requestID, String requestType, List&lt;String&gt; topics) {
+<span class="fc" id="L37">		BookRequest request = findRequestByID(requestID);</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">		if (request != null) {</span>
+<span class="fc" id="L39">			request.setRequestType(requestType);</span>
+<span class="fc" id="L40">			request.setTopics(topics);</span>
+<span class="fc" id="L41">			System.out.println(&quot;Details specified for request ID: &quot; + requestID);</span>
+<span class="fc" id="L42">		} else {</span>
+<span class="fc" id="L43">			System.out.println(&quot;No request found with ID: &quot; + requestID);</span>
+		}
+<span class="fc" id="L45">	}</span>
+
+	// Submits a book request for processing
+	public boolean submitRequest(String requestID) {
+<span class="fc" id="L49">		BookRequest request = findRequestByID(requestID);</span>
+<span class="fc bfc" id="L50" title="All 4 branches covered.">		if (request != null &amp;&amp; !request.isSubmitted()) {</span>
+<span class="fc" id="L51">			request.setSubmitted(true);</span>
+<span class="fc" id="L52">			System.out.println(&quot;Book request ID: &quot; + requestID + &quot; has been submitted.&quot;);</span>
+<span class="fc" id="L53">			return true;</span>
+		} else {
+<span class="fc" id="L55">			System.out.println(&quot;Request could not be submitted or it's already submitted.&quot;);</span>
+<span class="fc" id="L56">			return false;</span>
+		}
+	}
+
+	// Prioritizes a book request
+	public void prioritizeRequest(String requestID) {
+<span class="fc" id="L62">		BookRequest request = findRequestByID(requestID);</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">		if (request != null) {</span>
+<span class="fc" id="L64">			request.setPriority(true);</span>
+<span class="fc" id="L65">			System.out.println(&quot;Request ID: &quot; + requestID + &quot; has been prioritized.&quot;);</span>
+<span class="fc" id="L66">		} else {</span>
+<span class="fc" id="L67">			System.out.println(&quot;No request found with ID: &quot; + requestID);</span>
+		}
+<span class="fc" id="L69">	}</span>
+
+	// Finds a request by its ID
+	private BookRequest findRequestByID(String requestID) {
+<span class="fc bfc" id="L73" title="All 2 branches covered.">		for (BookRequest request : requests) {</span>
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">			if (request.getRequestID().equals(requestID)) {</span>
+<span class="fc" id="L75">				return request;</span>
+			}
+		}
+<span class="fc" id="L78">		return null;</span>
+	}
+
+	// Getters and Setters
+	public String getUserID() {
+<span class="fc" id="L83">		return userID;</span>
+	}
+
+	public void setUserID(String userID) {
+<span class="fc" id="L87">		this.userID = userID;</span>
+<span class="fc" id="L88">	}</span>
+
+	public List&lt;BookRequest&gt; getRequestsSystemManagerOnly(SystemManager sysManager) {
+<span class="fc bfc" id="L91" title="All 2 branches covered.">		if (sysManager != null) {</span>
+<span class="fc" id="L92">			return this.requests;</span>
+		}
+<span class="fc" id="L94">		return null;</span>
+	}
+
+	public Collection&lt;BookRequest&gt; getRequests() {
+<span class="fc" id="L98">		return new ArrayList&lt;&gt;(this.requests);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

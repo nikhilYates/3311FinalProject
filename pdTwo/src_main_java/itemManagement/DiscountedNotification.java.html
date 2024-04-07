@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>DiscountedNotification.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">itemManagement</a> &gt; <span class="el_source">DiscountedNotification.java</span></div><h1>DiscountedNotification.java</h1><pre class="source lang-java linenums">package itemManagement;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class DiscountedNotification implements Product {
+	private String clientID;
+	private List&lt;Item&gt; discountedItems;
+
+<span class="fc" id="L10">	public DiscountedNotification(String clientID) {</span>
+<span class="fc" id="L11">		this.clientID = clientID;</span>
+<span class="fc" id="L12">		this.discountedItems = new ArrayList&lt;&gt;(); // Initialization of the list</span>
+<span class="fc" id="L13">	}</span>
+
+	// Method to notify the client about the discounted items
+	public void notifyDiscounts() {
+		// In a real application, you might send an email or a push notification.
+<span class="fc bfc" id="L18" title="All 2 branches covered.">		for (Item item : discountedItems) {</span>
+<span class="fc" id="L19">			System.out.println(&quot;Notification for client &quot; + clientID + &quot;: Discount on &quot; + item.getName() + &quot;, now for $&quot;</span>
+<span class="fc" id="L20">					+ item.getDiscountPrice());</span>
+		}
+<span class="fc" id="L22">	}</span>
+
+	// Method to list all the items that currently have a discount
+	public List&lt;Item&gt; listDiscountedItems() {
+<span class="fc" id="L26">		return discountedItems; // This would typically return a copy to avoid external modifications</span>
+	}
+
+	// Method to simulate the process of selecting an item for purchase
+	public boolean selectItemForPurchase(String itemId) {
+<span class="fc bfc" id="L31" title="All 2 branches covered.">		for (Item item : discountedItems) {</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">			if (item.getId().equals(itemId)) {</span>
+				// In a real application, more complex logic could be applied
+<span class="fc" id="L34">				System.out.println(&quot;Item &quot; + item.getName() + &quot; selected for purchase.&quot;);</span>
+<span class="fc" id="L35">				return true;</span>
+			}
+		}
+<span class="fc" id="L38">		System.out.println(&quot;Item with ID &quot; + itemId + &quot; not found among discounted items.&quot;);</span>
+<span class="fc" id="L39">		return false;</span>
+	}
+
+	// Method to process the purchase of a discounted item
+	public boolean processPurchase(Item item) {
+		// Here you would implement the purchase logic, possibly integrating with a
+		// payment system
+<span class="fc bfc" id="L46" title="All 2 branches covered.">		if (discountedItems.contains(item)) {</span>
+<span class="fc" id="L47">			discountedItems.remove(item); // The item is no longer discounted after purchase</span>
+<span class="fc" id="L48">			System.out.println(&quot;Purchase processed for item: &quot; + item.getName());</span>
+<span class="fc" id="L49">			return true;</span>
+		} else {
+<span class="fc" id="L51">			System.out.println(&quot;Item &quot; + item.getName() + &quot; is not available for purchase.&quot;);</span>
+<span class="fc" id="L52">			return false;</span>
+		}
+	}
+
+	// Getters and Setters
+	public String getClientID() {
+<span class="fc" id="L58">		return clientID;</span>
+	}
+
+	public void setClientID(String clientID) {
+<span class="fc" id="L62">		this.clientID = clientID;</span>
+<span class="fc" id="L63">	}</span>
+
+	public void setDiscountedItems(List&lt;Item&gt; discountedItems) {
+		// Create a new ArrayList based on the input list to ensure the internal list is
+		// separate.
+<span class="fc" id="L68">		this.discountedItems = new ArrayList&lt;&gt;(discountedItems);</span>
+<span class="fc" id="L69">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>

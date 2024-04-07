@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ItemRepo.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">projectTest (Apr 5, 2024 7:45:34 PM)</a> &gt; <a href="../../index.html" class="el_group">pdTwo</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">itemManagement</a> &gt; <span class="el_source">ItemRepo.java</span></div><h1>ItemRepo.java</h1><pre class="source lang-java linenums">package itemManagement;
+
+import java.util.*;
+
+<span class="nc" id="L5">public class ItemRepo {</span>
+
+<span class="fc" id="L7">	public static final List&lt;PhysicalItem&gt; allPhysicalItems = new ArrayList&lt;&gt;();</span>
+
+	public static void addItem(PhysicalItem item) {
+<span class="fc" id="L10">		allPhysicalItems.add(item);</span>
+<span class="fc" id="L11">	}</span>
+
+	public static PhysicalItem getItemById(String itemid) {
+<span class="fc bfc" id="L14" title="All 2 branches covered.">		for (PhysicalItem item : allPhysicalItems) {</span>
+<span class="fc bfc" id="L15" title="All 2 branches covered.">			if (item.getItemID().equals(itemid)) {</span>
+<span class="fc" id="L16">				System.out.println(item.getTitle());</span>
+<span class="fc" id="L17">				return item;</span>
+			}
+		}
+<span class="fc" id="L20">		return null;</span>
+	}
+
+	public static void printList(List&lt;PhysicalItem&gt; allPhysicalItems) {
+<span class="fc bfc" id="L24" title="All 2 branches covered.">		for (PhysicalItem item : allPhysicalItems) {</span>
+<span class="fc" id="L25">			System.out.println(&quot;Title: &quot; + item.getTitle());</span>
+		}
+<span class="fc" id="L27">	}</span>
+
+	public static void searchItem(String match) {
+<span class="fc" id="L30">		List&lt;PhysicalItem&gt; matches = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">		for (PhysicalItem item : allPhysicalItems) {</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">			if (item.getTitle().toLowerCase().contains(match.toLowerCase())) {</span>
+<span class="fc" id="L33">				matches.add(item);</span>
+			}
+		}
+<span class="fc bfc" id="L36" title="All 2 branches covered.">		if (!matches.isEmpty()) {</span>
+<span class="fc" id="L37">			System.out.println(&quot;Below are all matching search results:\nTotal: &quot; + matches.size());</span>
+<span class="fc" id="L38">			printList(matches);</span>
+<span class="fc" id="L39">		} else {</span>
+<span class="fc" id="L40">			System.out.println(&quot;No matches found from your search results.&quot;);</span>
+		}
+<span class="fc" id="L42">	}</span>
+
+	// Initialize the repo with some items
+	public static void initializeWithDefaultItems() {
+		// Clear the current list to ensure a fresh start
+<span class="fc" id="L47">		allPhysicalItems.clear();</span>
+
+		// Add default items to the list
+<span class="fc" id="L50">		allPhysicalItems.add(new PhysicalItem(&quot;001&quot;, &quot;The Great Gatsby&quot;, &quot;Shelf A1&quot;, true));</span>
+<span class="fc" id="L51">		allPhysicalItems.add(new PhysicalItem(&quot;002&quot;, &quot;1984&quot;, &quot;Shelf B2&quot;, true));</span>
+<span class="fc" id="L52">		allPhysicalItems.add(new PhysicalItem(&quot;003&quot;, &quot;To Kill a Mockingbird&quot;, &quot;Shelf C3&quot;, true));</span>
+<span class="fc" id="L53">		allPhysicalItems.add(new PhysicalItem(&quot;004&quot;, &quot;Moby Dick&quot;, &quot;Shelf D4&quot;, true));</span>
+<span class="fc" id="L54">		allPhysicalItems.add(new PhysicalItem(&quot;005&quot;, &quot;Pride and Prejudice&quot;, &quot;Shelf E5&quot;, true));</span>
+
+<span class="fc" id="L56">	}</span>
+
+	public static void reset() {
+<span class="fc" id="L59">		allPhysicalItems.clear();</span>
+<span class="fc" id="L60">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span>projectTest (Apr 5, 2024 7:45:34 PM)</div></body></html>
